@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void getInfo(ifstream &input_file)
+/*void getInfo(ifstream &input_file)
 {
 
     string line;
@@ -32,7 +32,7 @@ void getInfo(ifstream &input_file)
     {
         cout << line[i];
     }
-}
+}*/
 
 int *sorteia(int max, int n)
 {
@@ -138,21 +138,26 @@ int *sorteia(int max, int n)
     return vetorN;
 }
 
-int menu()
+int menu(DatabaseArquitetura dbA, string arqNome)
 {
     cout << "Digite a Operacao Desejada" << endl;
     cout << "(1) acessaRegistro(i)" << endl;
     cout << "(2) testeImportacao(N)" << endl;
-    cout << "(3) Fechar Programa" << endl;
+    cout << "(3) Limpar o console" << endl;
+    cout << "(0) Fechar Programa" << endl;
     int entrada;
-    cin>> entrada;
+    cin >> entrada;
     if (entrada == 1)
     {
-        return 1;
+        cout << "Digite o i-esimo registro desejado: " << endl;
+        int i;
+        cin >> i;
+        dbA.leituraBinarioConsole(i);
     }
-    else if (entrada == 2)
+
+    if (entrada == 2)
     {
-        printf("Digite o Numero de Registros N que deve ser importado\n");
+        cout << "Digite o Numero de Registros N que deve ser importado" << endl;
         int imp;
         cin >> imp;
         cout << "Digite (1) Para Saida em Console" << endl;
@@ -166,23 +171,50 @@ int menu()
             cout << "Digite (2) Para Saida em Arquivo" << endl;
             cin >> aux;
         }
+
+        int *vetValSorteados = new int[imp];
+
+        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(), imp);
+
+        int i = 0;
         if (aux == 1)
         {
+            while (i < imp)
+            {
+                dbA.leituraBinarioConsole(vetValSorteados[i]);
+                i++;
+            }
         }
-        else if (aux == 2)
+        if (aux == 2)
         {
+            string nome;
+            cout << "De um nome ao arquivo de saida: " << endl;
+            cin >> nome;
+            ofstream arqSaida;
+            arqSaida.open(nome, ios::out);
+            if (arqSaida.is_open())
+            {
+                int i = 0;
+                while (i < imp)
+                {
+                    dbA.leArqBinarioEmArquivoTexto(arqSaida, vetValSorteados[i]);
+                    i++;
+                }
+            }
         }
-        
+
         return 2;
     }
-    else if (entrada == 3)
+    if (entrada == 3)
+    {
+        return 3;
+    }
+    if (entrada == 0)
     {
         return 0;
     }
-    else
-    {
-        return -1;
-    }
+
+    return -1;
 }
 
 int main(int argc, char const *argv[])
@@ -194,12 +226,12 @@ int main(int argc, char const *argv[])
         cout << "ERROR: Expecting: ./<program_name> <input_file> " << endl;
         return 1;
     }
-    string arqNome;
-    cin >> arqNome;
+
+    string arqNome = "tiktok_app_reviews.bin";
     ifstream input_file;
     ofstream output_file;
     input_file.open(argv[1], ios::in);
-    output_file.open(arqNome, ios::out | ios_base::binary | ios_base::app);
+    output_file.open(arqNome, ios::binary);
 
     DatabaseArquitetura dbA;
 
@@ -207,32 +239,38 @@ int main(int argc, char const *argv[])
     {
 
         dbA.setReview(input_file);
+
         dbA.escreveArqBin(output_file);
     }
     else
+    {
         cout << "Não foi possivel abrir" << argv[1];
+    }
+
     int selecao = 1;
     while (selecao != 0)
     {
-        system("cls");
 
+        if (selecao == 3)
+        {
+            system("cls");
+        }
+        if (selecao == -1)
+        {
+            cout << "ERRO: Digite uma das opcoes dadas" << endl;
+        }
         if (output_file.is_open())
         {
-            selecao = menu();
+            selecao = menu(dbA, arqNome);
         }
+
         else
         {
-            cout << "Nao foi possivel abrir" << endl;
+            cout << "ERRO: Nao foi possivel abrir" << endl;
             selecao = 0;
         }
         output_file << endl;
     }
-
-    dbA.imprimir();
-
-    dbA.pegaValor(7);
-
-    getInfo(input_file);
 
     //Fechando arquivo de entrada
     input_file.close();

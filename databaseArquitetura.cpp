@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <cstdlib>
 
 DatabaseArquitetura::DatabaseArquitetura()
 {
@@ -41,10 +42,12 @@ void DatabaseArquitetura::setReview(ifstream &input_file)
             p->proximo = aux;
             aux->anterior = p;
             p = aux;
+            p->setId(p->anterior->getId() + 1);
         }
         if (primeiro == NULL)
         {
             No *aux = new No();
+            p->setId(1);
             primeiro = p;
             p->anterior = NULL;
             p->proximo = aux;
@@ -116,16 +119,6 @@ void DatabaseArquitetura::setReview(ifstream &input_file)
                 controlador++;
             }
         }
-        cout << p->review_id << endl;
-        cout << endl;
-        cout << p->review_text << endl;
-        cout << endl;
-        cout << p->upvote << endl;
-        cout << endl;
-        cout << p->version << endl;
-        cout << endl;
-        cout << p->posted_data << endl;
-        cout << endl;
         quantos--;
     }
     input_file.close();
@@ -152,7 +145,7 @@ void DatabaseArquitetura::pegaValor(int a)
     while (aux < a - 1)
     {
         p = p->proximo;
-        
+
         aux++;
     }
     cout << "Upvotes do no " << a << " eh: " << p->upvote << endl;
@@ -160,24 +153,69 @@ void DatabaseArquitetura::pegaValor(int a)
 
 void DatabaseArquitetura::escreveArqBin(ofstream &output_file)
 {
-
     No *p = primeiro;
-    while (p->proximo != nullptr)
+    while (p->proximo != NULL)
     {
-        p = p->proximo;
-        output_file << p->review_id << endl;
-        output_file << p->review_text << endl;
-        output_file << p->upvote << endl;
-        output_file << p->version << endl;
-        output_file << p->posted_data << endl;
+        
+        output_file.write((char *)p, sizeof(No));
+        p=p->proximo;
     }
 }
 
-/*void DatabaseArquitetura::leArqBinario(ofstream &output_file)
+void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, int iDparametro)
 {
+    No *aux = new No();
+    fstream arq("tiktok_app_reviews.bin", ios_base::in | ios_base::binary | ios_base::app);
+    arq.seekg(0, ios_base::beg);
+
+    while (arq.read((char *)aux, sizeof(No)))
+    {
+
+        if (aux->getId() == iDparametro)
+        {
+
+            output_file << aux->review_id << endl;
+            output_file << endl;
+            output_file << aux->review_text << endl;
+            output_file << endl;
+            output_file << aux->upvote << endl;
+            output_file << endl;
+            output_file << aux->version << endl;
+            output_file << endl;
+            output_file << aux->posted_data << endl;
+            output_file << endl;
+            break;
+        }
+    }
 }
 
-void DatabaseArquitetura::setPath(string path)
+void DatabaseArquitetura::leituraBinarioConsole(int iDparametro)
 {
-    this._path = path;
-}*/
+
+    No *aux = new No();
+    fstream arq("tiktok_app_reviews.bin", ios_base::in | ios_base::binary | ios_base::app);
+    arq.seekg(0, ios_base::beg);
+
+    while (arq.read((char *)aux, sizeof(No)))
+    {
+
+        if (aux->getId() == iDparametro)
+        {
+
+            cout << aux->review_id << endl;
+            cout << endl;
+            cout << aux->review_text << endl;
+            cout << endl;
+            cout << aux->upvote << endl;
+            cout << endl;
+            cout << aux->version << endl;
+            cout << endl;
+            cout << aux->posted_data << endl;
+            cout << endl;
+            break;
+        }
+    }
+}
+int DatabaseArquitetura::getIdUltimaPosicao(){
+    return this->ultimo->getId();
+}

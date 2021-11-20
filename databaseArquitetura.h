@@ -17,8 +17,10 @@ class DatabaseArquitetura
         void pegaValor(int a);
         void escreveArqBin(ofstream &output_file);
         void leArqBinario();
+        void leituraBinarioConsole(int iDparametro);
+        void leArqBinarioEmArquivoTexto(ofstream &output_file, int iDparametro);
+        int getIdUltimaPosicao();
     private:
-        string _path;
         No *primeiro;
         No *ultimo;
 };
