@@ -154,7 +154,7 @@ void DatabaseArquitetura::pegaValor(int a)
 void DatabaseArquitetura::escreveArqBin(ofstream &output_file)
 {
     No *p = primeiro;
-    while (p->proximo != NULL)
+    while (p != NULL)
     {
         
         output_file.write((char *)p, sizeof(No));
@@ -167,13 +167,12 @@ void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, int 
     No *aux = new No();
     fstream arq("tiktok_app_reviews.bin", ios_base::in | ios_base::binary | ios_base::app);
     arq.seekg(0, ios_base::beg);
-
+    cout<<"parametro "<<iDparametro<<endl;
     while (arq.read((char *)aux, sizeof(No)))
     {
 
         if (aux->getId() == iDparametro)
         {
-
             output_file << aux->review_id << endl;
             output_file << endl;
             output_file << aux->review_text << endl;
@@ -195,10 +194,9 @@ void DatabaseArquitetura::leituraBinarioConsole(int iDparametro)
     No *aux = new No();
     fstream arq("tiktok_app_reviews.bin", ios_base::in | ios_base::binary | ios_base::app);
     arq.seekg(0, ios_base::beg);
-
+    cout<<"parametro "<<iDparametro<<endl;
     while (arq.read((char *)aux, sizeof(No)))
     {
-
         if (aux->getId() == iDparametro)
         {
 

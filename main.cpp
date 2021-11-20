@@ -55,16 +55,15 @@ int *sorteia(int max, int n)
         {
             bool libera = true;
             int numeroSorteado;
-
             while (libera)
             {
                 libera = false;
 
-                numeroSorteado = rand() % (max) + 1;
+                numeroSorteado = rand() % (max) +1;
 
-                for (int i = 0; i > n; i++)
+                for (int i = 0; i < (max - n); i++)
                 {
-                    if (vetorN[i] = numeroSorteado)
+                    if (vetorInverso[i] == numeroSorteado)
                     {
                         libera = true;
                     }
@@ -77,6 +76,7 @@ int *sorteia(int max, int n)
         }
 
         int contador = 0;
+
         while (contador != n)
         {
             for (int j = 0; j < max; j++)
@@ -98,6 +98,7 @@ int *sorteia(int max, int n)
                 }
             }
         }
+
         return vetorN;
     }
     else if ((max / 2) >= n)
@@ -127,10 +128,6 @@ int *sorteia(int max, int n)
             vetorN[qtdSorteados] = numeroSorteado;
 
             qtdSorteados++;
-        }
-
-        for (int i = 0; i < n; i++)
-        {
         }
 
         return vetorN;
@@ -174,15 +171,23 @@ int menu(DatabaseArquitetura dbA, string arqNome)
 
         int *vetValSorteados = new int[imp];
 
+        cout << "antes do sorteio" << endl;
+
         vetValSorteados = sorteia(dbA.getIdUltimaPosicao(), imp);
 
-        int i = 0;
+        for(int b=0;b<imp;b++){
+            cout<<vetValSorteados[b]<<endl;
+        }
+
+        cout << "passa do sorteio" << endl;
+
+        int j = 0;
         if (aux == 1)
         {
-            while (i < imp)
+            while (j < imp)
             {
-                dbA.leituraBinarioConsole(vetValSorteados[i]);
-                i++;
+                dbA.leituraBinarioConsole(vetValSorteados[j]);
+                j++;
             }
         }
         if (aux == 2)
@@ -194,11 +199,11 @@ int menu(DatabaseArquitetura dbA, string arqNome)
             arqSaida.open(nome, ios::out);
             if (arqSaida.is_open())
             {
-                int i = 0;
-                while (i < imp)
+                while (j < imp)
                 {
-                    dbA.leArqBinarioEmArquivoTexto(arqSaida, vetValSorteados[i]);
-                    i++;
+                    cout <<"vetValSorteados " <<vetValSorteados[j]<<endl;
+                    dbA.leArqBinarioEmArquivoTexto(arqSaida, vetValSorteados[j]);
+                    j++;
                 }
             }
         }
