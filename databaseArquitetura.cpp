@@ -1,22 +1,21 @@
-#include "databaseArquitetura.h"
-#include "no.h"
+#include "DatabaseArquitetura.h"
+#include "No.h"
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <sstream>
 
-databaseArquitetura::databaseArquitetura(string path)
+DatabaseArquitetura::DatabaseArquitetura()
 {
-    _path = path;
     primeiro = NULL;
     ultimo = NULL;
 }
 
-databaseArquitetura::~databaseArquitetura()
+DatabaseArquitetura::~DatabaseArquitetura()
 {
-    no *p = primeiro;
-    no *aux;
-    while(p->proximo != NULL)
+    No *p = primeiro;
+    No *aux;
+    while (p->proximo != NULL)
     {
         aux = p;
         p = p->proximo;
@@ -24,92 +23,92 @@ databaseArquitetura::~databaseArquitetura()
     }
 }
 
-void databaseArquitetura::setReview()
+void DatabaseArquitetura::setReview(ifstream &input_file)
 {
-    ifstream db;
-    db.open(_path);
+
     string line;
     int inicialPos = 90;
     int position = 0;
-    getline(db,line,'\n');
+    getline(input_file, line, '\n');
     //setar novo no
-    no *p = new no;
+    No *p = new No();
     int quantos = 10;
-    while(quantos >= 1)
+    while (quantos >= 1)
     {
-        if(primeiro != NULL)
+        if (primeiro != NULL)
         {
-            no *aux = new no;
+            No *aux = new No();
             p->proximo = aux;
             aux->anterior = p;
             p = aux;
         }
-        if(primeiro == NULL)
+        if (primeiro == NULL)
         {
-            no *aux = new no;
+            No *aux = new No();
             primeiro = p;
             p->anterior = NULL;
             p->proximo = aux;
             aux->anterior = p;
         }
-        getline(db,line,'\n');
+        getline(input_file, line, '\n');
 
         position = line.size();
-        for(int i = 0; i < 89; i++)
+        for (int i = 0; i < 89; i++)
         {
             p->review_id[i] = line[i];
         }
         p->review_id[90] = '\n';
 
         int v[3];
-        int n=0;
+        int n = 0;
 
-        for(int i=0; i < line.size(); i++)
+        for (int i = 0; i < line.size(); i++)
         {
-            if(line[i] == ',')
+            if (line[i] == ',')
             {
-                v[n%3]=i;
+                v[n % 3] = i;
                 n++;
             }
         }
         int vMenor = 10000;
-        for(int i = 0; i < 3; i++){
-            if(v[i] < vMenor)
+        for (int i = 0; i < 3; i++)
+        {
+            if (v[i] < vMenor)
                 vMenor = v[i];
         }
 
         int rev_text_index = 0;
         int lengthAux = position - vMenor;
-        for(int i=90; i < position - lengthAux; i++)
+        for (int i = 90; i < position - lengthAux; i++)
         {
             p->review_text[rev_text_index] = line[i];
             rev_text_index++;
         }
         int controlador = 0;
         string str = "";
-        for(int i = v[(n-3) % 3] + 1; i <=line.size(); i++)
+        for (int i = v[(n - 3) % 3] + 1; i <= line.size(); i++)
         {
             str = str + line[i];
-            if(line[i] == ',' || line[i] == '\n' || i == line.size())
+            if (line[i] == ',' || line[i] == '\n' || i == line.size())
             {
-                if(controlador == 0)
+                if (controlador == 0)
                 {
                     stringstream ss;
                     ss << str;
                     ss >> p->upvote;
                     str = "";
                 }
-                else if(controlador == 1)
+                else if (controlador == 1)
                 {
-                    for(int j = 0; j < str.length() - 1; j++)  //<-- POSSIVEL ERRO NO LENGTH
+                    for (int j = 0; j < str.length() - 1; j++) //<-- POSSIVEL ERRO NO LENGTH
                     {
                         p->version[j] = str[j];
                     }
                     str = "";
                 }
-                else if(controlador == 2)
+                else if (controlador == 2)
                 {
-                    for(int j = 0; j < str.length() - 1; j++)  //<-- POSSIVEL ERRO NO LENGTH
+                    for (int j = 0; j < str.length() - 1; j++) //<-- POSSIVEL ERRO NO LENGTH
                     {
                         p->posted_data[j] = str[j];
                     }
@@ -129,12 +128,13 @@ void databaseArquitetura::setReview()
         cout << endl;
         quantos--;
     }
-    db.close();
+    input_file.close();
     ultimo = p;
     p->proximo = NULL;
 }
 
-void databaseArquitetura::imprimir(){
+void DatabaseArquitetura::imprimir()
+{
     cout << "upvote do primeiro: ";
     cout << primeiro->upvote << endl;
     cout << "upvote do ultimo: ";
@@ -145,12 +145,39 @@ void databaseArquitetura::imprimir(){
     cout << ultimo->anterior->upvote << endl;
 }
 
-void databaseArquitetura::pegaValor(int a){
+void DatabaseArquitetura::pegaValor(int a)
+{
     int aux = 0;
-    no *p = primeiro;
-    while(aux < a-1){
+    No *p = primeiro;
+    while (aux < a - 1)
+    {
         p = p->proximo;
+        
         aux++;
     }
-    cout << "Upvotes do no "<< a << " eh: " << p->upvote << endl;
+    cout << "Upvotes do no " << a << " eh: " << p->upvote << endl;
 }
+
+void DatabaseArquitetura::escreveArqBin(ofstream &output_file)
+{
+
+    No *p = primeiro;
+    while (p->proximo != nullptr)
+    {
+        p = p->proximo;
+        output_file << p->review_id << endl;
+        output_file << p->review_text << endl;
+        output_file << p->upvote << endl;
+        output_file << p->version << endl;
+        output_file << p->posted_data << endl;
+    }
+}
+
+/*void DatabaseArquitetura::leArqBinario(ofstream &output_file)
+{
+}
+
+void DatabaseArquitetura::setPath(string path)
+{
+    this._path = path;
+}*/

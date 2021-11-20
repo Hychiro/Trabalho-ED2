@@ -6,18 +6,18 @@
 
 using namespace std;
 
-class no
+class No
 {
     public:
-        //no();
-        //~no();
+        No(){};
+        ~No(){};
         char review_id[90];
         char review_text[3000];
         int upvote;
         char version[10];
         char posted_data[20];
-        no *proximo;
-        no *anterior;
+        No *proximo;
+        No *anterior;
 };
 
 #endif // NO_H

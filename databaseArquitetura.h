@@ -3,23 +3,24 @@
 #define DATABASEARQUITETURA_H
 #include <iostream>
 #include <string>
-#include "no.h"
+#include "No.h"
 
 using namespace std;
 
-class databaseArquitetura
+class DatabaseArquitetura
 {
     public:
-        databaseArquitetura(string path);
-        ~databaseArquitetura();
-        void setReview();
+        DatabaseArquitetura();
+        ~DatabaseArquitetura();
+        void setReview(ifstream& input_file);
         void imprimir();
         void pegaValor(int a);
-
+        void escreveArqBin(ofstream &output_file);
+        void leArqBinario();
     private:
         string _path;
-        no *primeiro;
-        no *ultimo;
+        No *primeiro;
+        No *ultimo;
 };
 
 
