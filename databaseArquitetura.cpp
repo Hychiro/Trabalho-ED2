@@ -8,23 +8,15 @@
 
 DatabaseArquitetura::DatabaseArquitetura()
 {
-    primeiro = NULL;
-    ultimo = NULL;
+
 }
 
 DatabaseArquitetura::~DatabaseArquitetura()
 {
-    No *p = primeiro;
-    No *aux;
-    while (p->proximo != NULL)
-    {
-        aux = p;
-        p = p->proximo;
-        delete aux;
-    }
+
 }
 
-void DatabaseArquitetura::setReview(ifstream &input_file)
+void DatabaseArquitetura::setReview(ifstream &input_file, ofstream& output_file)
 {
 
     string line;
@@ -32,27 +24,16 @@ void DatabaseArquitetura::setReview(ifstream &input_file)
     int position = 0;
     getline(input_file, line, '\n');
     //setar novo no
-    No *p = new No();
+    No *p = new No() ;
     int quantos = 10;
-    while (quantos >= 1)
-    {
-        if (primeiro != NULL)
-        {
-            No *aux = new No();
-            p->proximo = aux;
-            aux->anterior = p;
-            p = aux;
-            p->setId(p->anterior->getId() + 1);
-        }
-        if (primeiro == NULL)
-        {
-            No *aux = new No();
-            p->setId(1);
-            primeiro = p;
-            p->anterior = NULL;
-            p->proximo = aux;
-            aux->anterior = p;
-        }
+    int h = 1;
+    while (!input_file.eof())
+    { 
+        
+        cout << h << endl;
+
+        p->setId(h);
+
         getline(input_file, line, '\n');
 
         position = line.size();
@@ -120,12 +101,14 @@ void DatabaseArquitetura::setReview(ifstream &input_file)
             }
         }
         quantos--;
+        output_file.write((char *)p, sizeof(No));
+        h++;
     }
+    this->idUltimo = h-1;
     input_file.close();
-    ultimo = p;
-    p->proximo = NULL;
+    delete p;
 }
-
+/*
 void DatabaseArquitetura::imprimir()
 {
     cout << "upvote do primeiro: ";
@@ -137,8 +120,8 @@ void DatabaseArquitetura::imprimir()
     cout << "pegar o segundo valor usando o anterior do ultimo: ";
     cout << ultimo->anterior->upvote << endl;
 }
-
-void DatabaseArquitetura::pegaValor(int a)
+*/
+/*void DatabaseArquitetura::pegaValor(int a)
 {
     int aux = 0;
     No *p = primeiro;
@@ -149,25 +132,14 @@ void DatabaseArquitetura::pegaValor(int a)
         aux++;
     }
     cout << "Upvotes do no " << a << " eh: " << p->upvote << endl;
-}
-
-void DatabaseArquitetura::escreveArqBin(ofstream &output_file)
-{
-    No *p = primeiro;
-    while (p != NULL)
-    {
-        
-        output_file.write((char *)p, sizeof(No));
-        p=p->proximo;
-    }
-}
+}*/
 
 void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, int iDparametro)
 {
     No *aux = new No();
     fstream arq("tiktok_app_reviews.bin", ios_base::in | ios_base::binary | ios_base::app);
     arq.seekg(0, ios_base::beg);
-    cout<<"parametro "<<iDparametro<<endl;
+    cout << "parametro " << iDparametro << endl;
     while (arq.read((char *)aux, sizeof(No)))
     {
 
@@ -194,7 +166,7 @@ void DatabaseArquitetura::leituraBinarioConsole(int iDparametro)
     No *aux = new No();
     fstream arq("tiktok_app_reviews.bin", ios_base::in | ios_base::binary | ios_base::app);
     arq.seekg(0, ios_base::beg);
-    cout<<"parametro "<<iDparametro<<endl;
+    cout << "parametro " << iDparametro << endl;
     while (arq.read((char *)aux, sizeof(No)))
     {
         if (aux->getId() == iDparametro)
@@ -214,6 +186,7 @@ void DatabaseArquitetura::leituraBinarioConsole(int iDparametro)
         }
     }
 }
-int DatabaseArquitetura::getIdUltimaPosicao(){
-    return this->ultimo->getId();
+int DatabaseArquitetura::getIdUltimaPosicao()
+{
+    return idUltimo;
 }

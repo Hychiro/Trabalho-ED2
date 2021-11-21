@@ -12,17 +12,15 @@ class DatabaseArquitetura
     public:
         DatabaseArquitetura();
         ~DatabaseArquitetura();
-        void setReview(ifstream& input_file);
+        void setReview(ifstream& input_file,ofstream& output_file);
         void imprimir();
         void pegaValor(int a);
-        void escreveArqBin(ofstream &output_file);
         void leArqBinario();
         void leituraBinarioConsole(int iDparametro);
         void leArqBinarioEmArquivoTexto(ofstream &output_file, int iDparametro);
         int getIdUltimaPosicao();
     private:
-        No *primeiro;
-        No *ultimo;
+        int idUltimo;
 };
 
 

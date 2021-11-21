@@ -171,15 +171,7 @@ int menu(DatabaseArquitetura dbA, string arqNome)
 
         int *vetValSorteados = new int[imp];
 
-        cout << "antes do sorteio" << endl;
-
         vetValSorteados = sorteia(dbA.getIdUltimaPosicao(), imp);
-
-        for(int b=0;b<imp;b++){
-            cout<<vetValSorteados[b]<<endl;
-        }
-
-        cout << "passa do sorteio" << endl;
 
         int j = 0;
         if (aux == 1)
@@ -201,7 +193,6 @@ int menu(DatabaseArquitetura dbA, string arqNome)
             {
                 while (j < imp)
                 {
-                    cout <<"vetValSorteados " <<vetValSorteados[j]<<endl;
                     dbA.leArqBinarioEmArquivoTexto(arqSaida, vetValSorteados[j]);
                     j++;
                 }
@@ -243,9 +234,7 @@ int main(int argc, char const *argv[])
     if (input_file.is_open())
     {
 
-        dbA.setReview(input_file);
-
-        dbA.escreveArqBin(output_file);
+        dbA.setReview(input_file,output_file);
     }
     else
     {
@@ -268,7 +257,6 @@ int main(int argc, char const *argv[])
         {
             selecao = menu(dbA, arqNome);
         }
-
         else
         {
             cout << "ERRO: Nao foi possivel abrir" << endl;

@@ -19,10 +19,8 @@ public:
     int upvote;
     char version[10];
     char posted_data[20];
-    No *proximo;
-    No *anterior;
-    int getId(){ return iD; };
-    void setId(int i){iD = i;};
+    int getId() { return iD; };
+    void setId(int i) { iD = i; };
 };
 
 #endif // NO_H
