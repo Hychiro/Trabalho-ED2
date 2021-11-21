@@ -171,7 +171,7 @@ int menu(DatabaseArquitetura dbA, string arqNome)
 
         int *vetValSorteados = new int[imp];
 
-        vetValSorteados = sorteia(10, imp);
+        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(), imp);
 
         int j = 0;
         if (aux == 1)
@@ -209,8 +209,6 @@ int menu(DatabaseArquitetura dbA, string arqNome)
     {
         return 0;
     }
-
-    return -1;
 }
 
 

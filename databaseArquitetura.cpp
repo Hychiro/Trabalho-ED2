@@ -17,12 +17,15 @@ DatabaseArquitetura::~DatabaseArquitetura()
 
 void DatabaseArquitetura::leituraArquivo(ifstream &input_file, ofstream &output_file)
 {
-    string linha;
+    string linhaArqivo;
+    string linhaReview="";
     int repetidor = 1;
-    getline(input_file, linha, '\n');
-    while (repetidor != 10)
+    getline(input_file, linhaArqivo, '\n');
+    while (!input_file.eof())
     {
-        getline(input_file, linha, '\n');
+        if(repetidor==1){
+            getline(input_file, linhaArqivo, '\n');
+        }
         cout << repetidor << endl;
 
         No *p = new No();
@@ -33,6 +36,22 @@ void DatabaseArquitetura::leituraArquivo(ifstream &input_file, ofstream &output_
         string app_version = "";
         string date = "";
         string hour = "";
+
+        while(!input_file.eof()){
+            int inicio = linhaArqivo.find("gp:AOqpTO");
+            if(inicio != string::npos){
+                linhaReview="";
+                linhaReview=linhaArqivo;
+            }else{
+                linhaReview=linhaReview+linhaArqivo;
+            }
+                getline(input_file, linhaArqivo, '\n');
+            inicio = linhaArqivo.find("gp:AOqpTO");
+            if(inicio != string::npos){
+                break;
+            }
+
+        }
         
         for (int i = 0; i < 3000; i++)
         {
@@ -56,17 +75,17 @@ void DatabaseArquitetura::leituraArquivo(ifstream &input_file, ofstream &output_
         }
 
         string::size_type position;
-        int inicio = linha.find("gp:AOqpTO");
+        int inicio = linhaReview.find("gp:AOqpTO");
 
-        int separador1 = linha.find_first_of(",");
+        int separador1 = linhaReview.find_first_of(",");
 
-        int separador4 = linha.find_last_of(",");
+        int separador4 = linhaReview.find_last_of(",");
 
-        int separador3 = linha.find_last_of(",", separador4 - 1);
+        int separador3 = linhaReview.find_last_of(",", separador4 - 1);
 
-        int separador2 = linha.find_last_of(",", separador3 - 1);
+        int separador2 = linhaReview.find_last_of(",", separador3 - 1);
 
-        int separador5 = linha.find_last_of(" ");
+        int separador5 = linhaReview.find_last_of(" ");
 
         if (inicio == string::npos || separador1 == string::npos || separador2 == string::npos || separador3 == string::npos || separador4 == string::npos)
         {
@@ -75,38 +94,38 @@ void DatabaseArquitetura::leituraArquivo(ifstream &input_file, ofstream &output_
         int j = 0;
         for (int i = inicio; i < separador1; i++)
         {
-            p->review_id[j] = linha[i];
+            p->review_id[j] = linhaReview[i];
             j++;
         }
         j = 0;
         for (int i = separador1 + 1; i < separador2; i++)
         {
 
-            p->review_text[j] = linha[i];
+            p->review_text[j] = linhaReview[i];
             j++;
         }
         j = 0;
         for (int i = separador2 + 1; i < separador3; i++)
         {
-            p->upvotes[j] = linha[i];
+            p->upvotes[j] = linhaReview[i];
             j++;
         }
         j = 0;
         for (int i = separador3 + 1; i < separador4; i++)
         {
-            p->app_version[j] = linha[i];
+            p->app_version[j] = linhaReview[i];
             j++;
         }
         j = 0;
         for (int i = separador4 + 1; i < separador5; i++)
         {
-            p->date[j] = linha[i];
+            p->date[j] = linhaReview[i];
             j++;
         }
         j = 0;
-        for (int i = separador5 + 1; i < linha.size(); i++)
+        for (int i = separador5 + 1; i < linhaReview.size(); i++)
         {
-            p->hour[j] = linha[i];
+            p->hour[j] = linhaReview[i];
             j++;
         }
 
