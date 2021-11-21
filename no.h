@@ -14,12 +14,12 @@ private:
 public:
     No(){};
     ~No(){};
-    string review_id;
-    string review_text;
-    string upvotes;
-    string app_version;
-    string date;
-    string hour;
+    char review_id[90];
+    char review_text[3000];
+    char upvotes[10];
+    char app_version[30];
+    char date[30];
+    char hour[30];
     int getId() { return iD; };
     void setId(int i) { iD = i; };
 };

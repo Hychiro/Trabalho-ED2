@@ -171,7 +171,7 @@ int menu(DatabaseArquitetura dbA, string arqNome)
 
         int *vetValSorteados = new int[imp];
 
-        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(), imp);
+        vetValSorteados = sorteia(10, imp);
 
         int j = 0;
         if (aux == 1)
@@ -228,7 +228,7 @@ int main(int argc, char const *argv[])
     ifstream input_file;
     ofstream output_file;
     input_file.open(argv[1], ios::in);
-    output_file.open(arqNome, ios::binary);
+    output_file.open(arqNome, ios::binary |ios::trunc);
 
     DatabaseArquitetura dbA;
 
