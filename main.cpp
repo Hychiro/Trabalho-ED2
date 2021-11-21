@@ -213,6 +213,7 @@ int menu(DatabaseArquitetura dbA, string arqNome)
     return -1;
 }
 
+
 int main(int argc, char const *argv[])
 {
 
@@ -234,7 +235,7 @@ int main(int argc, char const *argv[])
     if (input_file.is_open())
     {
 
-        dbA.setReview(input_file,output_file);
+        dbA.leituraArquivo(input_file,output_file);
     }
     else
     {

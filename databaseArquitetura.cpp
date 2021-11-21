@@ -8,15 +8,101 @@
 
 DatabaseArquitetura::DatabaseArquitetura()
 {
-
 }
 
 DatabaseArquitetura::~DatabaseArquitetura()
 {
-
 }
 
-void DatabaseArquitetura::setReview(ifstream &input_file, ofstream& output_file)
+void DatabaseArquitetura::leituraArquivo(ifstream &input_file, ofstream &output_file)
+{
+    string linha;
+    int repetidor = 0;
+    while (getline(input_file, linha))
+    {
+        cout<<repetidor<<endl;
+
+        No *p = new No();
+
+        string review_id = "";
+        string review_text = "";
+        string upvotes = "";
+        string app_version = "";
+        string date = "";
+        string hour = "";
+
+        p->review_id = "";
+        p->review_text = "";
+        p->upvotes = "";
+        p->app_version = "";
+        p->date = "";
+        p->hour = "";
+
+        string::size_type position;
+        int inicio = linha.find("gp:AOqpTO");
+        int separador1 = linha.find_first_of(",");
+        int separador4 = linha.find_last_of(",");
+        int separador3 = linha.find_last_of(",", separador4 - 1);
+        int separador2 = linha.find_last_of(",", separador3 - 1);
+        int separador5 = linha.find_last_of(" ");
+
+
+
+        if (repetidor > 0)
+        {
+            if (inicio == string::npos || separador1 == string::npos || separador2 == string::npos || separador3 == string::npos || separador4 == string::npos)
+            {
+                cout << "ERRO NA LEITURA DO ARQUIVO EM TEXTO LINHA: " << repetidor << endl;
+                
+            }
+
+            for (int i = inicio; i < separador1; i++)
+            {
+                review_id = review_id + linha[i];
+            }
+            p->review_id = review_id;
+
+            for (int i = separador1 + 1; i < separador2; i++)
+            {
+                review_text = review_text + linha[i];
+            }
+            p->review_text = review_text;
+
+            for (int i = separador2 + 1; i < separador3; i++)
+            {
+                upvotes = upvotes + linha[i];
+            }
+            p->upvotes = upvotes;
+
+            for (int i = separador3 + 1; i < separador4; i++)
+            {
+                app_version = app_version + linha[i];
+            }
+            p->app_version = app_version;
+
+            for (int i = separador4 + 1; i < separador5; i++)
+            {
+                date = date + linha[i];
+            }
+            p->date = date;
+
+            for (int i = separador5 + 1; i < linha.size(); i++)
+            {
+                hour = hour + linha[i];
+            }
+            p->hour = hour;
+
+            p->setId(repetidor);
+
+            output_file.write((char *)p, sizeof(No));
+        }
+
+        delete p;
+        repetidor++;
+    }
+}
+
+/*void DatabaseArquitetura::setReview(ifstream &input_file, ofstream& output_file)
 {
 
     string line;
@@ -24,12 +110,10 @@ void DatabaseArquitetura::setReview(ifstream &input_file, ofstream& output_file)
     int position = 0;
     getline(input_file, line, '\n');
     //setar novo no
-    No *p = new No() ;
-    int quantos = 10;
     int h = 1;
     while (!input_file.eof())
     { 
-        
+        No *p = new No() ;
         cout << h << endl;
 
         p->setId(h);
@@ -100,14 +184,14 @@ void DatabaseArquitetura::setReview(ifstream &input_file, ofstream& output_file)
                 controlador++;
             }
         }
-        quantos--;
         output_file.write((char *)p, sizeof(No));
+        delete p;
         h++;
     }
     this->idUltimo = h-1;
     input_file.close();
-    delete p;
-}
+}*/
+
 /*
 void DatabaseArquitetura::imprimir()
 {
@@ -149,11 +233,13 @@ void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, int 
             output_file << endl;
             output_file << aux->review_text << endl;
             output_file << endl;
-            output_file << aux->upvote << endl;
+            output_file << aux->upvotes << endl;
             output_file << endl;
-            output_file << aux->version << endl;
+            output_file << aux->app_version << endl;
             output_file << endl;
-            output_file << aux->posted_data << endl;
+            output_file << aux->date << endl;
+            output_file << endl;
+            output_file << aux->hour << endl;
             output_file << endl;
             break;
         }
@@ -176,11 +262,13 @@ void DatabaseArquitetura::leituraBinarioConsole(int iDparametro)
             cout << endl;
             cout << aux->review_text << endl;
             cout << endl;
-            cout << aux->upvote << endl;
+            cout << aux->upvotes << endl;
             cout << endl;
-            cout << aux->version << endl;
+            cout << aux->app_version << endl;
             cout << endl;
-            cout << aux->posted_data << endl;
+            cout << aux->date << endl;
+            cout << endl;
+            cout << aux->hour << endl;
             cout << endl;
             break;
         }
