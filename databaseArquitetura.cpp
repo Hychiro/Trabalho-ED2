@@ -21,7 +21,7 @@ void DatabaseArquitetura::leituraArquivo(ifstream &input_file, ofstream &output_
     string linhaReview="";
     int repetidor = 1;
     getline(input_file, linhaArqivo, '\n');
-    while (repetidor!=100)
+    while (!input_file.eof())
     {
         if(repetidor==1){
             getline(input_file, linhaArqivo, '\n');
@@ -137,12 +137,12 @@ void DatabaseArquitetura::leituraArquivo(ifstream &input_file, ofstream &output_
     }
 }
 
-void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, int iDparametro)
+void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, int iDparametro,ifstream& arqBin)
 {
     No *aux = new No();
-    fstream arq("tiktok_app_reviews.bin", ios_base::in | ios_base::binary | ios_base::app);
-    arq.seekg(0, ios_base::beg);
-    while (arq.read((char *)aux, sizeof(No)))
+    //fstream arqBin("tiktok_app_reviews.bin", ios_base::in | ios_base::binary | ios_base::app);
+    arqBin.seekg(0, ios_base::beg);
+    while (arqBin.read((char *)aux, sizeof(No)))
     {
 
         if (aux->getId() == iDparametro)
@@ -165,13 +165,13 @@ void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, int 
 }
 
 
-void DatabaseArquitetura::leituraBinarioConsole(int iDparametro)
+void DatabaseArquitetura::leituraBinarioConsole(int iDparametro,ifstream& arqBin)
 {
 
     No *aux = new No();
-    fstream arq("tiktok_app_reviews.bin", ios_base::in | ios_base::binary | ios_base::app);
-    arq.seekg(0, ios_base::beg);
-    while (arq.read((char *)aux, sizeof(No)))
+    //fstream arq("tiktok_app_reviews.bin", ios_base::in | ios_base::binary | ios_base::app);
+    arqBin.seekg(0, ios_base::beg);
+    while (arqBin.read((char *)aux, sizeof(No)))
     {
         if (aux->getId() == iDparametro)
         {
