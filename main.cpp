@@ -8,32 +8,6 @@
 
 using namespace std;
 
-/*void getInfo(ifstream &input_file)
-{
-
-    string line;
-    getline(input_file, line, '\n');
-
-    getline(input_file, line, ',');
-    getline(input_file, line, '\n');
-
-    int v[3];
-    int n = 0;
-
-    for (int i = 0; i < line.size(); i++)
-    {
-        if (line[i] == ',')
-        {
-            v[n % 3] = i;
-            n++;
-        }
-    }
-    for (int i = 0; i < v[(n - 3) % 3]; i++)
-    {
-        cout << line[i];
-    }
-}*/
-
 int *sorteia(int max, int n)
 {
 
@@ -145,10 +119,11 @@ int menu(DatabaseArquitetura dbA, string arqNome)
     int entrada;
     cin >> entrada;
     if (entrada == 1)
-    {
+    {        
         cout << "Digite o i-esimo registro desejado: " << endl;
         int i;
         cin >> i;
+        //le do .bin
         dbA.leituraBinarioConsole(i);
     }
 
@@ -178,6 +153,7 @@ int menu(DatabaseArquitetura dbA, string arqNome)
         {
             while (j < imp)
             {
+                //le do .bin
                 dbA.leituraBinarioConsole(vetValSorteados[j]);
                 j++;
             }
@@ -193,22 +169,24 @@ int menu(DatabaseArquitetura dbA, string arqNome)
             {
                 while (j < imp)
                 {
+                    //le do .bin em um arquivo de saida de final a escolha (recomendo que seja .txt)
                     dbA.leArqBinarioEmArquivoTexto(arqSaida, vetValSorteados[j]);
                     j++;
                 }
             }
         }
 
-        return 2;
+        return entrada;
     }
     if (entrada == 3)
     {
-        return 3;
+        return entrada;
     }
     if (entrada == 0)
     {
-        return 0;
+        return entrada;
     }
+    return entrada;
 }
 
 
@@ -226,13 +204,23 @@ int main(int argc, char const *argv[])
     ifstream input_file;
     ofstream output_file;
     input_file.open(argv[1], ios::in);
-    output_file.open(arqNome, ios::binary |ios::trunc);
+
+    // cria o arquivo caso ele nao exista ou só abre ele para escrita 
+    if(!output_file.is_open()){
+        output_file.open(arqNome, ios::binary |ios::trunc);
+        cout<<" O arquivo foi criado para uso "<<endl;
+    }else{
+        cout<<" O arquivo ja esta aberto para uso "<<endl;
+    }
+    
+    
 
     DatabaseArquitetura dbA;
 
+
     if (input_file.is_open())
     {
-
+        // faz escrita do .csv para o .bin
         dbA.leituraArquivo(input_file,output_file);
     }
     else
