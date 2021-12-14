@@ -148,7 +148,7 @@ int menu(DatabaseArquitetura dbA, ifstream& arqBin)
         }
         int *vetValSorteados = new int[imp];
 
-        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(), imp);
+        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
         No *vetOrdenados = new No[imp];
         vetOrdenados = radix(vetValSorteados,imp, arqBin);
         int j = 0;
