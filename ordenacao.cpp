@@ -144,3 +144,48 @@ cout<<endl<<endl<<endl;
         }
         return vetorStruct;
 }
+
+/* void quickSort (int a[], int inicio, int fim)
+{
+    int j;
+    if(inicio < fim)
+    {
+        j = particao(a, inicio, fim);
+        quickSort(a, inicio, fim - 1);
+        quickSort(a, inicio + 1, fim);
+    }
+}
+
+int particao(int a[], int inicio, int fim)
+{
+    int v, i, j, temp;
+    v = a[inicio];
+    i = inicio;
+    j = fim + 1;
+
+    do
+    {
+        do
+        {
+            i++;
+        }while(a[i] < v && i <= fim);
+        
+        do
+        {
+            j--;
+        }while(v < a[j]);
+
+        if(i < j)
+        {
+            temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+        }
+
+    } while(i < j);
+
+    a[inicio] = a[j];
+    a[j] = v;
+
+    return j;
+} */
