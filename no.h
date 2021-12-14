@@ -24,4 +24,4 @@ public:
     void setId(int i) { iD = i; };
 };
 
-#endif // NO_H
+#endif // NO_HS

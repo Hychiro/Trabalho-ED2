@@ -5,6 +5,7 @@
 #include "DatabaseArquitetura.cpp"
 #include "DatabaseArquitetura.h"
 #include <ctime>
+#include "ordenacao.cpp"
 
 using namespace std;
 
@@ -147,14 +148,15 @@ int menu(DatabaseArquitetura dbA, ifstream& arqBin)
         int *vetValSorteados = new int[imp];
 
         vetValSorteados = sorteia(dbA.getIdUltimaPosicao(), imp);
-
+        No *vetOrdenados = new No[imp];
+        vetOrdenados = radix(vetValSorteados,imp, arqBin);
         int j = 0;
         if (aux == 1)
         {
             while (j < imp)
             {
                 //le do .bin
-                dbA.leituraBinarioConsole(vetValSorteados[j], arqBin);
+                dbA.impressaoConsole(vetOrdenados[j], arqBin);
                 j++;
             }
         }

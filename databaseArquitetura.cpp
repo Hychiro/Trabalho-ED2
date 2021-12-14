@@ -164,6 +164,20 @@ void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, int 
     }
 }
 
+void DatabaseArquitetura::impressaoConsole(No parametro,ifstream& arqBin){
+            cout << parametro.review_id << endl;
+            cout << endl;
+            cout << parametro.review_text << endl;
+            cout << endl;
+            cout << parametro.upvotes << endl;
+            cout << endl;
+            cout << parametro.app_version << endl;
+            cout << endl;
+            cout << parametro.date << endl;
+            cout << endl;
+            cout << parametro.hour << endl;
+            cout << endl;
+}
 
 void DatabaseArquitetura::leituraBinarioConsole(int iDparametro,ifstream& arqBin)
 {
