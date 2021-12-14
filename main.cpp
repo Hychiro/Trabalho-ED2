@@ -110,6 +110,8 @@ int *sorteia(int max, int n)
     return vetorN;
 }
 
+
+
 int menu(DatabaseArquitetura dbA, ifstream& arqBin)
 {
     cout << "Digite a Operacao Desejada" << endl;
@@ -144,7 +146,6 @@ int menu(DatabaseArquitetura dbA, ifstream& arqBin)
             cout << "Digite (2) Para Saida em Arquivo" << endl;
             cin >> aux;
         }
-
         int *vetValSorteados = new int[imp];
 
         vetValSorteados = sorteia(dbA.getIdUltimaPosicao(), imp);
@@ -204,6 +205,7 @@ int main(int argc, char const *argv[])
     string arqNome = "tiktok_app_reviews.bin";
     ifstream arqBin;
     DatabaseArquitetura dbA;
+    bool entrada = true;
 
     arqBin.open(arqNome, ios_base::binary );
     if (arqBin.is_open())
@@ -231,46 +233,51 @@ int main(int argc, char const *argv[])
             }
         }
     }
-    else
+   else
     {
         ofstream output_file;
         ifstream input_file;
         input_file.open(argv[1], ios::in);
-        output_file.open(arqNome, ios::binary | ios::trunc);
-        if (input_file.is_open())
+
+        if (input_file)
         {
+            output_file.open(arqNome, ios::binary | ios::trunc);
             // faz escrita do .csv para o .bin
             dbA.leituraArquivo(input_file, output_file);
         }
         else
         {
             cout << "Não foi possivel abrir" << argv[1];
+            entrada = false;
         }
         //Fechando arquivo de entrada
         //Fechando arquivo de saída
         input_file.close();
         output_file.close();
-        arqBin.open(arqNome, ios::in | ios_base::binary | ios_base::app);
-        int selecao = 1;
-        while (selecao != 0)
+        if (entrada)
         {
+            arqBin.open(arqNome, ios::in | ios_base::binary | ios_base::app);
+            int selecao = 1;
+            while (selecao != 0)
+            {
 
-            if (selecao == 3)
-            {
-                system("cls");
-            }
-            if (selecao == -1)
-            {
-                cout << "ERRO: Digite uma das opcoes dadas" << endl;
-            }
-            if (arqBin.is_open())
-            {
-                selecao = menu(dbA, arqBin);
-            }
-            else
-            {
-                cout << "ERRO: Nao foi possivel abrir" << endl;
-                selecao = 0;
+                if (selecao == 3)
+                {
+                    system("cls");
+                }
+                if (selecao == -1)
+                {
+                    cout << "ERRO: Digite uma das opcoes dadas" << endl;
+                }
+                if (arqBin.is_open())
+                {
+                    selecao = menu(dbA, arqBin);
+                }
+                else
+                {
+                    cout << "ERRO: Nao foi possivel abrir" << endl;
+                    selecao = 0;
+                }
             }
         }
     }
