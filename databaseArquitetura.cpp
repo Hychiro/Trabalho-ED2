@@ -215,7 +215,9 @@ void DatabaseArquitetura::leituraBinarioConsole(int iDparametro,ifstream& arqBin
 int DatabaseArquitetura::getIdUltimaPosicao(ifstream &arqBin)
 {
     No *aux = new No();
-    arqBin.seekg(-(sizeof(No)), ios::end);
+    arqBin.seekg(0, ios_base::end);
+    int length = arqBin.tellg();
+    arqBin.seekg(length-(sizeof(No)), ios_base::beg);
     arqBin.read((char *)aux, sizeof(No));
     cout<<"ultima posicione: "<<aux->getId()<<endl;
     return aux->getId();
