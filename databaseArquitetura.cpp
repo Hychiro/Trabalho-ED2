@@ -217,6 +217,6 @@ int DatabaseArquitetura::getIdUltimaPosicao(ifstream &arqBin)
     No *aux = new No();
     arqBin.seekg(-(sizeof(No)), ios::end);
     arqBin.read((char *)aux, sizeof(No));
-
+    cout<<"ultima posicione: "<<aux->getId()<<endl;
     return aux->getId();
 }
