@@ -220,6 +220,25 @@ void heapSort(int *v, int n){
     cout << duration_cast<duration<double>>(fim - inicio).count() << " segundos"  << endl; //printa o tempo inicial - tempo final =  tempo levado
 }
 
+No *OrdenaOsNos(int tam, No *vetorStruct, int *v){
+    No *vetOrdenados = new No[tam];
+    int oldTam = tam;
+    int aux;
+    for(int i = 0; i < tam; i++){
+        for(int j = 0; j < tam; j++){
+            sscanf(vetorStruct[j].upvotes, "%d", &aux);//pega os upvotes de vetorStruct[j] e coloca com int em aux
+            if(v[i] == aux){
+                vetOrdenados[i] = vetorStruct[j]; //ordena o vetorOrdenado colocando os Nós em ordem crescente
+                for(int x = j; x < tam - 1; x++){
+                    vetorStruct[x] = vetorStruct[x + 1];
+                }
+                //tam--;
+                break;
+            }
+        }
+    }
+    return vetOrdenados;
+}
 
 No *getVet(int vetorId[], int tam, ifstream &arqBin) //peguei a logica do radix pra ler o bin e salvar em struct
 {
@@ -235,15 +254,21 @@ No *getVet(int vetorId[], int tam, ifstream &arqBin) //peguei a logica do radix 
             if (aux->getId() == vetorId[i])
             {
                 vetorStruct[i] = *aux;
-                sscanf(vetorStruct[i].upvotes, "%d", &v[i]); // v[i] = (int)vetorStruct[i].upvotes --- transforma o vetor de char upvote em int pra salvar no vetor
                 cout << "No " << i << " upvotes: " << vetorStruct[i].upvotes << endl;
+                sscanf(vetorStruct[i].upvotes, "%d", &v[i]); // v[i] = (int)vetorStruct[i].upvotes --- transforma o vetor de char upvote em int pra salvar no vetor
                 break;
             }
         }
     }
     //o *v agora salvou 'tam' upvotes de 0 a 'tam'
-    heapSort(v, tam); 
-    return NULL;
+    for(int i = 0; i < tam; i++){
+        cout << v[i] << " ";
+    }
+    cout << endl;
+    heapSort(v,tam);
+    No *ordenado = new No[tam];
+    ordenado = OrdenaOsNos(tam, vetorStruct, v);
+    return ordenado;
 }
 //FIM DO HEAPSORT-----------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //FIM DO HEAPSORT-----------------------------------------------------------------------------------------------------------------------------------------------------------------//

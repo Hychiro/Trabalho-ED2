@@ -110,9 +110,7 @@ int *sorteia(int max, int n)
     return vetorN;
 }
 
-
-
-int menu(DatabaseArquitetura dbA, ifstream& arqBin)
+int menu(DatabaseArquitetura dbA, ifstream &arqBin)
 {
     cout << "Digite a Operacao Desejada" << endl;
     cout << "(1) acessaRegistro(i)" << endl;
@@ -146,14 +144,30 @@ int menu(DatabaseArquitetura dbA, ifstream& arqBin)
             cout << "Digite (2) Para Saida em Arquivo" << endl;
             cin >> aux;
         }
-        int *vetValSorteados = new int[imp];
-
-        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
-        No *vetOrdenados = new No[imp];
-        vetOrdenados = radix(vetValSorteados,imp, arqBin);
         int j = 0;
+        int *vetValSorteados = new int[imp];
+        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
         if (aux == 1)
         {
+            //Selecionar tipo de ordenação _INICIO
+            cout << "Qual tipo de Sort usar?" << endl;
+            cout << "Digite (1) para RadixSort" << endl;
+            cout << "Digite (2) para HeapSort" << endl;
+            int type;
+            cin >> type;
+            No *vetOrdenados = new No[imp];
+            if (type == 1)
+                vetOrdenados = radix(vetValSorteados, imp, arqBin);
+            if (type == 2)
+                vetOrdenados = getVet(vetValSorteados, imp, arqBin);
+            while (type != 1 && type != 2)
+            {
+                cout << "Digite uma Opcao valida!" << endl;
+                cout << "Digite (1) para RadixSort" << endl;
+                cout << "Digite (2) para HeapSort" << endl;
+                cin >> type;
+            }
+            //Selecionar tipo de ordenação _FIM
             while (j < imp)
             {
                 //le do .bin
@@ -207,7 +221,7 @@ int main(int argc, char const *argv[])
     DatabaseArquitetura dbA;
     bool entrada = true;
 
-    arqBin.open(arqNome, ios_base::binary );
+    arqBin.open(arqNome, ios_base::binary);
     if (arqBin.is_open())
     {
         int selecao = 1;
@@ -233,7 +247,7 @@ int main(int argc, char const *argv[])
             }
         }
     }
-   else
+    else
     {
         ofstream output_file;
         ifstream input_file;
