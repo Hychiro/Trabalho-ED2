@@ -182,26 +182,28 @@ void troca(T& a, T& b)
     b = aux;
 }
 
-void heapify(int *v,int i, int n){
+void heapify(No *v,int i, int n){
     while(i < n){
         int filho = 2*i + 1;
+
         if(filho < n){
-            if(filho + 1 < n && v[filho + 1] > v[filho])
+            if(filho + 1 < n && atoi(v[filho + 1].upvotes) > atoi(v[filho].upvotes)){
                 filho++;
-            if(v[filho] > v[i])
+            }
+            if(atoi(v[filho].upvotes) > atoi(v[i].upvotes))
                 troca(v[i], v[filho]);
         }
         i = filho;
     }
 }
 
-void constroiHeap(int *v, int n){
+void constroiHeap(No *v, int n){
     for(int i = n/2-1; i >= 0; i--){
         heapify(v, i, n);
     }
 }
 
-void heapSortRec(int *v, int n){
+void heapSortRec(No *v, int n){
     constroiHeap(v,n);
     while(n > 0){
         troca(v[0], v[n-1]);
@@ -210,17 +212,16 @@ void heapSortRec(int *v, int n){
     }
 }
 
-void heapSort(int *v, int n){
+void heapSort(No *v, int n){
     high_resolution_clock::time_point inicio = high_resolution_clock::now();//pega o tempo do inicio
     heapSortRec(v, n);
     high_resolution_clock::time_point fim = high_resolution_clock::now();//pega o tempo do final
     cout << endl;
     for(int i = 0; i < n; i++){
-        cout << v[i] << " "; //printa o vetor de upvote em ordem crescente
+        cout << v[i].upvotes << " "; //printa o vetor de upvote em ordem crescente
     }
     cout << duration_cast<duration<double>>(fim - inicio).count() << " segundos"  << endl; //printa o tempo inicial - tempo final =  tempo levado
 }
-
 
 No *getVet(int vetorId[], int tam, ifstream &arqBin) //peguei a logica do radix pra ler o bin e salvar em struct
 {
@@ -236,15 +237,20 @@ No *getVet(int vetorId[], int tam, ifstream &arqBin) //peguei a logica do radix 
             if (aux->getId() == vetorId[i])
             {
                 vetorStruct[i] = *aux;
-                sscanf(vetorStruct[i].upvotes, "%d", &v[i]); // v[i] = (int)vetorStruct[i].upvotes --- transforma o vetor de char upvote em int pra salvar no vetor
                 cout << "No " << i << " upvotes: " << vetorStruct[i].upvotes << endl;
+                sscanf(vetorStruct[i].upvotes, "%d", &v[i]); // v[i] = (int)vetorStruct[i].upvotes --- transforma o vetor de char upvote em int pra salvar no vetor
                 break;
             }
         }
     }
     //o *v agora salvou 'tam' upvotes de 0 a 'tam'
-    heapSort(v, tam); 
-    return NULL;
+    for(int i = 0; i < tam; i++){
+        cout << v[i] << " ";
+    }
+    cout << endl;
+    heapSort(vetorStruct,tam);
+
+    return vetorStruct;
 }
 //FIM DO HEAPSORT-----------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //FIM DO HEAPSORT-----------------------------------------------------------------------------------------------------------------------------------------------------------------//
