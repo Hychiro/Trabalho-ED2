@@ -6,11 +6,21 @@
 #include "DatabaseArquitetura.h"
 #include <ctime>
 #include "ordenacao.cpp"
+#include <random>
+#include <iostream>
 
 using namespace std;
 
+
+
 int *sorteia(int max, int n)
 {
+    //default_random_engine generator;
+    //uniform_int_distribution<int> distribution(0, max);
+
+    std::random_device rd;
+    std::default_random_engine generator(rd());
+    std::uniform_int_distribution<int> distribution(0,max);
 
     srand((unsigned)time(0));
 
@@ -28,21 +38,22 @@ int *sorteia(int max, int n)
 
         while (qtdSorteados != (max - n))
         {
+            cout<<"Sorteando :"<<qtdSorteados<<endl;
             bool libera = true;
             int numeroSorteado;
             while (libera)
             {
                 libera = false;
 
-                numeroSorteado = rand() % (max) + 1;
+                numeroSorteado = distribution(generator);
 
-                for (int i = 0; i < (max - n); i++)
+                /*for (int i = 0; i < qtdSorteados; i++)
                 {
                     if (vetorInverso[i] == numeroSorteado)
                     {
                         libera = true;
                     }
-                }
+                }*/
             }
 
             vetorInverso[qtdSorteados] = numeroSorteado;
@@ -83,6 +94,7 @@ int *sorteia(int max, int n)
 
         while (qtdSorteados != n)
         {
+            cout<<"Sorteando :"<<qtdSorteados<<endl;
             bool libera = true;
             int numeroSorteado;
 
@@ -90,14 +102,14 @@ int *sorteia(int max, int n)
             {
                 libera = false;
 
-                numeroSorteado = rand() % (max) + 1;
-                for (int o = 0; o < n; o++)
+                numeroSorteado = distribution(generator);
+                /*for (int o = 0; o < qtdSorteados; o++)
                 {
                     if (vetorN[o] == numeroSorteado)
                     {
                         libera = true;
                     }
-                }
+                }*/
             }
 
             vetorN[qtdSorteados] = numeroSorteado;
@@ -147,9 +159,9 @@ int menu(DatabaseArquitetura dbA, ifstream& arqBin)
             cin >> aux;
         }
         int *vetValSorteados = new int[imp];
-
         vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
-        No *vetOrdenados = new No[imp];
+        //vetValSorteados = sorteia(200000, imp);
+        SubNo *vetOrdenados = new SubNo[imp];
         vetOrdenados = radix(vetValSorteados,imp, arqBin);
         int j = 0;
         if (aux == 1)
@@ -180,6 +192,7 @@ int menu(DatabaseArquitetura dbA, ifstream& arqBin)
         }
 
         return entrada;
+
     }
     if (entrada == 3)
     {

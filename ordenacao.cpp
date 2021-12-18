@@ -9,7 +9,7 @@
 using namespace std;
 using namespace std::chrono;
 
-No *countingSort(No vetorN[], int m, int tam)
+SubNo *countingSort(SubNo vetorN[], int m, int tam)
 {
     int max = 9;
     m = m + 1;
@@ -72,7 +72,7 @@ No *countingSort(No vetorN[], int m, int tam)
 
     //ATÉ AQUI VERIFIQUEI TUDO
 
-    No *vetorResultado = new No[tam];
+    SubNo *vetorResultado = new SubNo[tam];
 
     for (int i = 0; i < tam; i++)
     { //para toda struct do vetor
@@ -122,20 +122,21 @@ No *countingSort(No vetorN[], int m, int tam)
     return vetorResultado;
 }
 
-No *radix(int vetorId[], int tam, ifstream &arqBin)
+SubNo *radix(int vetorId[], int tam, ifstream &arqBin)
 {
 
-    No *vetorStruct = new No[tam];
+    SubNo *vetorStruct = new SubNo[tam];
     No *aux = new No();
     for (int i = 0; i < tam; i++)
     {
-        arqBin.seekg(((sizeof(No)) * (vetorId[i] - 1)), ios_base::beg);
+        cout<<"vetorID ["<<i<<"] = "<<vetorId[i]<<endl;
+        arqBin.seekg((sizeof(No))*(vetorId[i] - 1), ios_base::beg);
         while (arqBin.read((char *)aux, sizeof(No)))
         {
-            cout << "loop" << endl;
             if (aux->getId() == vetorId[i])
             {
-                vetorStruct[i] = *aux;
+                vetorStruct[i].setId(aux->getId());
+                vetorStruct[i].setupvotes(aux->upvotes);
                 cout << "No " << i << " upvotes: " << vetorStruct[i].upvotes << endl;
                 break;
             }

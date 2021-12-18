@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include <stdio.h>
 
 using namespace std;
 DatabaseArquitetura::DatabaseArquitetura()
@@ -169,32 +170,52 @@ void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, int 
     }
 }
 
-void DatabaseArquitetura::impressaoConsole(No parametro,ifstream& arqBin){
-            cout << parametro.review_id << endl;
+void DatabaseArquitetura::impressaoConsole(SubNo parametro,ifstream& arqBin){
+
+
+    No *aux = new No();
+
+
+        arqBin.seekg((sizeof(No))*(parametro.getId() - 1), ios_base::beg);
+        while (arqBin.read((char *)aux, sizeof(No)))
+        {
+            cout << aux->getId() << endl;
+            if (aux->getId() == parametro.getId())
+            {
+                break;
+            }
+        }
+            cout << aux->review_id << endl;
             cout << endl;
-            cout << parametro.review_text << endl;
+            cout << aux->review_text << endl;
             cout << endl;
-            cout << parametro.upvotes << endl;
+            cout << aux->upvotes << endl;
             cout << endl;
-            cout << parametro.app_version << endl;
+            cout << aux->app_version << endl;
             cout << endl;
-            cout << parametro.date << endl;
+            cout << aux->date << endl;
             cout << endl;
-            cout << parametro.hour << endl;
+            cout << aux->hour << endl;
             cout << endl;
+
+            delete aux;
 }
 
 void DatabaseArquitetura::leituraBinarioConsole(int iDparametro,ifstream& arqBin)
 {
-
     No *aux = new No();
+        long long int a=(iDparametro-1)*sizeof(No);
+    cout<<"TESTE LONG: "<<a<<endl;
+        int b=(iDparametro-1)*sizeof(No);
+    cout<<"TESTE int: "<<b<<endl;
     //fstream arq("tiktok_app_reviews.bin", ios_base::in | ios_base::binary | ios_base::app);
-    arqBin.seekg(0, ios_base::beg);
+    arqBin.seekg(a, ios_base::beg);
     cout << "iDparametro" << iDparametro << endl;
     while (arqBin.read((char *)aux, sizeof(No)))
     {
         if (aux->getId() == iDparametro)
         {
+
 
             cout << aux->review_id << endl;
             cout << endl;
@@ -215,10 +236,15 @@ void DatabaseArquitetura::leituraBinarioConsole(int iDparametro,ifstream& arqBin
 int DatabaseArquitetura::getIdUltimaPosicao(ifstream &arqBin)
 {
     No *aux = new No();
-    arqBin.seekg(0, ios_base::end);
+    /*arqBin.seekg(0, ios_base::end);
     int length = arqBin.tellg();
-    arqBin.seekg(length-(sizeof(No)), ios_base::beg);
+    if(arqBin.tellg()==-1){
+        cout<<"ERRO"<<endl;
+        exit(0);
+    }
+    arqBin.seekg(length-(sizeof(No)), ios_base::beg);*/
+    arqBin.seekg(-(sizeof(No)), ios_base::end);
     arqBin.read((char *)aux, sizeof(No));
-    cout<<"ultima posicione: "<<aux->getId()<<endl;
+    cout<<"ultima posicione: "<<aux->getId()<<"  upvotes : "<<aux->upvotes<<endl;
     return aux->getId();
 }
