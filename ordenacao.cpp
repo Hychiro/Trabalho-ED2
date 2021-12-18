@@ -9,7 +9,7 @@
 using namespace std;
 using namespace std::chrono;
 
-SubNo *countingSort(SubNo vetorN[], int m, int tam,SubNo vetorResultado[])
+SubNo *countingSort(SubNo vetorN[], int m, int tam,SubNo vetorResultado[],int maiordigitos)
 {
     int max = 9;
     m = m + 1;
@@ -19,13 +19,8 @@ SubNo *countingSort(SubNo vetorN[], int m, int tam,SubNo vetorResultado[])
         index[a] = 0;
     }
 
-    cout << "Digito " << m << endl;
-
     for (int i = 0; i < tam; i++) //olhar em todos structs do vetor
     {
-        //for(int j=0;j<=max;j++)//olhar todos os digitos
-        //{
-
         int digitoAnalisado = 0;
         int k = 0;
         while (1)
@@ -52,7 +47,6 @@ SubNo *countingSort(SubNo vetorN[], int m, int tam,SubNo vetorResultado[])
                 break;
             }
         }
-        //}
     }
 
     for (int i = 1; i <= max; i++)
@@ -65,14 +59,6 @@ SubNo *countingSort(SubNo vetorN[], int m, int tam,SubNo vetorResultado[])
         index[i] = index[i - 1];
     }
     index[0] = 0;
-    for (int i = 0; i <= max; i++)
-    {
-        cout << "index " << i << " = " << index[i] << endl;
-    }
-
-    //ATÉ AQUI VERIFIQUEI TUDO
-
-    //SubNo *vetorResultado = new SubNo[tam];
 
     for (int i = 0; i < tam; i++)
     { //para toda struct do vetor
@@ -101,22 +87,13 @@ SubNo *countingSort(SubNo vetorN[], int m, int tam,SubNo vetorResultado[])
 
             if (digitoAnalisado == m)
             {
-                //cout<<"entra 2"<<endl;
-                //cout<<index[((int)vetorN[i].upvotes[9-k]-48)]<<endl;
-                //cout<<(int)(vetorN[i].upvotes[10-k])<<endl;
                 int a = index[((int)vetorN[i].upvotes[10 - (k + digitoAnalisado)] - 48)];
                 vetorResultado[a] = vetorN[i];
-                //cout<<"Adicionando valor: "<<vetorN[i].upvotes<<" na pos "<<a<<endl;
                 index[((int)vetorN[i].upvotes[10 - (k + digitoAnalisado)] - 48)] = a + 1;
-                //cout<<"sai 2"<<endl;
                 break;
             }
         }
-    }
-
-    for (int a = 0; a < tam; a++)
-    {
-        cout << "posicao " << a << " do vetor Resultado =" << vetorResultado[a].upvotes << endl;
+        cout<<"Digito :"<<m<<" de "<<maiordigitos+1<<"     "<<(float)((float)i/(float)tam)*100<<"%"<<endl;
     }
 
     return vetorResultado;
@@ -124,12 +101,11 @@ SubNo *countingSort(SubNo vetorN[], int m, int tam,SubNo vetorResultado[])
 
 SubNo *radix(int vetorId[], int tam, ifstream &arqBin)
 {
-    SubNo *vetorResultado = new SubNo[tam];
     SubNo *vetorStruct = new SubNo[tam];
     No *aux = new No();
     for (int i = 0; i < tam; i++)
     {
-        cout<<"vetorID ["<<i<<"] = "<<vetorId[i]<<endl;
+        cout<<"Carregando upvotes dos registros     "<<(float)((float)i/(float)tam)*100<<"%"<<endl;
         arqBin.seekg((sizeof(No))*(vetorId[i] - 1), ios_base::beg);
         while (arqBin.read((char *)aux, sizeof(No)))
         {
@@ -137,7 +113,6 @@ SubNo *radix(int vetorId[], int tam, ifstream &arqBin)
             {
                 vetorStruct[i].setId(aux->getId());
                 vetorStruct[i].setupvotes(aux->upvotes);
-                cout << "No " << i << " upvotes: " << vetorStruct[i].upvotes << endl;
                 break;
             }
         }
@@ -163,10 +138,10 @@ SubNo *radix(int vetorId[], int tam, ifstream &arqBin)
     int contador = 0;
     while (contador <= maiorDigitos)
     {
-        vetorStruct = countingSort(vetorStruct, contador, tam, vetorResultado);
+        SubNo *vetorResultado = new SubNo[tam];
+        vetorStruct = countingSort(vetorStruct, contador, tam, vetorResultado,maiorDigitos);
         contador++;
     }
-    delete vetorResultado;
     return vetorStruct;
 }
 

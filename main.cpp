@@ -142,13 +142,17 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
 
     if (entrada == 2)
     {
-        cout << "Digite o Numero de Registros N que deve ser importado" << endl;
-        int imp;
-        cin >> imp;
         cout << "Digite (1) Para Saida em Console" << endl;
         cout << "Digite (2) Para Saida em Arquivo" << endl;
         int aux;
         cin >> aux;
+        string nome;
+        ofstream arqSaida;
+            if (aux == 2){
+            cout << "De um nome ao arquivo de saida: " << endl;
+            cin >> nome;
+            arqSaida.open(nome, ios::out);
+            }
         while (aux != 1 && aux != 2)
         {
             cout << "Digite uma Opcao valida!" << endl;
@@ -156,23 +160,11 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             cout << "Digite (2) Para Saida em Arquivo" << endl;
             cin >> aux;
         }
-        int j = 0;
-        int *vetValSorteados = new int[imp];
-        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
-        if (aux == 1)
-        {
-            //Selecionar tipo de ordenação _INICIO
-            cout << "Qual tipo de Sort usar?" << endl;
+                cout << "Qual tipo de Sort usar?" << endl;
             cout << "Digite (1) para RadixSort" << endl;
             cout << "Digite (2) para HeapSort" << endl;
             int type;
             cin >> type;
-            SubNo *vetOrdenados = new SubNo[imp];
-            No *vetOrdenados2 = new No[imp];
-            if (type == 1)
-                vetOrdenados = radix(vetValSorteados, imp, arqBin);
-            if (type == 2)
-                vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
             while (type != 1 && type != 2)
             {
                 cout << "Digite uma Opcao valida!" << endl;
@@ -180,27 +172,53 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
                 cout << "Digite (2) para HeapSort" << endl;
                 cin >> type;
             }
+
+        cout << "Digite o Numero de Registros N que deve ser importado" << endl;
+        int imp;
+        cin >> imp;
+        int *vetValSorteados = new int[imp];
+        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
+        if (aux == 1)
+        {
+            //Selecionar tipo de ordenação _INICIO
+            srand(time(nullptr));
+            high_resolution_clock::time_point inicio = high_resolution_clock::now();
+            SubNo *vetOrdenados = new SubNo[imp];
+            No *vetOrdenados2 = new No[imp];
+            if (type == 1)
+                vetOrdenados = radix(vetValSorteados, imp, arqBin);
+            if (type == 2)
+                vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
             //Selecionar tipo de ordenação _FIM
+            int tempo =0;
+            high_resolution_clock::time_point fim = high_resolution_clock::now();
+            tempo=duration_cast<duration<double>>(fim - inicio).count();
+            //Impressão
                 dbA.impressaoConsole(vetOrdenados, arqBin, imp);
-                delete vetValSorteados;
-                delete vetOrdenados;
-                delete vetOrdenados2;
+                delete [] vetValSorteados;
+                delete [] vetOrdenados;
+                delete [] vetOrdenados2;
         }
         if (aux == 2)
         {
-            string nome;
-            cout << "De um nome ao arquivo de saida: " << endl;
-            cin >> nome;
-            ofstream arqSaida;
-            arqSaida.open(nome, ios::out);
+            SubNo *vetOrdenados = new SubNo[imp];
+            No *vetOrdenados2 = new No[imp];
+            srand(time(nullptr));
+            high_resolution_clock::time_point inicio = high_resolution_clock::now();
+            if (type == 1)
+                vetOrdenados = radix(vetValSorteados, imp, arqBin);
+            if (type == 2)
+                vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
+            int tempo =0;
+            high_resolution_clock::time_point fim = high_resolution_clock::now();
+            tempo=duration_cast<duration<double>>(fim - inicio).count();
             if (arqSaida.is_open())
             {
-                while (j < imp)
-                {
                     //le do .bin em um arquivo de saida de final a escolha (recomendo que seja .txt)
-                    dbA.leArqBinarioEmArquivoTexto(arqSaida, vetValSorteados[j], arqBin);
-                    j++;
-                }
+                    dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
+
+            }else{
+                cout<<"ERRO NA ESCRITA EM ARQUIVO"<<endl;
             }
         }
 

@@ -143,16 +143,17 @@ void DatabaseArquitetura::leituraArquivo(ifstream &input_file, ofstream &output_
     }
 }
 
-void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, int iDparametro, ifstream &arqBin)
+void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, SubNo parametro[], ifstream &arqBin, int imp)
 {
     No *aux = new No();
-    //fstream arqBin("tiktok_app_reviews.bin", ios_base::in | ios_base::binary | ios_base::app);
-    arqBin.seekg(0, ios_base::beg);
-    while (arqBin.read((char *)aux, sizeof(No)))
-    {
-
-        if (aux->getId() == iDparametro)
+    int j=0;
+    while(j<imp){
+        arqBin.seekg((sizeof(No))*(parametro[j].getId() - 1), ios_base::beg);
+        while (arqBin.read((char *)aux, sizeof(No)))
         {
+
+            if (aux->getId() == parametro[j].getId())
+            {
             output_file << aux->review_id << endl;
             output_file << endl;
             output_file << aux->review_text << endl;
@@ -166,7 +167,9 @@ void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, int 
             output_file << aux->hour << endl;
             output_file << endl;
             break;
+            }
         }
+        j++;
     }
 }
 
@@ -211,12 +214,9 @@ void DatabaseArquitetura::leituraBinarioConsole(int iDparametro,ifstream& arqBin
 {
     No *aux = new No();
         long long int a=(iDparametro-1)*sizeof(No);
-    cout<<"TESTE LONG: "<<a<<endl;
         int b=(iDparametro-1)*sizeof(No);
-    cout<<"TESTE int: "<<b<<endl;
     //fstream arq("tiktok_app_reviews.bin", ios_base::in | ios_base::binary | ios_base::app);
     arqBin.seekg(a, ios_base::beg);
-    cout << "iDparametro" << iDparametro << endl;
     while (arqBin.read((char *)aux, sizeof(No)))
     {
         if (aux->getId() == iDparametro)
@@ -242,13 +242,6 @@ void DatabaseArquitetura::leituraBinarioConsole(int iDparametro,ifstream& arqBin
 int DatabaseArquitetura::getIdUltimaPosicao(ifstream &arqBin)
 {
     No *aux = new No();
-    /*arqBin.seekg(0, ios_base::end);
-    int length = arqBin.tellg();
-    if(arqBin.tellg()==-1){
-        cout<<"ERRO"<<endl;
-        exit(0);
-    }
-    arqBin.seekg(length-(sizeof(No)), ios_base::beg);*/
     arqBin.seekg(-(sizeof(No)), ios_base::end);
     arqBin.read((char *)aux, sizeof(No));
     cout<<"ultima posicione: "<<aux->getId()<<"  upvotes : "<<aux->upvotes<<endl;
