@@ -170,17 +170,19 @@ void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, int 
     }
 }
 
-void DatabaseArquitetura::impressaoConsole(SubNo parametro,ifstream& arqBin){
+void DatabaseArquitetura::impressaoConsole(SubNo parametro[],ifstream& arqBin,int imp){
 
 
     No *aux = new No();
+    int j = 0;
 
+        while(j<imp){
 
-        arqBin.seekg((sizeof(No))*(parametro.getId() - 1), ios_base::beg);
+        arqBin.seekg((sizeof(No))*(parametro[j].getId() - 1), ios_base::beg);
         while (arqBin.read((char *)aux, sizeof(No)))
         {
             cout << aux->getId() << endl;
-            if (aux->getId() == parametro.getId())
+            if (aux->getId() == parametro[j].getId())
             {
                 break;
             }
@@ -197,8 +199,12 @@ void DatabaseArquitetura::impressaoConsole(SubNo parametro,ifstream& arqBin){
             cout << endl;
             cout << aux->hour << endl;
             cout << endl;
+            j++;
+        }
 
-            delete aux;
+        delete aux;
+
+
 }
 
 void DatabaseArquitetura::leituraBinarioConsole(int iDparametro,ifstream& arqBin)

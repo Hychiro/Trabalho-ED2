@@ -9,7 +9,7 @@
 using namespace std;
 using namespace std::chrono;
 
-SubNo *countingSort(SubNo vetorN[], int m, int tam)
+SubNo *countingSort(SubNo vetorN[], int m, int tam,SubNo vetorResultado[])
 {
     int max = 9;
     m = m + 1;
@@ -72,7 +72,7 @@ SubNo *countingSort(SubNo vetorN[], int m, int tam)
 
     //ATÉ AQUI VERIFIQUEI TUDO
 
-    SubNo *vetorResultado = new SubNo[tam];
+    //SubNo *vetorResultado = new SubNo[tam];
 
     for (int i = 0; i < tam; i++)
     { //para toda struct do vetor
@@ -124,7 +124,7 @@ SubNo *countingSort(SubNo vetorN[], int m, int tam)
 
 SubNo *radix(int vetorId[], int tam, ifstream &arqBin)
 {
-
+    SubNo *vetorResultado = new SubNo[tam];
     SubNo *vetorStruct = new SubNo[tam];
     No *aux = new No();
     for (int i = 0; i < tam; i++)
@@ -163,9 +163,10 @@ SubNo *radix(int vetorId[], int tam, ifstream &arqBin)
     int contador = 0;
     while (contador <= maiorDigitos)
     {
-        vetorStruct = countingSort(vetorStruct, contador, tam);
+        vetorStruct = countingSort(vetorStruct, contador, tam, vetorResultado);
         contador++;
     }
+    delete vetorResultado;
     return vetorStruct;
 }
 

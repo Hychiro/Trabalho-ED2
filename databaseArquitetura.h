@@ -12,7 +12,7 @@ class DatabaseArquitetura
     public:
         DatabaseArquitetura();
         ~DatabaseArquitetura();
-        void impressaoConsole(SubNo parametro,ifstream& arqBin);
+        void impressaoConsole(SubNo parametro[],ifstream& arqBin,int imp);
         void setReview(ifstream& input_file,ofstream& output_file);
         void leituraArquivo(ifstream &input_file, ofstream& output_file);
         void imprimir();

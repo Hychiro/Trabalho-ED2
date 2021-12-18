@@ -181,12 +181,10 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
                 cin >> type;
             }
             //Selecionar tipo de ordenação _FIM
-            while (j < imp)
-            {
-                //le do .bin
-                dbA.impressaoConsole(vetOrdenados[j], arqBin);
-                j++;
-            }
+                dbA.impressaoConsole(vetOrdenados, arqBin, imp);
+                delete vetValSorteados;
+                delete vetOrdenados;
+                delete vetOrdenados2;
         }
         if (aux == 2)
         {
