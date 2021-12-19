@@ -9,7 +9,7 @@
 using namespace std;
 using namespace std::chrono;
 
-SubNo *countingSort(SubNo vetorN[], int m, int tam,SubNo vetorResultado[],int maiordigitos)
+SubNo *countingSort(SubNo vetorN[], int m, int tam, SubNo vetorResultado[], int maiordigitos)
 {
     int max = 9;
     m = m + 1;
@@ -94,7 +94,7 @@ SubNo *countingSort(SubNo vetorN[], int m, int tam,SubNo vetorResultado[],int ma
             }
         }
     }
-     cout<<"Digito: "<<m<<" de "<<maiordigitos+1<<endl;
+    cout << "Digito: " << m << " de " << maiordigitos + 1 << endl;
 
     return vetorResultado;
 }
@@ -103,10 +103,10 @@ SubNo *radix(int vetorId[], int tam, ifstream &arqBin)
 {
     SubNo *vetorStruct = new SubNo[tam];
     No *aux = new No();
-    cout<<"Carregando upvotes dos registro"<<endl;
+    cout << "Carregando upvotes dos registro" << endl;
     for (int i = 0; i < tam; i++)
     {
-        arqBin.seekg((sizeof(No))*(vetorId[i] - 1), ios_base::beg);
+        arqBin.seekg((sizeof(No)) * (vetorId[i] - 1), ios_base::beg);
         while (arqBin.read((char *)aux, sizeof(No)))
         {
             if (aux->getId() == vetorId[i])
@@ -136,64 +136,73 @@ SubNo *radix(int vetorId[], int tam, ifstream &arqBin)
     while (contador <= maiorDigitos)
     {
         SubNo *vetorResultado = new SubNo[tam];
-        vetorStruct = countingSort(vetorStruct, contador, tam, vetorResultado,maiorDigitos);
+        vetorStruct = countingSort(vetorStruct, contador, tam, vetorResultado, maiorDigitos);
         contador++;
     }
     return vetorStruct;
 }
-
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //         |
 //         |
 //HEAPSORT V --------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 template <typename T>
-void troca(T& a, T& b)
+void troca(T &a, T &b)
 {
     T aux = a;
     a = b;
     b = aux;
 }
 
-void heapify(No *v,int i, int n){
-    while(i < n){
-        int filho = 2*i + 1;
+void heapify(No *v, int i, int n)
+{
+    while (i < n)
+    {
+        int filho = 2 * i + 1;
 
-        if(filho < n){
-            if(filho + 1 < n && atoi(v[filho + 1].upvotes) > atoi(v[filho].upvotes)){
+        if (filho < n)
+        {
+            if (filho + 1 < n && atoi(v[filho + 1].upvotes) > atoi(v[filho].upvotes))
+            {
                 filho++;
             }
-            if(atoi(v[filho].upvotes) > atoi(v[i].upvotes))
+            if (atoi(v[filho].upvotes) > atoi(v[i].upvotes))
                 troca(v[i], v[filho]);
         }
         i = filho;
     }
 }
 
-void constroiHeap(No *v, int n){
-    for(int i = n/2-1; i >= 0; i--){
+void constroiHeap(No *v, int n)
+{
+    for (int i = n / 2 - 1; i >= 0; i--)
+    {
         heapify(v, i, n);
     }
 }
 
-void heapSortRec(No *v, int n){
-    constroiHeap(v,n);
-    while(n > 0){
-        troca(v[0], v[n-1]);
-        heapify(v, 0, n-1);
+void heapSortRec(No *v, int n)
+{
+    constroiHeap(v, n);
+    while (n > 0)
+    {
+        troca(v[0], v[n - 1]);
+        heapify(v, 0, n - 1);
         n--;
     }
 }
 
-void heapSort(No *v, int n){
-    high_resolution_clock::time_point inicio = high_resolution_clock::now();//pega o tempo do inicio
+void heapSort(No *v, int n)
+{
+    high_resolution_clock::time_point inicio = high_resolution_clock::now(); //pega o tempo do inicio
     heapSortRec(v, n);
-    high_resolution_clock::time_point fim = high_resolution_clock::now();//pega o tempo do final
+    high_resolution_clock::time_point fim = high_resolution_clock::now(); //pega o tempo do final
     cout << endl;
-    for(int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++)
+    {
         cout << v[i].upvotes << " "; //printa o vetor de upvote em ordem crescente
     }
-    cout << duration_cast<duration<double>>(fim - inicio).count() << " segundos"  << endl; //printa o tempo inicial - tempo final =  tempo levado
+    cout << duration_cast<duration<double>>(fim - inicio).count() << " segundos" << endl; //printa o tempo inicial - tempo final =  tempo levado
 }
 
 No *getVet(int vetorId[], int tam, ifstream &arqBin) //peguei a logica do radix pra ler o bin e salvar em struct
@@ -206,7 +215,7 @@ No *getVet(int vetorId[], int tam, ifstream &arqBin) //peguei a logica do radix 
         arqBin.seekg(((sizeof(No)) * (vetorId[i] - 1)), ios_base::beg);
         while (arqBin.read((char *)aux, sizeof(No)))
         {
-            
+
             if (aux->getId() == vetorId[i])
             {
                 vetorStruct[i] = *aux;
@@ -216,33 +225,46 @@ No *getVet(int vetorId[], int tam, ifstream &arqBin) //peguei a logica do radix 
         }
     }
     //o *v agora salvou 'tam' upvotes de 0 a 'tam'
-    for(int i = 0; i < tam; i++){
+    for (int i = 0; i < tam; i++)
+    {
         cout << v[i] << " ";
     }
     cout << endl;
-    heapSort(vetorStruct,tam);
+    heapSort(vetorStruct, tam);
 
     return vetorStruct;
 }
 //FIM DO HEAPSORT-----------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //FIM DO HEAPSORT-----------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
-
-/* void quickSort (int a[], int inicio, int fim)
+SubNo *criaVetSubNo(ifstream &arqBin, int vetorId[], int tam, SubNo *vetorStruct)
 {
-    int j;
-    if(inicio < fim)
+    No *aux = new No();
+    cout << "Carregando upvotes dos registro" << endl;
+    for (int i = 0; i < tam; i++)
     {
-        j = particao(a, inicio, fim);
-        quickSort(a, inicio, fim - 1);
-        quickSort(a, inicio + 1, fim);
+        arqBin.seekg((sizeof(No)) * (vetorId[i] - 1), ios_base::beg);
+        while (arqBin.read((char *)aux, sizeof(No)))
+        {
+            if (aux->getId() == vetorId[i])
+            {
+                vetorStruct[i].setId(aux->getId());
+
+                vetorStruct[i].setupvotes(aux->upvotes);
+                sscanf(vetorStruct[i].upvotes, "%d", &vetorStruct[i].intUpvotes);
+                break;
+            }
+        }
     }
+    return vetorStruct;
 }
 
-int particao(int a[], int inicio, int fim)
+int particao(SubNo *vetorStruct, int inicio, int fim)
 {
-    int v, i, j, temp;
-    v = a[inicio];
+
+    int i, j;
+    SubNo v, temp;
+    v = vetorStruct[inicio];
     i = inicio;
     j = fim + 1;
 
@@ -251,24 +273,37 @@ int particao(int a[], int inicio, int fim)
         do
         {
             i++;
-        }while(a[i] < v && i <= fim);
-        
+        } while (vetorStruct[i].intUpvotes < v.intUpvotes && i <= fim);
+
         do
         {
             j--;
-        }while(v < a[j]);
+        } while (v.intUpvotes < vetorStruct[j].intUpvotes);
 
-        if(i < j)
+        if (i < j)
         {
-            temp = a[i];
-            a[i] = a[j];
-            a[j] = temp;
+            temp = vetorStruct[i];
+            vetorStruct[i] = vetorStruct[j];
+            vetorStruct[j] = temp;
         }
 
-    } while(i < j);
+    } while (i < j);
 
-    a[inicio] = a[j];
-    a[j] = v;
+    vetorStruct[inicio] = vetorStruct[j];
+    vetorStruct[j] = v;
 
     return j;
-} */
+}
+SubNo *quickSort(SubNo *vetorStruct, int inicio, int fim)
+{
+
+    int j, cont;
+    cont = 0;
+    if (inicio < fim)
+    {
+        j = particao(vetorStruct, inicio, fim);
+        vetorStruct = quickSort(vetorStruct, inicio, j - 1);
+        vetorStruct = quickSort(vetorStruct, j + 1, fim);
+    }
+    return vetorStruct;
+}

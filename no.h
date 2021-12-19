@@ -34,6 +34,7 @@ public:
     SubNo(){};
     ~SubNo(){};
     char upvotes[10];
+    int intUpvotes;
     int getId() { return iD; };
     void setId(int i) { iD = i; };
     void setupvotes(char a[]){for(int i=0;i<10;i++){this->upvotes[i]=a[i];}};
