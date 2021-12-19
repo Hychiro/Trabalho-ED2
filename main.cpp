@@ -8,16 +8,12 @@
 #include "ordenacao.cpp"
 #include <random>
 #include <iostream>
+#include "hashing.cpp"
 
 using namespace std;
 
-
-
 int *sorteia(int max, int n)
 {
-    //default_random_engine generator;
-    //uniform_int_distribution<int> distribution(0, max);
-
     std::random_device rd;
     std::default_random_engine generator(rd());
     std::uniform_int_distribution<int> distribution(0,max);
@@ -29,96 +25,16 @@ int *sorteia(int max, int n)
     {
         vetorN[i] = 0;
     }
-
-    if ((max / 2) < n)
-    {
-
-        int vetorInverso[max - n];
         int qtdSorteados = 0;
-
-        while (qtdSorteados != (max - n))
-        {
-            cout<<"Sorteando :"<<qtdSorteados<<endl;
-            bool libera = true;
-            int numeroSorteado;
-            while (libera)
-            {
-                libera = false;
-
-                numeroSorteado = distribution(generator);
-
-                /*for (int i = 0; i < qtdSorteados; i++)
-                {
-                    if (vetorInverso[i] == numeroSorteado)
-                    {
-                        libera = true;
-                    }
-                }*/
-            }
-
-            vetorInverso[qtdSorteados] = numeroSorteado;
-
-            qtdSorteados++;
-        }
-
-        int contador = 0;
-
-        while (contador != n)
-        {
-            for (int j = 0; j < max; j++)
-            {
-                bool pertence = true;
-                int valorComparacao = j + 1;
-                for (int k = 0; k < qtdSorteados; k++)
-                {
-                    if (valorComparacao == vetorInverso[k])
-                    {
-                        pertence = false;
-                        break;
-                    }
-                }
-                if (pertence)
-                {
-                    vetorN[contador] = valorComparacao;
-                    contador++;
-                }
-            }
-        }
-
-        return vetorN;
-    }
-    else if ((max / 2) >= n)
-    {
-
-        int qtdSorteados = 0;
-
         while (qtdSorteados != n)
         {
             cout<<"Sorteando :"<<qtdSorteados<<endl;
-            bool libera = true;
             int numeroSorteado;
-
-            while (libera)
-            {
-                libera = false;
-
-                numeroSorteado = distribution(generator);
-                /*for (int o = 0; o < qtdSorteados; o++)
-                {
-                    if (vetorN[o] == numeroSorteado)
-                    {
-                        libera = true;
-                    }
-                }*/
-            }
-
+            numeroSorteado = distribution(generator);
             vetorN[qtdSorteados] = numeroSorteado;
-
             qtdSorteados++;
         }
 
-        return vetorN;
-    }
     return vetorN;
 }
 
@@ -126,8 +42,10 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
 {
     cout << "Digite a Operacao Desejada" << endl;
     cout << "(1) acessaRegistro(i)" << endl;
-    cout << "(2) testeImportacao(N)" << endl;
-    cout << "(3) Limpar o console" << endl;
+    cout << "(2) Ordenacao" << endl;
+    cout << "(3) Hash" << endl;
+    cout << "(4) Modulo de Teste" << endl;
+    cout << "(5) Limpar o console" << endl;
     cout << "(0) Fechar Programa" << endl;
     int entrada;
     cin >> entrada;
@@ -148,11 +66,7 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         cin >> aux;
         string nome;
         ofstream arqSaida;
-            if (aux == 2){
-            cout << "De um nome ao arquivo de saida: " << endl;
-            cin >> nome;
-            arqSaida.open(nome, ios::out);
-            }
+
         while (aux != 1 && aux != 2)
         {
             cout << "Digite uma Opcao valida!" << endl;
@@ -160,18 +74,24 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             cout << "Digite (2) Para Saida em Arquivo" << endl;
             cin >> aux;
         }
-                cout << "Qual tipo de Sort usar?" << endl;
+        if (aux == 2)
+        {
+            cout << "De um nome ao arquivo de saida: " << endl;
+            cin >> nome;
+            arqSaida.open(nome, ios::out);
+        }
+        cout << "Qual tipo de Sort usar?" << endl;
+        cout << "Digite (1) para RadixSort" << endl;
+        cout << "Digite (2) para HeapSort" << endl;
+        int type;
+        cin >> type;
+        while (type != 1 && type != 2)
+        {
+            cout << "Digite uma Opcao valida!" << endl;
             cout << "Digite (1) para RadixSort" << endl;
             cout << "Digite (2) para HeapSort" << endl;
-            int type;
             cin >> type;
-            while (type != 1 && type != 2)
-            {
-                cout << "Digite uma Opcao valida!" << endl;
-                cout << "Digite (1) para RadixSort" << endl;
-                cout << "Digite (2) para HeapSort" << endl;
-                cin >> type;
-            }
+        }
 
         cout << "Digite o Numero de Registros N que deve ser importado" << endl;
         int imp;
@@ -190,14 +110,14 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             if (type == 2)
                 vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
             //Selecionar tipo de ordenação _FIM
-            int tempo =0;
+            int tempo = 0;
             high_resolution_clock::time_point fim = high_resolution_clock::now();
-            tempo=duration_cast<duration<double>>(fim - inicio).count();
+            tempo = duration_cast<duration<double>>(fim - inicio).count();
             //Impressão
-                dbA.impressaoConsole(vetOrdenados, arqBin, imp);
-                delete [] vetValSorteados;
-                delete [] vetOrdenados;
-                delete [] vetOrdenados2;
+            dbA.impressaoConsole(vetOrdenados, arqBin, imp);
+            delete[] vetValSorteados;
+            delete[] vetOrdenados;
+            delete[] vetOrdenados2;
         }
         if (aux == 2)
         {
@@ -209,23 +129,42 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
                 vetOrdenados = radix(vetValSorteados, imp, arqBin);
             if (type == 2)
                 vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
-            int tempo =0;
+            int tempo = 0;
             high_resolution_clock::time_point fim = high_resolution_clock::now();
-            tempo=duration_cast<duration<double>>(fim - inicio).count();
+            tempo = duration_cast<duration<double>>(fim - inicio).count();
             if (arqSaida.is_open())
             {
-                    //le do .bin em um arquivo de saida de final a escolha (recomendo que seja .txt)
-                    dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
-
-            }else{
-                cout<<"ERRO NA ESCRITA EM ARQUIVO"<<endl;
+                //le do .bin em um arquivo de saida de final a escolha (recomendo que seja .txt)
+                dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
+            }
+            else
+            {
+                cout << "ERRO NA ESCRITA EM ARQUIVO" << endl;
             }
         }
 
         return entrada;
-
     }
     if (entrada == 3)
+    {
+        cout << "Digite o Numero de Registros N que deve ser importado" << endl;
+        int imp;
+        cin >> imp;
+        int *vetValSorteados = new int[imp];
+        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
+
+        versao **tabela = criaTabela(arqBin, imp, vetValSorteados); 
+
+        imprimeTabela(tabela, 1087);
+          
+
+        return entrada;
+    }
+    if (entrada == 4)
+    {
+        return entrada;
+    }
+    if (entrada == 5)
     {
         return entrada;
     }
@@ -258,7 +197,7 @@ int main(int argc, char const *argv[])
         while (selecao != 0)
         {
 
-            if (selecao == 3)
+            if (selecao == 5)
             {
                 system("cls");
             }
