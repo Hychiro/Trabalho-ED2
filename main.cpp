@@ -8,7 +8,6 @@
 #include "ordenacao.cpp"
 #include <random>
 #include <iostream>
-#include "hashing.cpp"
 
 using namespace std;
 
@@ -29,7 +28,20 @@ int *sorteia(int max, int n)
     while (qtdSorteados != n)
     {
         int numeroSorteado;
-        numeroSorteado = distribution(generator);
+        bool libera = true;
+        while (libera)
+        {
+            libera = false;
+
+            numeroSorteado = distribution(generator);
+            for (int o = 0; o < qtdSorteados; o++)
+            {
+                if (vetorN[o] == numeroSorteado)
+                {
+                    libera = true;
+                }
+            }
+        }
         vetorN[qtdSorteados] = numeroSorteado;
         qtdSorteados++;
     }
@@ -53,7 +65,7 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         cout << "Digite o i-esimo registro desejado: " << endl;
         int i;
         cin >> i;
-        //le do .bin
+        // le do .bin
         dbA.leituraBinarioConsole(i, arqBin);
     }
 
@@ -82,15 +94,13 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         cout << "Qual tipo de Sort usar?" << endl;
         cout << "Digite (1) para RadixSort" << endl;
         cout << "Digite (2) para HeapSort" << endl;
-        cout << "Digite (3) para QuickSort" << endl;
         int type;
         cin >> type;
-        while (type != 1 && type != 2 && type != 3)
+        while (type != 1 && type != 2)
         {
             cout << "Digite uma Opcao valida!" << endl;
             cout << "Digite (1) para RadixSort" << endl;
             cout << "Digite (2) para HeapSort" << endl;
-            cout << "Digite (3) para QuickSort" << endl;
             cin >> type;
         }
 
@@ -101,43 +111,26 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
         if (aux == 1)
         {
-            //Selecionar tipo de ordenação _INICIO
+            // Selecionar tipo de ordenação _INICIO
             srand(time(nullptr));
             high_resolution_clock::time_point inicio = high_resolution_clock::now();
             SubNo *vetOrdenados = new SubNo[imp];
             No *vetOrdenados2 = new No[imp];
             if (type == 1)
-            {
                 vetOrdenados = radix(vetValSorteados, imp, arqBin);
-            }
-
             if (type == 2)
-            {
                 vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
-            }
-
-            if (type == 3)
-            {
-                vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
-                vetOrdenados = quickSort(vetOrdenados, 0, imp);
-            }
-
-            //Selecionar tipo de ordenação _FIM
+            // Selecionar tipo de ordenação _FIM
             int tempo = 0;
             high_resolution_clock::time_point fim = high_resolution_clock::now();
             tempo = duration_cast<duration<double>>(fim - inicio).count();
-            //Impressão
+            // Impressão
             if (type == 1)
                 dbA.impressaoConsole(vetOrdenados, arqBin, imp);
             if (type == 2)
                 dbA.impressaoConsole(vetOrdenados2, arqBin, imp);
-            if (type == 3)
-                dbA.impressaoConsole(vetOrdenados, arqBin, imp);
-
             delete[] vetValSorteados;
-
             delete[] vetOrdenados;
-
             delete[] vetOrdenados2;
         }
         if (aux == 2)
@@ -147,38 +140,20 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             srand(time(nullptr));
             high_resolution_clock::time_point inicio = high_resolution_clock::now();
             if (type == 1)
-            {
                 vetOrdenados = radix(vetValSorteados, imp, arqBin);
-            }
-
             if (type == 2)
-            {
                 vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
-            }
-
-            if (type == 3)
-            {
-                vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
-                vetOrdenados = quickSort(vetOrdenados, 0, imp);
-            }
-
             int tempo = 0;
             high_resolution_clock::time_point fim = high_resolution_clock::now();
             tempo = duration_cast<duration<double>>(fim - inicio).count();
             if (arqSaida.is_open())
             {
-                //le do .bin em um arquivo de saida de final a escolha (recomendo que seja .txt)
+                // le do .bin em um arquivo de saida de final a escolha (recomendo que seja .txt)
 
                 if (type == 1)
                     dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
                 if (type == 2)
                     dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados2, arqBin, imp);
-                if (type == 3)
-                    dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
-
-                delete[] vetValSorteados;
-                delete[] vetOrdenados;
-                delete[] vetOrdenados2;
             }
             else
             {
@@ -195,39 +170,58 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         cin >> imp;
         int *vetValSorteados = new int[imp];
         vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
-
         versao **tabela = criaTabela(arqBin, imp, vetValSorteados);
-        int m = 1087;
-        imprimeTabela(tabela, m);
-        int vetorDeChaves[2 * m];
+        imprimeTabela(tabela, 1087);
 
-        for (int r = 0; r < 2 * m; m++)
+        int m = 1087;
+        int chaves[m * 2];
+        for (int i = 0; i < (m * 2); i++)
         {
-            vetorDeChaves[r] = -1;
+            chaves[i] = -1;
         }
 
         int next = 0;
-        for (int i = 0; i < m; i++)
+        for (int j = 0; j < m; j++)
         {
-            if (tabela[i] != NULL)
+            if (tabela[j] != NULL)
             {
-
-                for (versao *p = tabela[i]; p != NULL; p = p->prox)
+                if (tabela[j]->prox != NULL)
                 {
-                    vetorDeChaves[next] = p->chave;
+                    for (versao *p = tabela[j]; p != NULL; p = p->prox)
+                    {
+                        chaves[next] = p->chave;
+                        next++;
+                    }
+                }
+                else
+                {
+                    chaves[next] = tabela[j]->chave;
                     next++;
                 }
             }
-            else
-            {
-                vetorDeChaves[next] = tabela[i]->chave;
-                next++;
-            }
         }
 
-        //chamar o metodo de ordenação de forma descrescente
 
-        //printar M mais frequentes
+        int nulos = 0;
+        for (int i = 0; i < (m * 2); i++)
+        {
+            if (chaves[i] == -1)
+            {
+                nulos++;
+            }
+        }
+        int tam = ((m * 2) - nulos);
+        int *resultado = new int[tam];
+        for (int i = 0; i < tam; i++)
+        {
+            resultado[i] = chaves[i];
+        }
+        resultado = radix2(resultado, tabela, tam);
+
+        for (int i = 0; i < tam; i++)
+        {
+            cout << "Versao : " << busca(resultado[i], tabela)->versao_app << "      Repeticoes : " << busca(resultado[i], tabela)->reps << endl;
+        }
 
         return entrada;
     }
@@ -304,8 +298,8 @@ int main(int argc, char const *argv[])
             cout << "Não foi possivel abrir" << argv[1];
             entrada = false;
         }
-        //Fechando arquivo de entrada
-        //Fechando arquivo de saída
+        // Fechando arquivo de entrada
+        // Fechando arquivo de saída
         input_file.close();
         output_file.close();
         if (entrada)

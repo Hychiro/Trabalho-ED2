@@ -159,19 +159,22 @@ versao *busca(int chave, versao **tabela)
     {
         if (tabela[i] != NULL)
         {
-            for (versao *p = tabela[i]; p != NULL; p = p->prox)
+            if (tabela[i]->prox != NULL)
             {
-                if (p->chave == chave)
+                for (versao *p = tabela[i]; p != NULL; p = p->prox)
                 {
-                    return p;
+                    if (p->chave == chave)
+                    {
+                        return p;
+                    }
                 }
             }
-        }
-        else
-        {
-            if (tabela[i]->chave == chave)
+            else
             {
-                return tabela[i];
+                if (tabela[i]->chave == chave)
+                {
+                    return tabela[i];
+                }
             }
         }
     }
