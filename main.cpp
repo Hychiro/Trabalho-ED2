@@ -30,7 +30,20 @@ int *sorteia(int max, int n)
         while (qtdSorteados != n)
         {
             int numeroSorteado;
-            numeroSorteado = distribution(generator);
+            bool libera = true;
+            while (libera)
+            {
+                libera = false;
+
+                numeroSorteado = distribution(generator);
+                for (int o = 0; o < qtdSorteados; o++)
+                {
+                    if (vetorN[o] == numeroSorteado)
+                    {
+                        libera = true;
+                    }
+                }
+            }
             vetorN[qtdSorteados] = numeroSorteado;
             qtdSorteados++;
         }
