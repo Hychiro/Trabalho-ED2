@@ -173,8 +173,76 @@ void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, SubN
         j++;
     }
 }
+void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, No parametro[], ifstream &arqBin, int imp)
+{
+    cout<<"Imprimindo no Arquivo"<<endl;
+    No *aux = new No();
+    int j=0;
+    while(j<imp){
+        arqBin.seekg((sizeof(No))*(parametro[j].getId() - 1), ios_base::beg);
+        
+        while (arqBin.read((char *)aux, sizeof(No)))
+        {
+
+            if (aux->getId() == parametro[j].getId())
+            {
+            output_file << aux->review_id << endl;
+            output_file << endl;
+            output_file << aux->review_text << endl;
+            output_file << endl;
+            output_file << aux->upvotes << endl;
+            output_file << endl;
+            output_file << aux->app_version << endl;
+            output_file << endl;
+            output_file << aux->date << endl;
+            output_file << endl;
+            output_file << aux->hour << endl;
+            output_file << endl;
+            break;
+            }
+        }
+        j++;
+    }
+}
 
 void DatabaseArquitetura::impressaoConsole(SubNo parametro[],ifstream& arqBin,int imp){
+
+
+    No *aux = new No();
+    int j = 0;
+
+        while(j<imp){
+
+        arqBin.seekg((sizeof(No))*(parametro[j].getId() - 1), ios_base::beg);
+        while (arqBin.read((char *)aux, sizeof(No)))
+        {
+            cout << aux->getId() << endl;
+            if (aux->getId() == parametro[j].getId())
+            {
+                break;
+            }
+        }
+            cout << aux->review_id << endl;
+            cout << endl;
+            cout << aux->review_text << endl;
+            cout << endl;
+            cout << aux->upvotes << endl;
+            cout << endl;
+            cout << aux->app_version << endl;
+            cout << endl;
+            cout << aux->date << endl;
+            cout << endl;
+            cout << aux->hour << endl;
+            cout << endl;
+            j++;
+        }
+
+        delete aux;
+
+
+}
+
+void DatabaseArquitetura::impressaoConsole(No parametro[],ifstream& arqBin,int imp){
 
 
     No *aux = new No();

@@ -206,11 +206,10 @@ No *getVet(int vetorId[], int tam, ifstream &arqBin) //peguei a logica do radix 
         arqBin.seekg(((sizeof(No)) * (vetorId[i] - 1)), ios_base::beg);
         while (arqBin.read((char *)aux, sizeof(No)))
         {
-            cout << "loop" << endl;
+            
             if (aux->getId() == vetorId[i])
             {
                 vetorStruct[i] = *aux;
-                cout << "No " << i << " upvotes: " << vetorStruct[i].upvotes << endl;
                 sscanf(vetorStruct[i].upvotes, "%d", &v[i]); // v[i] = (int)vetorStruct[i].upvotes --- transforma o vetor de char upvote em int pra salvar no vetor
                 break;
             }

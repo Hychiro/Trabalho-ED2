@@ -16,36 +16,36 @@ int *sorteia(int max, int n)
 {
     std::random_device rd;
     std::default_random_engine generator(rd());
-    std::uniform_int_distribution<int> distribution(0,max);
+    std::uniform_int_distribution<int> distribution(0, max);
 
-    cout<<"Sorteando"<<endl;
+    cout << "Sorteando" << endl;
 
     int *vetorN = new int[n];
     for (int i = 0; i < n; i++)
     {
         vetorN[i] = 0;
     }
-        int qtdSorteados = 0;
-        while (qtdSorteados != n)
+    int qtdSorteados = 0;
+    while (qtdSorteados != n)
+    {
+        int numeroSorteado;
+        bool libera = true;
+        while (libera)
         {
-            int numeroSorteado;
-            bool libera = true;
-            while (libera)
-            {
-                libera = false;
+            libera = false;
 
-                numeroSorteado = distribution(generator);
-                for (int o = 0; o < qtdSorteados; o++)
+            numeroSorteado = distribution(generator);
+            for (int o = 0; o < qtdSorteados; o++)
+            {
+                if (vetorN[o] == numeroSorteado)
                 {
-                    if (vetorN[o] == numeroSorteado)
-                    {
-                        libera = true;
-                    }
+                    libera = true;
                 }
             }
-            vetorN[qtdSorteados] = numeroSorteado;
-            qtdSorteados++;
         }
+        vetorN[qtdSorteados] = numeroSorteado;
+        qtdSorteados++;
+    }
 
     return vetorN;
 }
@@ -126,7 +126,10 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             high_resolution_clock::time_point fim = high_resolution_clock::now();
             tempo = duration_cast<duration<double>>(fim - inicio).count();
             //Impressão
-            dbA.impressaoConsole(vetOrdenados, arqBin, imp);
+            if (type == 1)
+                dbA.impressaoConsole(vetOrdenados, arqBin, imp);
+            if (type == 2)
+                dbA.impressaoConsole(vetOrdenados2, arqBin, imp);
             delete[] vetValSorteados;
             delete[] vetOrdenados;
             delete[] vetOrdenados2;
@@ -147,7 +150,11 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             if (arqSaida.is_open())
             {
                 //le do .bin em um arquivo de saida de final a escolha (recomendo que seja .txt)
-                dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
+
+                if (type == 1)
+                    dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
+                if (type == 2)
+                    dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados2, arqBin, imp);
             }
             else
             {
@@ -165,10 +172,9 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         int *vetValSorteados = new int[imp];
         vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
 
-        versao **tabela = criaTabela(arqBin, imp, vetValSorteados); 
+        versao **tabela = criaTabela(arqBin, imp, vetValSorteados);
 
         imprimeTabela(tabela, 1087);
-          
 
         return entrada;
     }

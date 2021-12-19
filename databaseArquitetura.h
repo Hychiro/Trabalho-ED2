@@ -13,6 +13,7 @@ class DatabaseArquitetura
         DatabaseArquitetura();
         ~DatabaseArquitetura();
         void impressaoConsole(SubNo parametro[],ifstream& arqBin,int imp);
+        void impressaoConsole(No parametro[],ifstream& arqBin,int imp);
         void setReview(ifstream& input_file,ofstream& output_file);
         void leituraArquivo(ifstream &input_file, ofstream& output_file);
         void imprimir();
@@ -20,6 +21,7 @@ class DatabaseArquitetura
         void leArqBinario();
         void leituraBinarioConsole(int iDparametro,ifstream& arqBin);
         void leArqBinarioEmArquivoTexto(ofstream &output_file, SubNo parametro[], ifstream &arqBin, int imp);
+        void leArqBinarioEmArquivoTexto(ofstream &output_file, No parametro[], ifstream &arqBin, int imp);
         int getIdUltimaPosicao(ifstream& arqBin);
 };
 

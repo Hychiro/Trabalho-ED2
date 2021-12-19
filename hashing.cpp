@@ -69,7 +69,7 @@ void imprimeTabela(versao **tabela, int m)
         if (tabela[i] != NULL)
         {
             for (versao *p = tabela[i]; p != NULL; p = p->prox)
-            cout<< " Chave: " << p->chave << " Versao: " << p->versao_app << " --> ";
+                cout << " Chave: " << p->chave << " Versao: " << p->versao_app << " --> ";
             cout << "NULL";
         }
         else
@@ -150,4 +150,30 @@ versao **criaTabela(ifstream &arqBin, int tam, int vetorId[])
         }
     }
     return tabelaHash;
+}
+
+versao *busca(int chave, versao **tabela)
+{
+    int m = 1087;
+    for (int i = 0; i < m; i++)
+    {
+        if (tabela[i] != NULL)
+        {
+            for (versao *p = tabela[i]; p != NULL; p = p->prox)
+            {
+                if (p->chave == chave)
+                {
+                    return p;
+                }
+            }
+        }
+        else
+        {
+            if (tabela[i]->chave == chave)
+            {
+                return tabela[i];
+            }
+        }
+    }
+    return NULL;
 }
