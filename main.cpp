@@ -18,7 +18,7 @@ int *sorteia(int max, int n)
     std::default_random_engine generator(rd());
     std::uniform_int_distribution<int> distribution(0,max);
 
-    srand((unsigned)time(0));
+    cout<<"Sorteando"<<endl;
 
     int *vetorN = new int[n];
     for (int i = 0; i < n; i++)
@@ -28,7 +28,6 @@ int *sorteia(int max, int n)
         int qtdSorteados = 0;
         while (qtdSorteados != n)
         {
-            cout<<"Sorteando :"<<qtdSorteados<<endl;
             int numeroSorteado;
             numeroSorteado = distribution(generator);
             vetorN[qtdSorteados] = numeroSorteado;
