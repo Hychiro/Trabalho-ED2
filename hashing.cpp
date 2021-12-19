@@ -14,7 +14,6 @@ typedef struct ver_no
 {
     int chave;
     int reps = 0;
-    int id;
     string versao_app = "";
     ver_no *prox;
 } versao;
@@ -47,7 +46,7 @@ int criaChave(char *app_version)
 
         int chave = 0;
         int posi = k - 1;
-        cout << "valor k: " << posi << endl;
+
         for (int j = 0; j < k - 2; j++)
         {
             if (posi == primP || posi == secP)
@@ -70,7 +69,7 @@ void imprimeTabela(versao **tabela, int m)
         if (tabela[i] != NULL)
         {
             for (versao *p = tabela[i]; p != NULL; p = p->prox)
-                cout <<" No: "<<p->id<<" Chave: "<< p->chave <<" Versao: "<<p->versao_app<< " --> ";
+            cout<< " Chave: " << p->chave << " Versao: " << p->versao_app << " --> ";
             cout << "NULL";
         }
         else
@@ -84,7 +83,6 @@ versao *novoNoVersao(int chave, No *p)
 {
     versao *novo = new versao;
     novo->chave = chave;
-    novo->id = p->getId();
     novo->versao_app = p->app_version;
     novo->prox = NULL;
     return novo;
@@ -103,11 +101,19 @@ void insereChave(versao **tabelaHash, int m, int chave, No *aux)
     {
         tabelaHash[h] = novoNoVersao(chave, aux);
     }
-    else if (tabelaHash[h]->versao_app == aux->app_version)
+    bool verifica = false;
+    string compara = aux->app_version;
+
+    for (versao *p = tabelaHash[h]; p != NULL; p = p->prox)
     {
-        tabelaHash[h]->reps = tabelaHash[h]->reps + 1;
+
+        if (p->versao_app == compara)
+        {
+            tabelaHash[h]->reps = tabelaHash[h]->reps + 1;
+            verifica = true;
+        }
     }
-    else
+    if (!verifica)
     {
         versao *novo = novoNoVersao(chave, aux);
         novo->prox = tabelaHash[h];
@@ -115,7 +121,7 @@ void insereChave(versao **tabelaHash, int m, int chave, No *aux)
     }
 }
 
-versao ** criaTabela(ifstream &arqBin, int tam, int vetorId[])
+versao **criaTabela(ifstream &arqBin, int tam, int vetorId[])
 {
     int m = 1087;
     versao **tabelaHash = new versao *[m];
@@ -145,4 +151,3 @@ versao ** criaTabela(ifstream &arqBin, int tam, int vetorId[])
     }
     return tabelaHash;
 }
-
