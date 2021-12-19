@@ -15,110 +15,26 @@ using namespace std;
 
 int *sorteia(int max, int n)
 {
-    //default_random_engine generator;
-    //uniform_int_distribution<int> distribution(0, max);
-
     std::random_device rd;
     std::default_random_engine generator(rd());
     std::uniform_int_distribution<int> distribution(0,max);
 
-    srand((unsigned)time(0));
+    cout<<"Sorteando"<<endl;
 
     int *vetorN = new int[n];
     for (int i = 0; i < n; i++)
     {
         vetorN[i] = 0;
     }
-
-    if ((max / 2) < n)
-    {
-
-        int vetorInverso[max - n];
         int qtdSorteados = 0;
-
-        while (qtdSorteados != (max - n))
-        {
-            cout<<"Sorteando :"<<qtdSorteados<<endl;
-            bool libera = true;
-            int numeroSorteado;
-            while (libera)
-            {
-                libera = false;
-
-                numeroSorteado = distribution(generator);
-
-                /*for (int i = 0; i < qtdSorteados; i++)
-                {
-                    if (vetorInverso[i] == numeroSorteado)
-                    {
-                        libera = true;
-                    }
-                }*/
-            }
-
-            vetorInverso[qtdSorteados] = numeroSorteado;
-
-            qtdSorteados++;
-        }
-
-        int contador = 0;
-
-        while (contador != n)
-        {
-            for (int j = 0; j < max; j++)
-            {
-                bool pertence = true;
-                int valorComparacao = j + 1;
-                for (int k = 0; k < qtdSorteados; k++)
-                {
-                    if (valorComparacao == vetorInverso[k])
-                    {
-                        pertence = false;
-                        break;
-                    }
-                }
-                if (pertence)
-                {
-                    vetorN[contador] = valorComparacao;
-                    contador++;
-                }
-            }
-        }
-
-        return vetorN;
-    }
-    else if ((max / 2) >= n)
-    {
-
-        int qtdSorteados = 0;
-
         while (qtdSorteados != n)
         {
-            cout<<"Sorteando :"<<qtdSorteados<<endl;
-            bool libera = true;
             int numeroSorteado;
-
-            while (libera)
-            {
-                libera = false;
-
-                numeroSorteado = distribution(generator);
-                /*for (int o = 0; o < qtdSorteados; o++)
-                {
-                    if (vetorN[o] == numeroSorteado)
-                    {
-                        libera = true;
-                    }
-                }*/
-            }
-
+            numeroSorteado = distribution(generator);
             vetorN[qtdSorteados] = numeroSorteado;
-
             qtdSorteados++;
         }
 
-        return vetorN;
-    }
     return vetorN;
 }
 

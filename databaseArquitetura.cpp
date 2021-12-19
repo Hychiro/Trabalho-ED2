@@ -145,6 +145,7 @@ void DatabaseArquitetura::leituraArquivo(ifstream &input_file, ofstream &output_
 
 void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, SubNo parametro[], ifstream &arqBin, int imp)
 {
+    cout<<"Imprimindo no Arquivo"<<endl;
     No *aux = new No();
     int j=0;
     while(j<imp){
@@ -244,6 +245,5 @@ int DatabaseArquitetura::getIdUltimaPosicao(ifstream &arqBin)
     No *aux = new No();
     arqBin.seekg(-(sizeof(No)), ios_base::end);
     arqBin.read((char *)aux, sizeof(No));
-    cout<<"ultima posicione: "<<aux->getId()<<"  upvotes : "<<aux->upvotes<<endl;
     return aux->getId();
 }

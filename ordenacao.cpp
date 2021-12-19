@@ -93,8 +93,8 @@ SubNo *countingSort(SubNo vetorN[], int m, int tam,SubNo vetorResultado[],int ma
                 break;
             }
         }
-        cout<<"Digito :"<<m<<" de "<<maiordigitos+1<<"     "<<(float)((float)i/(float)tam)*100<<"%"<<endl;
     }
+     cout<<"Digito: "<<m<<" de "<<maiordigitos+1<<endl;
 
     return vetorResultado;
 }
@@ -103,9 +103,9 @@ SubNo *radix(int vetorId[], int tam, ifstream &arqBin)
 {
     SubNo *vetorStruct = new SubNo[tam];
     No *aux = new No();
+    cout<<"Carregando upvotes dos registro"<<endl;
     for (int i = 0; i < tam; i++)
     {
-        cout<<"Carregando upvotes dos registros     "<<(float)((float)i/(float)tam)*100<<"%"<<endl;
         arqBin.seekg((sizeof(No))*(vetorId[i] - 1), ios_base::beg);
         while (arqBin.read((char *)aux, sizeof(No)))
         {
@@ -119,9 +119,6 @@ SubNo *radix(int vetorId[], int tam, ifstream &arqBin)
     }
 
     int maiorDigitos = 0;
-    cout << endl
-         << endl
-         << endl;
     for (int i = 0; i < tam; i++)
     {
         for (int j = 0; j < 10; j++)
