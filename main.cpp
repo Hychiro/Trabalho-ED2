@@ -171,7 +171,7 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         int *vetValSorteados = new int[imp];
         vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
         versao **tabela = criaTabela(arqBin, imp, vetValSorteados);
-        imprimeTabela(tabela, 1087);
+        // imprimeTabela(tabela, 1087);
 
         int m = 1087;
         int chaves[m * 2];
@@ -201,6 +201,99 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             }
         }
 
+        int nulos = 0;
+        for (int i = 0; i < (m * 2); i++)
+        {
+            if (chaves[i] == -1)
+            {
+                nulos++;
+            }
+        }
+        int tam = ((m * 2) - nulos);
+        int *resultado = new int[tam];
+        for (int i = 0; i < tam; i++)
+        {
+            resultado[i] = chaves[i];
+        }
+        resultado = radix2(resultado, tabela, tam);
+
+        int quantidade;
+        cout << "sabendo que existem " << tam << " versoes, de uma quantidade de versoes: " << endl;
+        cin >> quantidade;
+
+        for (int i = tam - 1; i >= tam - quantidade; i--)
+        {
+            cout << "Versao : " << busca(resultado[i], tabela)->versao_app << "      Repeticoes : " << busca(resultado[i], tabela)->reps << endl;
+        }
+
+        return entrada;
+    }
+    if (entrada == 4)
+    {
+        string nome;
+        ofstream arqSaida;
+
+        cout << "De um nome ao arquivo de saida: " << endl;
+        cin >> nome;
+        arqSaida.open(nome, ios::out);
+
+        int imp = 100;
+        int *vetValSorteados = new int[imp];
+        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
+
+        SubNo *vetOrdenados = new SubNo[imp];
+        No *vetOrdenados2 = new No[imp];
+        SubNo *vetOrdenados3 = new SubNo[imp];
+
+        ///radix
+        vetOrdenados = radix(vetValSorteados, imp, arqBin);
+
+        dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
+        delete[] vetOrdenados;
+
+        ///heap
+        vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
+
+        dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados2, arqBin, imp);
+        delete[] vetOrdenados2;
+
+        ///quick
+        vetOrdenados3 = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados3);
+        vetOrdenados3 = quickSort(vetOrdenados3, 0, imp);
+
+        dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados3, arqBin, imp);
+        delete[] vetOrdenados3;
+
+        ///hash
+        versao **tabela = criaTabela(arqBin, imp, vetValSorteados);
+        // imprimeTabela(tabela, 1087);
+        int m = 1087;
+        int chaves[m * 2];
+        for (int i = 0; i < (m * 2); i++)
+        {
+            chaves[i] = -1;
+        }
+
+        int next = 0;
+        for (int j = 0; j < m; j++)
+        {
+            if (tabela[j] != NULL)
+            {
+                if (tabela[j]->prox != NULL)
+                {
+                    for (versao *p = tabela[j]; p != NULL; p = p->prox)
+                    {
+                        chaves[next] = p->chave;
+                        next++;
+                    }
+                }
+                else
+                {
+                    chaves[next] = tabela[j]->chave;
+                    next++;
+                }
+            }
+        }
 
         int nulos = 0;
         for (int i = 0; i < (m * 2); i++)
@@ -218,15 +311,13 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         }
         resultado = radix2(resultado, tabela, tam);
 
-        for (int i = 0; i < tam; i++)
+        for (int i = tam - 1; i >= 0; i--)
         {
-            cout << "Versao : " << busca(resultado[i], tabela)->versao_app << "      Repeticoes : " << busca(resultado[i], tabela)->reps << endl;
+            arqSaida << "Versao : " << busca(resultado[i], tabela)->versao_app << " --- Repeticoes : " << busca(resultado[i], tabela)->reps << endl;
         }
 
-        return entrada;
-    }
-    if (entrada == 4)
-    {
+        delete[] vetValSorteados;
+        arqSaida.close();
         return entrada;
     }
     if (entrada == 5)
