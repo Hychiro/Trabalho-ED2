@@ -21,6 +21,7 @@ class DatabaseArquitetura
         void leArqBinario();
         void leituraBinarioConsole(int iDparametro,ifstream& arqBin);
         void leArqBinarioEmArquivoTexto(ofstream &output_file, SubNo parametro[], ifstream &arqBin, int imp);
+        void leArqBinarioEmArquivoTexto2(ofstream &output_file, SubNo parametro[], ifstream &arqBin, int imp);
         void leArqBinarioEmArquivoTexto(ofstream &output_file, No parametro[], ifstream &arqBin, int imp);
         int getIdUltimaPosicao(ifstream& arqBin);
 };

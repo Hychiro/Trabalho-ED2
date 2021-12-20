@@ -22,13 +22,13 @@ void DatabaseArquitetura::leituraArquivo(ifstream &input_file, ofstream &output_
     string linhaReview = "";
     int repetidor = 1;
     getline(input_file, linhaArqivo, '\n');
+    cout << "Arquivo Bin nao encontrado, gerando outro" << endl;
     while (!input_file.eof())
     {
         if (repetidor == 1)
         {
             getline(input_file, linhaArqivo, '\n');
         }
-        cout << repetidor << endl;
 
         No *p = new No();
 
@@ -173,6 +173,43 @@ void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, SubN
         j++;
     }
 }
+
+
+void DatabaseArquitetura::leArqBinarioEmArquivoTexto2(ofstream &output_file, SubNo parametro[], ifstream &arqBin, int imp)
+{
+    cout<<"Imprimindo no Arquivo"<<endl;
+    No *aux = new No();
+    int j=0;
+    while(j<imp){
+        arqBin.seekg((sizeof(No))*(parametro[j].getId() - 1), ios_base::beg);
+        while (arqBin.read((char *)aux, sizeof(No)))
+        {
+
+            if (aux->getId() == parametro[j].getId())
+            {
+            output_file << aux->review_id << endl;
+            output_file << endl;
+            output_file << aux->review_text << endl;
+            output_file << endl;
+            output_file << aux->upvotes << endl;
+            output_file << endl;
+            output_file << aux->app_version << endl;
+            output_file << endl;
+            output_file << aux->date << endl;
+            output_file << endl;
+            output_file << aux->hour << endl;
+            output_file << endl;
+            break;
+            }
+        }
+        j++;
+    }
+    if(imp>50000){
+    exit(0);
+    }
+}
+
+
 void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, No parametro[], ifstream &arqBin, int imp)
 {
     cout<<"Imprimindo no Arquivo"<<endl;

@@ -1,0 +1,92 @@
+Radix
+
+
+Radix faz um index com o digito analisado e cria um novo vetor posicionando
+os valores anteriores com base nesse index, logo ele não faz comparações e o 
+numero de movimentções é um valor que não possui sentido pois alem dele não 
+estar movimentando as chaves e sim recriando o vetor, esse valor tambem sera 
+sempre  N*(qtd de digitos do maior numero).
+
+N = 10.000
+N1- 0.0920833 segundos
+N2- 0.0970885 segundos
+N3- 0.0890809 segundos
+Média: 0.0927509 segundos
+
+N = 50.000
+N1- 0.46341 segundos
+N2- 0.458603 segundos
+N3- 0.452551 segundos
+Média: 0.458188
+
+N = 100.000
+N1- 0.903923 segundos
+N2- 0.907575 segundos
+N3- 0.904806 segundos
+Média: 0.90543467 segundos
+
+N = 500.000
+N1- 4.51502 segundos
+N2- 4.53286 segundos
+N3- 4.5165 segundos
+Média: 4.52146 segundos
+
+N = 1.000.000
+N1- 9.11809 segundos
+N2- 9.17363 segundos
+N3- 9.07654 segundos
+Média: 9.122753 segundos
+
+
+HeapSort
+
+N = 10.000
+N1- 0.126114 segundos
+N2- 0.123112  segundos
+N3- 0.122111  segundos
+Média: 0.123779 segundos
+Trocas: 14921 Comparações: 138311
+
+N = 50.000 
+N1- 0.656606 segundos
+N2- 0.662105 segundos
+N3- 0.663471 segundos
+Média: 0.6607273 segundos
+Trocas: 79080 Comparações: 808701
+
+N = 100.000
+N1- 1.33952 segundos
+N2- 1.35228 segundos
+N3- 1.34676 segundos
+Média: 1.34618666667
+Trocas:163870 Comparações:1717398
+
+N = 500.000
+N1- 7.0149 segundos
+N2- 7.13675 segundos
+N3- 6.87365 segundos
+Média: 7.008433 segundos
+Trocas:863450 Comparações:9723466
+
+N = 1.000.000
+N1- 13.9788 segundos
+N2- 14.0326 segundos
+N3- 13.8965 segundos
+Média: 13.9693 segundos
+Trocas:1763037 Comparações:20447010
+
+
+QuickSort
+
+N = 10.000 
+N1- 0.091083 segundos
+N2- 0.088079 segundos
+N3- 0.0880806 segundos
+Média: 
+
+N = 50.000
+N1- 0.48349 segundos
+N2- 0.484885 segundos
+N3- 0.478434 segundos
+Média: 
+

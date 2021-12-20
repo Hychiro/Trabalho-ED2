@@ -28,20 +28,7 @@ int *sorteia(int max, int n)
     while (qtdSorteados != n)
     {
         int numeroSorteado;
-        bool libera = true;
-        while (libera)
-        {
-            libera = false;
-
-            numeroSorteado = distribution(generator);
-            for (int o = 0; o < qtdSorteados; o++)
-            {
-                if (vetorN[o] == numeroSorteado)
-                {
-                    libera = true;
-                }
-            }
-        }
+        numeroSorteado = distribution(generator);
         vetorN[qtdSorteados] = numeroSorteado;
         qtdSorteados++;
     }
@@ -117,11 +104,10 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             srand(time(nullptr));
             high_resolution_clock::time_point inicio = high_resolution_clock::now();
             SubNo *vetOrdenados = new SubNo[imp];
-            No *vetOrdenados2 = new No[imp];
             if (type == 1)
                 vetOrdenados = radix(vetValSorteados, imp, arqBin);
             if (type == 2)
-                vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
+                vetOrdenados = getVet(vetValSorteados, imp, arqBin);
             if (type == 3)
             {
                 vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
@@ -136,47 +122,44 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             int tempo = 0;
             high_resolution_clock::time_point fim = high_resolution_clock::now();
             tempo = duration_cast<duration<double>>(fim - inicio).count();
+            cout<<"Tempo  de ordenação: "<<tempo<< " segundos"<<endl;
             // Impressão
-            if (type == 1)
-                dbA.impressaoConsole(vetOrdenados, arqBin, imp);
-            if (type == 2)
-                dbA.impressaoConsole(vetOrdenados2, arqBin, imp);
-            if (type == 3)
-                dbA.impressaoConsole(vetOrdenados, arqBin, imp);
+            dbA.impressaoConsole(vetOrdenados, arqBin, imp);
 
             delete[] vetValSorteados;
             delete[] vetOrdenados;
-            delete[] vetOrdenados2;
         }
         if (aux == 2)
         {
             SubNo *vetOrdenados = new SubNo[imp];
-            No *vetOrdenados2 = new No[imp];
+
             srand(time(nullptr));
             high_resolution_clock::time_point inicio = high_resolution_clock::now();
             if (type == 1)
                 vetOrdenados = radix(vetValSorteados, imp, arqBin);
             if (type == 2)
-                vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
+                vetOrdenados = getVet(vetValSorteados, imp, arqBin);
             if (type == 3)
             {
                 vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
                 // vetOrdenados = quickSort(vetOrdenados, 0, imp);
                 recursiveQsort(vetOrdenados, 0, imp);
             }
-            int tempo = 0;
+            double tempo = 0;
             high_resolution_clock::time_point fim = high_resolution_clock::now();
             tempo = duration_cast<duration<double>>(fim - inicio).count();
+            cout<<"Tempo  de ordenação: "<<tempo<< " segundos"<<endl;
             if (arqSaida.is_open())
             {
                 // le do .bin em um arquivo de saida de final a escolha (recomendo que seja .txt)
 
-                if (type == 1)
+                if (type == 1 || type == 2)
                     dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
-                if (type == 2)
-                    dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados2, arqBin, imp);
                 if (type == 3)
-                    dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
+                    dbA.leArqBinarioEmArquivoTexto2(arqSaida, vetOrdenados, arqBin, imp);
+
+            delete[] vetValSorteados;
+            delete[] vetOrdenados;
             }
             else
             {
@@ -265,7 +248,7 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
 
         SubNo *vetOrdenados = new SubNo[imp];
-        No *vetOrdenados2 = new No[imp];
+        SubNo *vetOrdenados2 = new SubNo[imp];
         SubNo *vetOrdenados3 = new SubNo[imp];
 
 
