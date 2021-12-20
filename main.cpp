@@ -125,7 +125,8 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             if (type == 3)
             {
                 vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
-                vetOrdenados = quickSort(vetOrdenados, 0, imp);
+                // vetOrdenados = quickSort(vetOrdenados, 0, imp);
+                recursiveQsort(vetOrdenados, 0, imp);
                 // for (int k = 0; k < imp; k++)
                 // {
                 //     cout << "vetorStruct[k]: " << vetOrdenados[k].getId() << vetOrdenados[k].intUpvotes << " -- " << vetOrdenados[k].upvotes << endl;
@@ -160,7 +161,8 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             if (type == 3)
             {
                 vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
-                vetOrdenados = quickSort(vetOrdenados, 0, imp);
+                // vetOrdenados = quickSort(vetOrdenados, 0, imp);
+                recursiveQsort(vetOrdenados, 0, imp);
             }
             int tempo = 0;
             high_resolution_clock::time_point fim = high_resolution_clock::now();
@@ -284,7 +286,8 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         arqSaida<<"QuickSort"<<endl;
         ///quick
         vetOrdenados3 = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados3);
-        vetOrdenados3 = quickSort(vetOrdenados3, 0, imp);
+        // vetOrdenados3 = quickSort(vetOrdenados3, 0, imp);
+        recursiveQsort(vetOrdenados, 0, imp);
 
         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados3, arqBin, imp);
         delete[] vetOrdenados3;

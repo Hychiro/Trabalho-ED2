@@ -7,6 +7,8 @@
 #include <chrono>
 #include <math.h>
 #include "hashing.cpp"
+#include <cstdlib>
+#include <stack>
 
 using namespace std;
 using namespace std::chrono;
@@ -349,51 +351,96 @@ SubNo *criaVetSubNo(ifstream &arqBin, int vetorId[], int tam, SubNo *vetorStruct
     return vetorStruct;
 }
 
-int particao(SubNo *vetorStruct, int inicio, int fim)
+// int particao(SubNo *vetorStruct, int inicio, int fim)
+// {
+
+//     int i, j;
+//     SubNo v, temp;
+//     v = vetorStruct[inicio];
+//     i = inicio;
+//     j = fim + 1;
+
+//     do
+//     {
+//         do
+//         {
+//             i++;
+//         } while (vetorStruct[i].intUpvotes < v.intUpvotes && i <= fim);
+
+//         do
+//         {
+//             j--;
+//         } while (v.intUpvotes < vetorStruct[j].intUpvotes);
+
+//         if (i < j)
+//         {
+//             temp = vetorStruct[i];
+//             vetorStruct[i] = vetorStruct[j];
+//             vetorStruct[j] = temp;
+//         }
+
+//     } while (i < j);
+
+//     vetorStruct[inicio] = vetorStruct[j];
+//     vetorStruct[j] = v;
+
+//     return j;
+// }
+// SubNo *quickSort(SubNo *vetorStruct, int inicio, int fim)
+// {
+
+//     int j;
+//     if (inicio < fim)
+//     {
+//         j = particao(vetorStruct, inicio, fim);
+//         vetorStruct = quickSort(vetorStruct, inicio, j - 1);
+//         vetorStruct = quickSort(vetorStruct, j + 1, fim);
+//     }
+
+//     return vetorStruct;
+// }
+void swap(SubNo *arr, int i, int j)
 {
-
-    int i, j;
-    SubNo v, temp;
-    v = vetorStruct[inicio];
-    i = inicio;
-    j = fim + 1;
-
-    do
-    {
-        do
-        {
-            i++;
-        } while (vetorStruct[i].intUpvotes < v.intUpvotes && i <= fim);
-
-        do
-        {
-            j--;
-        } while (v.intUpvotes < vetorStruct[j].intUpvotes);
-
-        if (i < j)
-        {
-            temp = vetorStruct[i];
-            vetorStruct[i] = vetorStruct[j];
-            vetorStruct[j] = temp;
-        }
-
-    } while (i < j);
-
-    vetorStruct[inicio] = vetorStruct[j];
-    vetorStruct[j] = v;
-
-    return j;
+    SubNo temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
 }
-SubNo *quickSort(SubNo *vetorStruct, int inicio, int fim)
+
+int partition(SubNo *arr, int p, int start, int end)
 {
+    int l = start;
+    int h = end - 2;
+    SubNo piv = arr[p];
+    swap(arr, p, end - 1);
 
-    int j;
-    if (inicio < fim)
+    while (l < h)
     {
-        j = particao(vetorStruct, inicio, fim);
-        vetorStruct = quickSort(vetorStruct, inicio, j - 1);
-        vetorStruct = quickSort(vetorStruct, j + 1, fim);
+        if (arr[l].intUpvotes < piv.intUpvotes)
+        {
+            l++;
+        }
+        else if (arr[h].intUpvotes >= piv.intUpvotes)
+        {
+            h--;
+        }
+        else
+        {
+            swap(arr, l, h);
+        }
     }
+    int idx = h;
+    if (arr[h].intUpvotes < piv.intUpvotes)
+        idx++;
+    swap(arr, end - 1, idx);
+    return idx;
+}
 
-    return vetorStruct;
+void recursiveQsort(SubNo *arr, int start, int end)
+{
+    if (end - start < 2)
+        return; //stop  clause
+    int p = start + ((end - start) / 2);
+    p = partition(arr, p, start, end);
+    recursiveQsort(arr, start, p);
+    recursiveQsort(arr, p + 1, end);
 }
