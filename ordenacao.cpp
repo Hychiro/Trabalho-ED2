@@ -144,9 +144,9 @@ SubNo *radix(int vetorId[], int tam, ifstream &arqBin)
     return vetorStruct;
 }
 
-int *countingSortHash(int chaves[], int m, int tam,versao **tabelaHash,int resultado[])
+int *countingSortHash(int chaves[], int m, int tam, versao **tabelaHash, int resultado[])
 {
-    versao *aux=new versao;
+    versao *aux = new versao;
     int max = 9;
     int index[10];
     for (int a = 0; a < 10; a++)
@@ -158,13 +158,12 @@ int *countingSortHash(int chaves[], int m, int tam,versao **tabelaHash,int resul
     {
         int digitoAnalisado = 0;
         int k = 0;
-        aux = busca(chaves[i],tabelaHash);
-        int repeticao=aux->reps;
-        repeticao = repeticao/pow(10,(m-1));
-        repeticao = repeticao%10;
+        aux = busca(chaves[i], tabelaHash);
+        int repeticao = aux->reps;
+        repeticao = repeticao / pow(10, (m - 1));
+        repeticao = repeticao % 10;
 
         index[repeticao]++;
-        
     }
 
     for (int i = 1; i <= max; i++)
@@ -178,44 +177,37 @@ int *countingSortHash(int chaves[], int m, int tam,versao **tabelaHash,int resul
     }
     index[0] = 0;
 
-
-
-    
-
     for (int i = 0; i < tam; i++) // olhar em todos structs do vetor
     {
         int digitoAnalisado = 0;
         int k = 0;
-        aux = busca(chaves[i],tabelaHash);
-        int repeticao=aux->reps;
-        repeticao = repeticao/pow(10,(m-1));
-        repeticao = repeticao%10;
+        aux = busca(chaves[i], tabelaHash);
+        int repeticao = aux->reps;
+        repeticao = repeticao / pow(10, (m - 1));
+        repeticao = repeticao % 10;
 
-        resultado[index[repeticao]]=aux->chave;
+        resultado[index[repeticao]] = aux->chave;
         index[repeticao]++;
-
     }
 
     return resultado;
-
-
 }
 
 int *radix2(int chaves[], versao **tabelaHash, int tam)
 {
-    versao *aux=new versao;
+    versao *aux = new versao;
     int maiorDigitos = 0;
-
 
     for (int i = 0; i < tam; i++)
     {
-        int contaDigito=0;
-        aux = busca(chaves[i],tabelaHash);
-        int repeticao=aux->reps;
-        do{
-            repeticao=repeticao/10;
+        int contaDigito = 0;
+        aux = busca(chaves[i], tabelaHash);
+        int repeticao = aux->reps;
+        do
+        {
+            repeticao = repeticao / 10;
             contaDigito++;
-        }while(repeticao != 0);
+        } while (repeticao != 0);
 
         if (maiorDigitos < contaDigito)
         {
@@ -223,14 +215,11 @@ int *radix2(int chaves[], versao **tabelaHash, int tam)
         }
     }
 
-
-
-
     int contador = 1;
     while (contador <= maiorDigitos)
     {
-        int *vetorResultado=new int[tam];
-        chaves = countingSortHash(chaves, contador, tam,tabelaHash,vetorResultado);
+        int *vetorResultado = new int[tam];
+        chaves = countingSortHash(chaves, contador, tam, tabelaHash, vetorResultado);
         contador++;
     }
 
@@ -351,6 +340,12 @@ SubNo *criaVetSubNo(ifstream &arqBin, int vetorId[], int tam, SubNo *vetorStruct
             }
         }
     }
+
+    // for (int k = 0; k < tam; k++)
+    // {
+    //     cout << "vetorStruct[k]: " << vetorStruct[k].getId() << vetorStruct[k].intUpvotes << " -- " << vetorStruct[k].upvotes << endl;
+    // }
+
     return vetorStruct;
 }
 
@@ -399,5 +394,6 @@ SubNo *quickSort(SubNo *vetorStruct, int inicio, int fim)
         vetorStruct = quickSort(vetorStruct, inicio, j - 1);
         vetorStruct = quickSort(vetorStruct, j + 1, fim);
     }
+
     return vetorStruct;
 }

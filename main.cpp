@@ -97,7 +97,7 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         cout << "Digite (3) para QuickSort" << endl;
         int type;
         cin >> type;
-        while (type != 1 && type != 2 && type != 3 )
+        while (type != 1 && type != 2 && type != 3)
         {
             cout << "Digite uma Opcao valida!" << endl;
             cout << "Digite (1) para RadixSort" << endl;
@@ -126,6 +126,10 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             {
                 vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
                 vetOrdenados = quickSort(vetOrdenados, 0, imp);
+                // for (int k = 0; k < imp; k++)
+                // {
+                //     cout << "vetorStruct[k]: " << vetOrdenados[k].getId() << vetOrdenados[k].intUpvotes << " -- " << vetOrdenados[k].upvotes << endl;
+                // }
             }
             // Selecionar tipo de ordenação _FIM
             int tempo = 0;
@@ -262,25 +266,30 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         No *vetOrdenados2 = new No[imp];
         SubNo *vetOrdenados3 = new SubNo[imp];
 
+
+        arqSaida<<"Radix"<<endl;
         ///radix
         vetOrdenados = radix(vetValSorteados, imp, arqBin);
 
         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
         delete[] vetOrdenados;
-
+        arqSaida<<endl<<endl;
+        arqSaida<<"HeapSort"<<endl;
         ///heap
         vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
 
         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados2, arqBin, imp);
         delete[] vetOrdenados2;
-
+        arqSaida<<endl<<endl;
+        arqSaida<<"QuickSort"<<endl;
         ///quick
         vetOrdenados3 = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados3);
         vetOrdenados3 = quickSort(vetOrdenados3, 0, imp);
 
         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados3, arqBin, imp);
         delete[] vetOrdenados3;
-
+        arqSaida<<endl<<endl;
+        arqSaida<<"Hashing"<<endl;
         ///hash
         versao **tabela = criaTabela(arqBin, imp, vetValSorteados);
         // imprimeTabela(tabela, 1087);
