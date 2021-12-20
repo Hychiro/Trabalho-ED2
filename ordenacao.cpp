@@ -231,19 +231,20 @@ int *radix2(int chaves[], versao **tabelaHash, int tam)
 //         |
 // HEAPSORT V --------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 template <typename T>
-void troca(T &a, T &b)
+void troca(T &a, T &b, int *trocas)
 {
+    *trocas = *trocas + 1;
     T aux = a;
     a = b;
     b = aux;
 }
 
-void heapify(No *v, int i, int n)
+void heapify(SubNo *v, int i, int n, int *trocas, int *comp)
 {
     while (i < n)
     {
         int filho = 2 * i + 1;
-
+        *comp = *comp + 1;
         if (filho < n)
         {
             if (filho + 1 < n && atoi(v[filho + 1].upvotes) > atoi(v[filho].upvotes))
@@ -251,58 +252,64 @@ void heapify(No *v, int i, int n)
                 filho++;
             }
             if (atoi(v[filho].upvotes) > atoi(v[i].upvotes))
-                troca(v[i], v[filho]);
+                troca(v[i], v[filho], trocas);
         }
         i = filho;
     }
 }
 
-void constroiHeap(No *v, int n)
+void constroiHeap(SubNo *v, int n, int *trocas, int *comp)
 {
     for (int i = n / 2 - 1; i >= 0; i--)
     {
-        heapify(v, i, n);
+        heapify(v, i, n, trocas, comp);
     }
 }
 
-void heapSortRec(No *v, int n)
+void heapSortRec(SubNo *v, int n, int *trocas, int *comp)
 {
-    constroiHeap(v, n);
+    constroiHeap(v, n, trocas, comp);
     while (n > 0)
     {
-        troca(v[0], v[n - 1]);
-        heapify(v, 0, n - 1);
+        troca(v[0], v[n - 1], trocas);
+        heapify(v, 0, n - 1, trocas, comp);
         n--;
     }
 }
 
-void heapSort(No *v, int n)
+void heapSort(SubNo *v, int n)
 {
-    high_resolution_clock::time_point inicio = high_resolution_clock::now(); // pega o tempo do inicio
-    heapSortRec(v, n);
-    high_resolution_clock::time_point fim = high_resolution_clock::now(); // pega o tempo do final
+    int trocas;
+    int comp;
+    trocas = 0;
+    comp = 0;
+    heapSortRec(v, n, &trocas, &comp);
+    cout << "Trocas: " << trocas << endl;
+    cout << "Comparacoes: " << comp << endl;
 }
 
-No *getVet(int vetorId[], int tam, ifstream &arqBin) // peguei a logica do radix pra ler o bin e salvar em struct
+SubNo *getVet(int vetorId[], int tam, ifstream &arqBin) // peguei a logica do radix pra ler o bin e salvar em struct
 {
     int *v = new int[tam];
-    No *vetorStruct = new No[tam];
+    SubNo *vetorStruct = new SubNo[tam];
     No *aux = new No();
+
     for (int i = 0; i < tam; i++)
     {
         arqBin.seekg(((sizeof(No)) * (vetorId[i] - 1)), ios_base::beg);
         while (arqBin.read((char *)aux, sizeof(No)))
         {
-
             if (aux->getId() == vetorId[i])
             {
-                vetorStruct[i] = *aux;
+                vetorStruct[i].setId(aux->getId());
+                vetorStruct[i].setupvotes(aux->upvotes);
                 sscanf(vetorStruct[i].upvotes, "%d", &v[i]); // v[i] = (int)vetorStruct[i].upvotes --- transforma o vetor de char upvote em int pra salvar no vetor
                 break;
             }
         }
     }
     // o *v agora salvou 'tam' upvotes de 0 a 'tam'
+    cout << endl;
     heapSort(vetorStruct, tam);
 
     return vetorStruct;
