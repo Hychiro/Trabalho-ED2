@@ -392,8 +392,7 @@ int particao(SubNo *vetorStruct, int inicio, int fim)
 SubNo *quickSort(SubNo *vetorStruct, int inicio, int fim)
 {
 
-    int j, cont;
-    cont = 0;
+    int j;
     if (inicio < fim)
     {
         j = particao(vetorStruct, inicio, fim);
