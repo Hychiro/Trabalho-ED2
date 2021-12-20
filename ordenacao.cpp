@@ -281,12 +281,6 @@ void heapSort(No *v, int n)
     high_resolution_clock::time_point inicio = high_resolution_clock::now(); // pega o tempo do inicio
     heapSortRec(v, n);
     high_resolution_clock::time_point fim = high_resolution_clock::now(); // pega o tempo do final
-    cout << endl;
-    for (int i = 0; i < n; i++)
-    {
-        cout << v[i].upvotes << " "; // printa o vetor de upvote em ordem crescente
-    }
-    cout << duration_cast<duration<double>>(fim - inicio).count() << " segundos" << endl; // printa o tempo inicial - tempo final =  tempo levado
 }
 
 No *getVet(int vetorId[], int tam, ifstream &arqBin) // peguei a logica do radix pra ler o bin e salvar em struct
@@ -309,11 +303,6 @@ No *getVet(int vetorId[], int tam, ifstream &arqBin) // peguei a logica do radix
         }
     }
     // o *v agora salvou 'tam' upvotes de 0 a 'tam'
-    for (int i = 0; i < tam; i++)
-    {
-        cout << v[i] << " ";
-    }
-    cout << endl;
     heapSort(vetorStruct, tam);
 
     return vetorStruct;

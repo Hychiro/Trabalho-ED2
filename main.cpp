@@ -28,20 +28,7 @@ int *sorteia(int max, int n)
     while (qtdSorteados != n)
     {
         int numeroSorteado;
-        bool libera = true;
-        while (libera)
-        {
-            libera = false;
-
-            numeroSorteado = distribution(generator);
-            for (int o = 0; o < qtdSorteados; o++)
-            {
-                if (vetorN[o] == numeroSorteado)
-                {
-                    libera = true;
-                }
-            }
-        }
+        numeroSorteado = distribution(generator);
         vetorN[qtdSorteados] = numeroSorteado;
         qtdSorteados++;
     }
@@ -135,6 +122,7 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             int tempo = 0;
             high_resolution_clock::time_point fim = high_resolution_clock::now();
             tempo = duration_cast<duration<double>>(fim - inicio).count();
+            cout<<"Tempo  de ordenação: "<<tempo<< " segundos"<<endl;
             // Impressão
             if (type == 1)
                 dbA.impressaoConsole(vetOrdenados, arqBin, imp);
@@ -151,6 +139,7 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         {
             SubNo *vetOrdenados = new SubNo[imp];
             No *vetOrdenados2 = new No[imp];
+            SubNo *vetOrdenados3 = new SubNo[imp];
             srand(time(nullptr));
             high_resolution_clock::time_point inicio = high_resolution_clock::now();
             if (type == 1)
@@ -159,12 +148,13 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
                 vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
             if (type == 3)
             {
-                vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
-                vetOrdenados = quickSort(vetOrdenados, 0, imp);
+                vetOrdenados3 = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados3);
+                vetOrdenados3 = quickSort(vetOrdenados3, 0, imp);
             }
-            int tempo = 0;
+            double tempo = 0;
             high_resolution_clock::time_point fim = high_resolution_clock::now();
             tempo = duration_cast<duration<double>>(fim - inicio).count();
+            cout<<"Tempo  de ordenação: "<<tempo<< " segundos"<<endl;
             if (arqSaida.is_open())
             {
                 // le do .bin em um arquivo de saida de final a escolha (recomendo que seja .txt)
@@ -174,7 +164,12 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
                 if (type == 2)
                     dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados2, arqBin, imp);
                 if (type == 3)
-                    dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
+                    dbA.leArqBinarioEmArquivoTexto2(arqSaida, vetOrdenados3, arqBin, imp);
+
+            delete[] vetValSorteados;
+            delete[] vetOrdenados;
+            delete[] vetOrdenados2;
+            delete[] vetOrdenados3;
             }
             else
             {
