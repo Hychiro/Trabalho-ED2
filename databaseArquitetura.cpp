@@ -22,13 +22,13 @@ void DatabaseArquitetura::leituraArquivo(ifstream &input_file, ofstream &output_
     string linhaReview = "";
     int repetidor = 1;
     getline(input_file, linhaArqivo, '\n');
+    cout << "Arquivo Bin nao encontrado, gerando outro" << endl;
     while (!input_file.eof())
     {
         if (repetidor == 1)
         {
             getline(input_file, linhaArqivo, '\n');
         }
-        cout << repetidor << endl;
 
         No *p = new No();
 
