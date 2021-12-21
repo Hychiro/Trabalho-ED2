@@ -142,9 +142,6 @@ versao **criaTabela(ifstream &arqBin, int tam, int vetorId[])
                 int chave = criaChave(aux->app_version);
                 insereChave(tabelaHash, m, chave, aux);
                 int o = funcaoDispersaoDivisao(chave, m);
-
-                cout << "No " << aux->getId() << " versao: " << aux->app_version << " chave: " << chave << endl;
-                cout << "Tabela " << o << " versao: " << tabelaHash[o]->versao_app << " chave: " << tabelaHash[o]->chave << endl;
                 break;
             }
         }

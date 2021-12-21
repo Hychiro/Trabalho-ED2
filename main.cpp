@@ -13,9 +13,7 @@ using namespace std;
 
 int *sorteia(int max, int n)
 {
-    std::random_device rd;
-    std::default_random_engine generator(rd());
-    std::uniform_int_distribution<int> distribution(1, max);
+    srand(time(NULL));
 
     cout << "Sorteando" << endl;
 
@@ -28,7 +26,7 @@ int *sorteia(int max, int n)
     while (qtdSorteados != n)
     {
         int numeroSorteado;
-        numeroSorteado = distribution(generator);
+        numeroSorteado = ((rand() * rand())%max) + 1;
         vetorN[qtdSorteados] = numeroSorteado;
         qtdSorteados++;
     }
@@ -101,7 +99,6 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         if (aux == 1)
         {
             // Selecionar tipo de ordenação _INICIO
-            srand(time(nullptr));
             high_resolution_clock::time_point inicio = high_resolution_clock::now();
             SubNo *vetOrdenados = new SubNo[imp];
             if (type == 1)
@@ -111,18 +108,14 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             if (type == 3)
             {
                 vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
-                // vetOrdenados = quickSort(vetOrdenados, 0, imp);
-                recursiveQsort(vetOrdenados, 0, imp);
-                // for (int k = 0; k < imp; k++)
-                // {
-                //     cout << "vetorStruct[k]: " << vetOrdenados[k].getId() << vetOrdenados[k].intUpvotes << " -- " << vetOrdenados[k].upvotes << endl;
-                // }
+                quickSort(vetOrdenados, 0, imp,imp);
+
             }
             // Selecionar tipo de ordenação _FIM
             int tempo = 0;
             high_resolution_clock::time_point fim = high_resolution_clock::now();
             tempo = duration_cast<duration<double>>(fim - inicio).count();
-            cout<<"Tempo  de ordenação: "<<tempo<< " segundos"<<endl;
+            cout << "Tempo  de ordenação: " << tempo << " segundos" << endl;
             // Impressão
             dbA.impressaoConsole(vetOrdenados, arqBin, imp);
 
@@ -133,7 +126,6 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         {
             SubNo *vetOrdenados = new SubNo[imp];
 
-            srand(time(nullptr));
             high_resolution_clock::time_point inicio = high_resolution_clock::now();
             if (type == 1)
                 vetOrdenados = radix(vetValSorteados, imp, arqBin);
@@ -142,24 +134,22 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             if (type == 3)
             {
                 vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
-                // vetOrdenados = quickSort(vetOrdenados, 0, imp);
-                recursiveQsort(vetOrdenados, 0, imp);
+                cout << "acaba o carregamento" << endl;
+                quickSort(vetOrdenados, 0, imp,imp);
+                imprimeTC();
             }
             double tempo = 0;
             high_resolution_clock::time_point fim = high_resolution_clock::now();
             tempo = duration_cast<duration<double>>(fim - inicio).count();
-            cout<<"Tempo  de ordenação: "<<tempo<< " segundos"<<endl;
+            cout << "Tempo  de ordenação: " << tempo << " segundos" << endl;
             if (arqSaida.is_open())
             {
                 // le do .bin em um arquivo de saida de final a escolha (recomendo que seja .txt)
 
-                if (type == 1 || type == 2)
                     dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
-                if (type == 3)
-                    dbA.leArqBinarioEmArquivoTexto2(arqSaida, vetOrdenados, arqBin, imp);
 
-            delete[] vetValSorteados;
-            delete[] vetOrdenados;
+                delete[] vetValSorteados;
+                delete[] vetOrdenados;
             }
             else
             {
@@ -251,32 +241,34 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         SubNo *vetOrdenados2 = new SubNo[imp];
         SubNo *vetOrdenados3 = new SubNo[imp];
 
-
-        arqSaida<<"Radix"<<endl;
-        ///radix
+        arqSaida << "Radix" << endl;
+        /// radix
         vetOrdenados = radix(vetValSorteados, imp, arqBin);
 
         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
         delete[] vetOrdenados;
-        arqSaida<<endl<<endl;
-        arqSaida<<"HeapSort"<<endl;
-        ///heap
+        arqSaida << endl
+                 << endl;
+        arqSaida << "HeapSort" << endl;
+        /// heap
         vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
 
         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados2, arqBin, imp);
         delete[] vetOrdenados2;
-        arqSaida<<endl<<endl;
-        arqSaida<<"QuickSort"<<endl;
-        ///quick
+        arqSaida << endl
+                 << endl;
+        arqSaida << "QuickSort" << endl;
+        /// quick
         vetOrdenados3 = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados3);
         // vetOrdenados3 = quickSort(vetOrdenados3, 0, imp);
-        recursiveQsort(vetOrdenados, 0, imp);
+        quickSort(vetOrdenados, 0, imp,imp);
 
         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados3, arqBin, imp);
         delete[] vetOrdenados3;
-        arqSaida<<endl<<endl;
-        arqSaida<<"Hashing"<<endl;
-        ///hash
+        arqSaida << endl
+                 << endl;
+        arqSaida << "Hashing" << endl;
+        /// hash
         versao **tabela = criaTabela(arqBin, imp, vetValSorteados);
         // imprimeTabela(tabela, 1087);
         int m = 1087;

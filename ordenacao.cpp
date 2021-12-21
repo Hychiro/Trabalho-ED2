@@ -13,6 +13,9 @@
 using namespace std;
 using namespace std::chrono;
 
+int trocas=0;
+int comp=0;
+
 SubNo *countingSort(SubNo vetorN[], int m, int tam, SubNo vetorResultado[], int maiordigitos)
 {
     int max = 9;
@@ -331,7 +334,6 @@ SubNo *criaVetSubNo(ifstream &arqBin, int vetorId[], int tam, SubNo *vetorStruct
             if (aux->getId() == vetorId[i])
             {
                 vetorStruct[i].setId(aux->getId());
-
                 vetorStruct[i].setupvotes(aux->upvotes);
                 sscanf(vetorStruct[i].upvotes, "%d", &vetorStruct[i].intUpvotes);
                 break;
@@ -339,104 +341,66 @@ SubNo *criaVetSubNo(ifstream &arqBin, int vetorId[], int tam, SubNo *vetorStruct
         }
     }
 
-    // for (int k = 0; k < tam; k++)
-    // {
-    //     cout << "vetorStruct[k]: " << vetorStruct[k].getId() << vetorStruct[k].intUpvotes << " -- " << vetorStruct[k].upvotes << endl;
-    // }
-
     return vetorStruct;
 }
 
-// int particao(SubNo *vetorStruct, int inicio, int fim)
-// {
-
-//     int i, j;
-//     SubNo v, temp;
-//     v = vetorStruct[inicio];
-//     i = inicio;
-//     j = fim + 1;
-
-//     do
-//     {
-//         do
-//         {
-//             i++;
-//         } while (vetorStruct[i].intUpvotes < v.intUpvotes && i <= fim);
-
-//         do
-//         {
-//             j--;
-//         } while (v.intUpvotes < vetorStruct[j].intUpvotes);
-
-//         if (i < j)
-//         {
-//             temp = vetorStruct[i];
-//             vetorStruct[i] = vetorStruct[j];
-//             vetorStruct[j] = temp;
-//         }
-
-//     } while (i < j);
-
-//     vetorStruct[inicio] = vetorStruct[j];
-//     vetorStruct[j] = v;
-
-//     return j;
-// }
-// SubNo *quickSort(SubNo *vetorStruct, int inicio, int fim)
-// {
-
-//     int j;
-//     if (inicio < fim)
-//     {
-//         j = particao(vetorStruct, inicio, fim);
-//         vetorStruct = quickSort(vetorStruct, inicio, j - 1);
-//         vetorStruct = quickSort(vetorStruct, j + 1, fim);
-//     }
-
-//     return vetorStruct;
-// }
-void swap(SubNo *arr, int i, int j)
+int particao(SubNo *vetorStruct, int inicio, int fim,int imp)
 {
-    SubNo temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-}
 
-int partition(SubNo *arr, int p, int start, int end)
-{
-    int l = start;
-    int h = end - 2;
-    SubNo piv = arr[p];
-    swap(arr, p, end - 1);
-
-    while (l < h)
-    {
-        if (arr[l].intUpvotes < piv.intUpvotes)
-        {
-            l++;
-        }
-        else if (arr[h].intUpvotes >= piv.intUpvotes)
-        {
-            h--;
-        }
-        else
-        {
-            swap(arr, l, h);
-        }
+    int i, j;
+    SubNo v, temp;
+    v = vetorStruct[inicio];
+    i = inicio;
+    j = fim+1;
+    if(j>=imp){
+        j=imp;
     }
-    int idx = h;
-    if (arr[h].intUpvotes < piv.intUpvotes)
-        idx++;
-    swap(arr, end - 1, idx);
-    return idx;
+
+    do
+    {
+        do
+        {
+            i++;
+        } while (vetorStruct[i].intUpvotes < v.intUpvotes && i <= fim);
+
+        do
+        {
+            j--;
+        } while (v.intUpvotes < vetorStruct[j].intUpvotes);
+
+        if (i < j)
+        {
+            trocas++;
+            temp = vetorStruct[i];
+            vetorStruct[i] = vetorStruct[j];
+            vetorStruct[j] = temp;
+        }
+
+    } while (i < j);
+
+    trocas++;
+    vetorStruct[inicio] = vetorStruct[j];
+    vetorStruct[j] = v;
+
+    return j;
+}
+void quickSort(SubNo *vetorStruct, int inicio, int fim,int imp)
+{
+    int j;
+    if (inicio < fim)
+    {
+        j = particao(vetorStruct, inicio, fim, imp);
+        comp++;
+        quickSort(vetorStruct, inicio, j - 1, imp);
+        comp++;
+        quickSort(vetorStruct, j + 1, fim, imp);
+    }
 }
 
-void recursiveQsort(SubNo *arr, int start, int end)
-{
-    if (end - start < 2)
-        return; //stop  clause
-    int p = start + ((end - start) / 2);
-    p = partition(arr, p, start, end);
-    recursiveQsort(arr, start, p);
-    recursiveQsort(arr, p + 1, end);
+void imprimeTC(){
+    cout<<"Trocas: "<<trocas<<endl;
+    cout<<"Comparacoes: "<<comp<<endl;
+    trocas=0;
+    comp=0;
 }
+

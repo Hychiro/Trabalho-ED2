@@ -149,6 +149,9 @@ void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, SubN
     No *aux = new No();
     int j=0;
     while(j<imp){
+        if(parametro[j].getId()==0){
+            parametro[j].setId(1);
+        }
         arqBin.seekg((sizeof(No))*(parametro[j].getId() - 1), ios_base::beg);
         while (arqBin.read((char *)aux, sizeof(No)))
         {
@@ -174,40 +177,6 @@ void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, SubN
     }
 }
 
-
-void DatabaseArquitetura::leArqBinarioEmArquivoTexto2(ofstream &output_file, SubNo parametro[], ifstream &arqBin, int imp)
-{
-    cout<<"Imprimindo no Arquivo"<<endl;
-    No *aux = new No();
-    int j=0;
-    while(j<imp){
-        arqBin.seekg((sizeof(No))*(parametro[j].getId() - 1), ios_base::beg);
-        while (arqBin.read((char *)aux, sizeof(No)))
-        {
-
-            if (aux->getId() == parametro[j].getId())
-            {
-            output_file << aux->review_id << endl;
-            output_file << endl;
-            output_file << aux->review_text << endl;
-            output_file << endl;
-            output_file << aux->upvotes << endl;
-            output_file << endl;
-            output_file << aux->app_version << endl;
-            output_file << endl;
-            output_file << aux->date << endl;
-            output_file << endl;
-            output_file << aux->hour << endl;
-            output_file << endl;
-            break;
-            }
-        }
-        j++;
-    }
-    if(imp>50000){
-    exit(0);
-    }
-}
 
 
 void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, No parametro[], ifstream &arqBin, int imp)
@@ -316,35 +285,6 @@ void DatabaseArquitetura::impressaoConsole(No parametro[],ifstream& arqBin,int i
 
 }
 
-void DatabaseArquitetura::leituraBinarioConsole(int iDparametro,ifstream& arqBin)
-{
-    No *aux = new No();
-        long long int a=(iDparametro-1)*sizeof(No);
-        int b=(iDparametro-1)*sizeof(No);
-    //fstream arq("tiktok_app_reviews.bin", ios_base::in | ios_base::binary | ios_base::app);
-    arqBin.seekg(a, ios_base::beg);
-    while (arqBin.read((char *)aux, sizeof(No)))
-    {
-        if (aux->getId() == iDparametro)
-        {
-
-
-            cout << aux->review_id << endl;
-            cout << endl;
-            cout << aux->review_text << endl;
-            cout << endl;
-            cout << aux->upvotes << endl;
-            cout << endl;
-            cout << aux->app_version << endl;
-            cout << endl;
-            cout << aux->date << endl;
-            cout << endl;
-            cout << aux->hour << endl;
-            cout << endl;
-            break;
-        }
-    }
-}
 int DatabaseArquitetura::getIdUltimaPosicao(ifstream &arqBin)
 {
     No *aux = new No();

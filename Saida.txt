@@ -41,11 +41,11 @@ Média: 9.122753 segundos
 HeapSort
 
 N = 10.000
-N1- 0.126114 segundos
-N2- 0.123112  segundos
+N1- 0.126114 segundos Trocas: 14921 Comparações: 138311
+N2- 0.123112  segundos 
 N3- 0.122111  segundos
 Média: 0.123779 segundos
-Trocas: 14921 Comparações: 138311
+
 
 N = 50.000 
 N1- 0.656606 segundos
@@ -79,14 +79,19 @@ Trocas:1763037 Comparações:20447010
 QuickSort
 
 N = 10.000 
-N1- 0.091083 segundos
-N2- 0.088079 segundos
-N3- 0.0880806 segundos
+N1- 0.0990902 segundos
+N2- 0.101092 segundos
+N3- 0.103094 segundos
 Média: 
+Trocas:57992 Comparações:11620
 
 N = 50.000
 N1- 0.48349 segundos
 N2- 0.484885 segundos
 N3- 0.478434 segundos
-Média: 
+Média:
+Trocas: Comparações:
+
+
+
 
