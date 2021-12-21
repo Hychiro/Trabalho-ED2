@@ -285,6 +285,33 @@ void DatabaseArquitetura::impressaoConsole(No parametro[],ifstream& arqBin,int i
 
 }
 
+void DatabaseArquitetura::leituraBinarioConsole(int iDparametro,ifstream& arqBin){
+    No *aux = new No();
+    arqBin.seekg(0, ios_base::beg);
+
+    while (arqBin.read((char *)aux, sizeof(No)))
+    {
+
+        if (aux->getId() == iDparametro)
+        {
+
+            cout << aux->review_id << endl;
+            cout << endl;
+            cout << aux->review_text << endl;
+            cout << endl;
+            cout << aux->upvotes << endl;
+            cout << endl;
+            cout << aux->app_version << endl;
+            cout << endl;
+            cout << aux->date << endl;
+            cout << endl;
+            cout << aux->hour << endl;
+            cout << endl;
+            break;
+        }
+    }
+}
+
 int DatabaseArquitetura::getIdUltimaPosicao(ifstream &arqBin)
 {
     No *aux = new No();

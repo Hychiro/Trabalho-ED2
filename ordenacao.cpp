@@ -8,7 +8,6 @@
 #include <math.h>
 #include "hashing.cpp"
 #include <cstdlib>
-#include <stack>
 
 using namespace std;
 using namespace std::chrono;
