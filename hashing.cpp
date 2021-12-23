@@ -97,27 +97,32 @@ int funcaoDispersaoDivisao(int chave, int m)
 void insereChave(versao **tabelaHash, int m, int chave, No *aux)
 {
     int h = funcaoDispersaoDivisao(chave, m);
+    bool verifica = false;
     if (tabelaHash[h] == NULL)
     {
         tabelaHash[h] = novoNoVersao(chave, aux);
+        tabelaHash[h]->reps = 1;
     }
-    bool verifica = false;
-    string compara = aux->app_version;
-
-    for (versao *p = tabelaHash[h]; p != NULL; p = p->prox)
+    else
     {
-
-        if (p->versao_app == compara)
+        string compara = aux->app_version;
+        for (versao *p = tabelaHash[h]; p != NULL; p = p->prox)
         {
-            tabelaHash[h]->reps = tabelaHash[h]->reps + 1;
-            verifica = true;
+
+            if (p->versao_app == compara)
+            {
+                p->reps = p->reps + 1;
+                verifica = true;
+            }
         }
-    }
-    if (!verifica)
-    {
-        versao *novo = novoNoVersao(chave, aux);
-        novo->prox = tabelaHash[h];
-        tabelaHash[h] = novo;
+
+        if (!verifica)
+        {
+            versao *novo = novoNoVersao(chave, aux);
+            novo->reps = 1;
+            novo->prox = tabelaHash[h];
+            tabelaHash[h] = novo;
+        }
     }
 }
 
@@ -149,7 +154,7 @@ versao **criaTabela(ifstream &arqBin, int tam, int vetorId[])
     return tabelaHash;
 }
 
-versao *busca(int chave, versao **tabela)
+versao *buscaIteracao(int chave, versao **tabela)
 {
     int m = 1087;
     for (int i = 0; i < m; i++)
@@ -173,6 +178,30 @@ versao *busca(int chave, versao **tabela)
                     return tabela[i];
                 }
             }
+        }
+    }
+    return NULL;
+}
+// por func de dispersão
+versao *busca(int chave, versao **tabela)
+{
+    int m = 1087;
+    int i = funcaoDispersaoDivisao(chave, m);
+    if (tabela[i] != NULL)
+    {
+        if (tabela[i]->prox != NULL)
+        {
+            for (versao *p = tabela[i]; p != NULL; p = p->prox)
+            {
+                if (p->chave == chave)
+                {
+                    return p;
+                }
+            }
+        }
+        else
+        {
+            return tabela[i];
         }
     }
     return NULL;

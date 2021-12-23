@@ -195,16 +195,7 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
                 }
             }
         }
-
-        int nulos = 0;
-        for (int i = 0; i < (m * 2); i++)
-        {
-            if (chaves[i] == -1)
-            {
-                nulos++;
-            }
-        }
-        int tam = ((m * 2) - nulos);
+        int tam = next;
         int *resultado = new int[tam];
         for (int i = 0; i < tam; i++)
         {
@@ -246,7 +237,7 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
 
         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
         delete[] vetOrdenados;
-        arqSaida << endl
+        arqSaida << "=========================================================================================="<< endl
                  << endl;
         arqSaida << "HeapSort" << endl;
         /// heap
@@ -254,17 +245,16 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
 
         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados2, arqBin, imp);
         delete[] vetOrdenados2;
-        arqSaida << endl
+        arqSaida << "=========================================================================================="<< endl
                  << endl;
         arqSaida << "QuickSort" << endl;
         /// quick
         vetOrdenados3 = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados3);
-        // vetOrdenados3 = quickSort(vetOrdenados3, 0, imp);
-        quickSort(vetOrdenados, 0, imp,imp);
-
+        quickSort(vetOrdenados3, 0, imp,imp);
+        
         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados3, arqBin, imp);
         delete[] vetOrdenados3;
-        arqSaida << endl
+        arqSaida << "=========================================================================================="<< endl
                  << endl;
         arqSaida << "Hashing" << endl;
         /// hash
@@ -297,28 +287,18 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
                 }
             }
         }
-
-        int nulos = 0;
-        for (int i = 0; i < (m * 2); i++)
-        {
-            if (chaves[i] == -1)
-            {
-                nulos++;
-            }
-        }
-        int tam = ((m * 2) - nulos);
+        int tam = next;
         int *resultado = new int[tam];
         for (int i = 0; i < tam; i++)
         {
             resultado[i] = chaves[i];
         }
         resultado = radix2(resultado, tabela, tam);
-
         for (int i = tam - 1; i >= 0; i--)
         {
             arqSaida << "Versao : " << busca(resultado[i], tabela)->versao_app << " --- Repeticoes : " << busca(resultado[i], tabela)->reps << endl;
         }
-
+        system("cls");
         delete[] vetValSorteados;
         arqSaida.close();
         return entrada;
@@ -403,7 +383,7 @@ int main(int argc, char const *argv[])
             while (selecao != 0)
             {
 
-                if (selecao == 3)
+                if (selecao == 5)
                 {
                     system("cls");
                 }

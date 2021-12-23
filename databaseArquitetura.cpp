@@ -149,9 +149,9 @@ void DatabaseArquitetura::leArqBinarioEmArquivoTexto(ofstream &output_file, SubN
     No *aux = new No();
     int j=0;
     while(j<imp){
-        if(parametro[j].getId()==0){
-            parametro[j].setId(1);
-        }
+        // if(parametro[j].getId()==0){
+        //     parametro[j].setId(1);
+        // }
         arqBin.seekg((sizeof(No))*(parametro[j].getId() - 1), ios_base::beg);
         while (arqBin.read((char *)aux, sizeof(No)))
         {
