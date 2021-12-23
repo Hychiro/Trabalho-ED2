@@ -124,6 +124,8 @@ SubNo *radix(int vetorId[], int tam, ifstream &arqBin)
         }
     }
 
+    high_resolution_clock::time_point inicio = high_resolution_clock::now();
+
     int maiorDigitos = 0;
     for (int i = 0; i < tam; i++)
     {
@@ -145,6 +147,12 @@ SubNo *radix(int vetorId[], int tam, ifstream &arqBin)
         vetorStruct = countingSort(vetorStruct, contador, tam, vetorResultado, maiorDigitos);
         contador++;
     }
+
+    double tempo = 0;
+    high_resolution_clock::time_point fim = high_resolution_clock::now();
+    tempo = duration_cast<duration<double>>(fim - inicio).count();
+    cout << "Tempo  de ordenação: " << tempo << " segundos" << endl;
+
     return vetorStruct;
 }
 
@@ -312,10 +320,13 @@ SubNo *getVet(int vetorId[], int tam, ifstream &arqBin) // peguei a logica do ra
             }
         }
     }
+    high_resolution_clock::time_point inicio = high_resolution_clock::now();
     // o *v agora salvou 'tam' upvotes de 0 a 'tam'
-    cout << endl;
     heapSort(vetorStruct, tam);
-
+    double tempo = 0;
+    high_resolution_clock::time_point fim = high_resolution_clock::now();
+    tempo = duration_cast<duration<double>>(fim - inicio).count();
+    cout << "Tempo  de ordenação: " << tempo << " segundos" << endl;
     return vetorStruct;
 }
 // FIM DO HEAPSORT-----------------------------------------------------------------------------------------------------------------------------------------------------------------//

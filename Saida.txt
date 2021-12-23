@@ -8,89 +8,104 @@ estar movimentando as chaves e sim recriando o vetor, esse valor tambem sera
 sempre  N*(qtd de digitos do maior numero).
 
 N = 10.000
-N1- 0.0920833 segundos
-N2- 0.0970885 segundos
-N3- 0.0890809 segundos
-Média: 0.0927509 segundos
+N1- 0.0030113 segundos
+N2- 0.0040138 segundos
+N3- 0.0052881 segundos
+Média: 0.0041044 segundos
 
 N = 50.000
-N1- 0.46341 segundos
-N2- 0.458603 segundos
-N3- 0.452551 segundos
-Média: 0.458188
+N1- 0.0126616 segundos
+N2- 0.0133364 segundos
+N3- 0.0140133 segundos
+Média: 0.0133371 segundos
 
 N = 100.000
-N1- 0.903923 segundos
-N2- 0.907575 segundos
-N3- 0.904806 segundos
-Média: 0.90543467 segundos
+N1- 0.024029 segundos
+N2- 0.0240213 segundos
+N3- 0.0240311 segundos
+Média: 0.02402713333 segundos
 
 N = 500.000
-N1- 4.51502 segundos
-N2- 4.53286 segundos
-N3- 4.5165 segundos
-Média: 4.52146 segundos
+N1- 0.111705 segundos
+N2- 0.137475 segundos
+N3- 0.146132 segundos
+Média: 0.13177066666 segundos
 
 N = 1.000.000
-N1- 9.11809 segundos
-N2- 9.17363 segundos
-N3- 9.07654 segundos
-Média: 9.122753 segundos
+N1- 0.224033 segundos
+N2- 0.278253 segundos
+N3- 0.273588 segundos
+Média: 0.25862466666 segundos
 
 
 HeapSort
 
 N = 10.000
-N1- 0.126114 segundos Trocas: 14921 Comparações: 138311
-N2- 0.123112  segundos 
-N3- 0.122111  segundos
-Média: 0.123779 segundos
+N1- 0.0176201 segundos Trocas: 14875 Comparações: 138340
+N2- 0.0180177 segundos Trocas: 14847 Comparações: 138317
+N3- 0.0190174 segundos Trocas: 14442 Comparações: 138357
+Média: 0.0182184 segundos Trocas: 14721.3333333 Comparações: 138338
 
 
 N = 50.000 
-N1- 0.656606 segundos
-N2- 0.662105 segundos
-N3- 0.663471 segundos
-Média: 0.6607273 segundos
-Trocas: 79080 Comparações: 808701
+N1- 0.104605 segundos Trocas: 78831 Comparações: 808745
+N2- 0.104882 segundos Trocas: 79158 Comparações: 808689
+N3- 0.104286 segundos Trocas: 79607 Comparações: 808708
+Média: 0.104591 segundos Trocas: 79198.6666667 Comparações: 808714
+
 
 N = 100.000
-N1- 1.33952 segundos
-N2- 1.35228 segundos
-N3- 1.34676 segundos
-Média: 1.34618666667
-Trocas:163870 Comparações:1717398
+N1- 0.221135 segundos Trocas: 163096 Comparações: 1717394
+N2- 0.223472 segundos Trocas: 162768 Comparações: 1717391
+N3- 0.221847 segundos Trocas: 162901 Comparações: 1717428
+Média: 0.22215133333 Trocas: 162921.666667 Comparações: 1717404.33333
 
 N = 500.000
-N1- 7.0149 segundos
-N2- 7.13675 segundos
-N3- 6.87365 segundos
-Média: 7.008433 segundos
-Trocas:863450 Comparações:9723466
+N1- 1.27116 segundos Trocas: 856949 Comparações: 9723601
+N2- 1.26816 segundos Trocas: 855452 Comparações: 9723590
+N3- 1.2681 segundos Trocas: 864401 Comparações: 9723431
+Média: 1.26914 segundos Trocas: 858934 Comparações: 9723541
+
 
 N = 1.000.000
-N1- 13.9788 segundos
-N2- 14.0326 segundos
-N3- 13.8965 segundos
-Média: 13.9693 segundos
-Trocas:1763037 Comparações:20447010
+N1- 2.67463 segundos Trocas: 1764579 Comparações: 20447008
+N2- 2.67651 segundos Trocas: 1757163 Comparações: 20447119
+N3- 2.68343 segundos Trocas: 1757417 Comparações: 20447105
+Média: 2.67819 segundos Trocas: 1759719.6 Comparações: 20447077.3333
 
 
 QuickSort
 
 N = 10.000 
-N1- 0.0990902 segundos
-N2- 0.101092 segundos
-N3- 0.103094 segundos
-Média: 
-Trocas:57992 Comparações:11620
+N1- 0.0010093 segundos Trocas: 59556 Comparações: 11624
+N2- 0.0010267 segundos Trocas: 59554 Comparações: 11588
+N3- 0.0012062 segundos Trocas: 59561 Comparações: 11620
+Média: 0.00108073333 segundos Trocas: 59557 Comparações: 11610.6666667
 
 N = 50.000
-N1- 0.48349 segundos
-N2- 0.484885 segundos
-N3- 0.478434 segundos
-Média:
-Trocas: Comparações:
+N1- 0.0030031 segundos Trocas: 361206 Comparações: 65934
+N2- 0.0030113 segundos Trocas: 361270 Comparações: 65578
+N3- 0.0039715 segundos Trocas: 360968 Comparações: 65924
+Média: 0.00332863333 segundos Trocas: 361148 Comparações: 65812
+
+N = 100.000
+N1- 0.0060141 segundos Trocas: 771266 Comparações: 130666
+N2- 0.0060145 segundos Trocas: 772221 Comparações: 131960
+N3- 0.007015 segundos Trocas: 772212 Comparações: 131708
+Média: 0.00634786666 segundos Trocas: 771899.666667 Comparações: 131444.666667
+
+N = 500.000
+N1- 0.0360474 segundos Trocas: 4402671 Comparações: 542034
+N2- 0.0350401 segundos Trocas: 4401073 Comparações: 539582
+N3- 0.0400286 segundos Trocas: 4401042 Comparações: 539742
+Média: 0.0370387 segundos Trocas: 4401595.33333 Comparações: 540452.666667
+
+N = 1.000.000
+N1- 0.0800814 segundos Trocas: 9304404 Comparações: 1083968
+N2- 0.0809988 segundos Trocas: 9306736 Comparações: 1100316
+N3- 0.083084 segundos Trocas: 9300583 Comparações: 1098062
+Média: 0.08138806666 segundos Trocas: 9303907.66667 Comparações: 1094115.33333
+
 
 
 

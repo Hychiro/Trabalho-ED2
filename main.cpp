@@ -99,7 +99,6 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         if (aux == 1)
         {
             // Selecionar tipo de ordenação _INICIO
-            high_resolution_clock::time_point inicio = high_resolution_clock::now();
             SubNo *vetOrdenados = new SubNo[imp];
             if (type == 1)
                 vetOrdenados = radix(vetValSorteados, imp, arqBin);
@@ -108,14 +107,15 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             if (type == 3)
             {
                 vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
+                high_resolution_clock::time_point inicio = high_resolution_clock::now();
                 quickSort(vetOrdenados, 0, imp,imp);
+                int tempo = 0;
+                high_resolution_clock::time_point fim = high_resolution_clock::now();
+                tempo = duration_cast<duration<double>>(fim - inicio).count();
+                cout << "Tempo  de ordenação: " << tempo << " segundos" << endl;
 
             }
             // Selecionar tipo de ordenação _FIM
-            int tempo = 0;
-            high_resolution_clock::time_point fim = high_resolution_clock::now();
-            tempo = duration_cast<duration<double>>(fim - inicio).count();
-            cout << "Tempo  de ordenação: " << tempo << " segundos" << endl;
             // Impressão
             dbA.impressaoConsole(vetOrdenados, arqBin, imp);
 
@@ -126,7 +126,6 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         {
             SubNo *vetOrdenados = new SubNo[imp];
 
-            high_resolution_clock::time_point inicio = high_resolution_clock::now();
             if (type == 1)
                 vetOrdenados = radix(vetValSorteados, imp, arqBin);
             if (type == 2)
@@ -134,14 +133,14 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             if (type == 3)
             {
                 vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
-                cout << "acaba o carregamento" << endl;
+                high_resolution_clock::time_point inicio = high_resolution_clock::now();
                 quickSort(vetOrdenados, 0, imp,imp);
+                double tempo = 0;
+                high_resolution_clock::time_point fim = high_resolution_clock::now();
+                tempo = duration_cast<duration<double>>(fim - inicio).count();
+                cout << "Tempo  de ordenação: " << tempo << " segundos" << endl;
                 imprimeTC();
             }
-            double tempo = 0;
-            high_resolution_clock::time_point fim = high_resolution_clock::now();
-            tempo = duration_cast<duration<double>>(fim - inicio).count();
-            cout << "Tempo  de ordenação: " << tempo << " segundos" << endl;
             if (arqSaida.is_open())
             {
                 // le do .bin em um arquivo de saida de final a escolha (recomendo que seja .txt)
