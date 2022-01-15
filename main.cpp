@@ -2,8 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include "DatabaseArquitetura.cpp"
-#include "DatabaseArquitetura.h"
+#include "databaseArquitetura.h"
 #include <ctime>
 #include "ordenacao.cpp"
 #include <random>

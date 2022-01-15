@@ -2,7 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include "No.h"
+#include "no.h"
 #include "databaseArquitetura.h"
 #include <chrono>
 #include <math.h>

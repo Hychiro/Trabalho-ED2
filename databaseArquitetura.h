@@ -3,7 +3,7 @@
 #define DATABASEARQUITETURA_H
 #include <iostream>
 #include <string>
-#include "No.h"
+#include "no.h"
 
 using namespace std;
 
