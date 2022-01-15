@@ -35,7 +35,7 @@ int *sorteia(int max, int n)
     return vetorN;
 }
 
-void metodosArvoreB(arvoreb *arv, double tempo){
+void metodosArvoreB(arvoreb *arv, double tempo, int comparacoes){
     cout << "Escolha o que deseja fazer" << endl;
     cout << "1. Modo de analise" << endl;
     cout << "2. Modo de teste" << endl;
@@ -45,7 +45,7 @@ void metodosArvoreB(arvoreb *arv, double tempo){
     if(x == 1){
         cout << "Relatorio:" << endl;
         cout << "Numero de comparacoes de chaves: ";
-        cout << arv->comparacoes << endl;
+        cout << comparacoes << endl;
         cout << "Tempo decorrido: ";
         cout << tempo << endl;
     }
@@ -64,19 +64,26 @@ void metodosArvoreB(arvoreb *arv, double tempo){
     }
     else{
         cout << "valor invalido" << endl;
-        metodosArvoreB(arv, tempo);
+        metodosArvoreB(arv, tempo, comparacoes);
     }
 
 }
 
-double InsereNosArvoreB(arvoreb *arv){ //precisa ser feito
+void InsereNosArvoreB(arvoreb *arv){ //precisa ser feito
     high_resolution_clock::time_point inicio = high_resolution_clock::now();//começa o cronometro
+    int comparacoes = 0;
 
     //Essa função Monta a arvore B a partir da leitura do arquivo
     //precisa ler o arquivo binario, pegar o id do review e usar a posição 9+n do char e salvar como id do TreeNode
 
     //EXEMPLO:
-    //---->o id fica com valor = 5, então ----> arv->insert(id, No); <----- passa como parametro o id tratado e o No correspondente<------//
+    //---->o id fica com valor = 5, então ---->comparacoes = comparacoes + arv->insert(id, No, comparacoes); <----- passa como parametro o id tratado e o No correspondente<------//
+
+    //exemplo:
+    //while(arqBin)
+        //-->metodo de transformar o id em int<--//
+        //comparacoes = comparacoes + arv->insert(id, No, comparacoes);
+
 
     //ao final dessa função precisamos da arvore completa, é só dar os inserts mesmo, fazer um loop deve dar, só nao sei como fazer o tratamento do id a partir da leitura
     //do arquivo
@@ -87,7 +94,7 @@ double InsereNosArvoreB(arvoreb *arv){ //precisa ser feito
     high_resolution_clock::time_point fim = high_resolution_clock::now();//termina o cronometro
     double tempo;
     tempo = duration_cast<duration<double>>(fim - inicio).count();
-    return tempo;
+    metodosArvoreB(arv, tempo, comparacoes);
 }
 
 void menuArvoreB(){
@@ -96,9 +103,7 @@ void menuArvoreB(){
     cin >> ordem;
     if(ordem > 0){
         arvoreb *arv = new arvoreb(ordem); //cria a arvore B com a ordem passada
-        double tempo;
-        tempo = InsereNosArvoreB(arv);//monta a arvore a partir da leitura do arquivo
-        metodosArvoreB(arv, tempo);
+        InsereNosArvoreB(arv);//monta a arvore a partir da leitura do arquivo
     }
     else{
         cout << "ordem invalida" << endl;

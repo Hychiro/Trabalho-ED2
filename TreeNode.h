@@ -3,7 +3,6 @@
 
 #include "no.h"
 
-
 class TreeNode
 {
     //int *keys; //armazena um ponteiro para as chaves, que serão = posição 9+n do char id
@@ -21,7 +20,7 @@ public:
 
     int *keys; //armazena um ponteiro para as chaves, que serão = posição 9+n do char id
 
-    void insertVal(int k, No no, arvoreb *arv);
+    int insertVal(int k, No no, int comp);
     void splitChild(int i, TreeNode *y);
     void traverse();
 

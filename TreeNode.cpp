@@ -50,15 +50,21 @@ TreeNode *TreeNode::search(int k) {
 
   return C[i]->search(k);
 }
-void TreeNode::insertVal(int k, No no, arvoreb *arv) {
+int TreeNode::insertVal(int k, No no, int comp) {
   int i = n - 1;
 
   if (leaf == true) {
     while (i >= 0 && keys[i] > k) {
-      arv->comparacoes++;
+      comp++;
       keys[i + 1] = keys[i];
       nos[i + 1] = nos[i];
       i--;
+    }
+
+    int j = n - 1;
+    while(i >= 0 && keys[j] < k){
+        comp++;
+        j--;
     }
 
     keys[i + 1] = k;
@@ -66,21 +72,27 @@ void TreeNode::insertVal(int k, No no, arvoreb *arv) {
     n = n + 1;
   } else {
     while (i >= 0 && keys[i] > k){
-        arv->comparacoes++;
+      comp++;
         i--;
     }
 
+    int j = n - 1;
+    while(i >= 0 && keys[j] < k){
+        comp++;
+        j--;
+    }
 
     if (C[i + 1]->n == 2 * t - 1) {
       splitChild(i + 1, C[i + 1]);
 
       if (keys[i + 1] < k){
-        arv->comparacoes++;
+        comp++;
         i++; 
       }
     }
-    C[i + 1]->insertVal(k,no, arv);
+    C[i + 1]->insertVal(k,no, comp);
   }
+  return comp;
 }
 
 void TreeNode::splitChild(int i, TreeNode *y) {

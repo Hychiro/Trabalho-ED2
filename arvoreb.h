@@ -33,7 +33,7 @@ public:
         return (root == NULL) ? NULL : root->search(k);
     }
 
-    void insert(int k, No no);
+    int insert(int k, No no, int comp);
 };
 
 #endif // ARVOREB_H

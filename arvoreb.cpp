@@ -10,7 +10,7 @@ arvoreb::~arvoreb()
     //dtor
 }
 
-void arvoreb::insert(int k, No no) {
+int arvoreb::insert(int k, No no, int comp) {
   if (root == NULL) {
     root = new TreeNode(t, true);
     root->keys[0] = k;
@@ -27,10 +27,11 @@ void arvoreb::insert(int k, No no) {
       int i = 0;
       if (s->keys[0] < k)
         i++;
-      s->C[i]->insertVal(k,no, this);
+      s->C[i]->insertVal(k,no, comp);
 
       root = s;
     } else
-      root->insertVal(k,no, this);
+      root->insertVal(k,no, comp);
   }
+  return comp;
 }
