@@ -7,6 +7,8 @@
 #include "ordenacao.cpp"
 #include <random>
 #include <iostream>
+#include "arvoreb.h"
+#include "TreeNode.h"
 
 using namespace std;
 
@@ -25,13 +27,123 @@ int *sorteia(int max, int n)
     while (qtdSorteados != n)
     {
         int numeroSorteado;
-        numeroSorteado = ((rand() * rand())%max) + 1;
+        numeroSorteado = ((rand() * rand()) % max) + 1;
         vetorN[qtdSorteados] = numeroSorteado;
         qtdSorteados++;
     }
 
     return vetorN;
 }
+
+void metodosArvoreB(arvoreb *arv, double tempo){
+    cout << "Escolha o que deseja fazer" << endl;
+    cout << "1. Modo de analise" << endl;
+    cout << "2. Modo de teste" << endl;
+    cout << "3. Sair" << endl;
+    int x;
+    cin >> x;
+    if(x == 1){
+        cout << "Relatorio:" << endl;
+        cout << "Numero de comparacoes de chaves: ";
+        cout << arv->comparacoes << endl;
+        cout << "Tempo decorrido: ";
+        cout << tempo << endl;
+    }
+    else if(x == 2){
+        cout << "Defina qual valor deseja procurar na arvore" << endl;
+        int id;
+        cin >> id; //nessa parte, provavelmente sera inserido o id de um review, entao todo o esquema feito pra definir o id na 
+        //hora de inserir sera igual
+        //id vai precisar do tratamento para pegar pos 9+n do char id
+
+
+        (arv->search(id) != NULL) ? cout << endl << id << " encontrou" : cout << endl << id << " nao encontrou"; //caso encontre ou não, printa na tela
+    }
+    else if(x == 3){
+        return;
+    }
+    else{
+        cout << "valor invalido" << endl;
+        metodosArvoreB(arv, tempo);
+    }
+
+}
+
+double InsereNosArvoreB(arvoreb *arv){ //precisa ser feito
+    high_resolution_clock::time_point inicio = high_resolution_clock::now();//começa o cronometro
+
+    //Essa função Monta a arvore B a partir da leitura do arquivo
+    //precisa ler o arquivo binario, pegar o id do review e usar a posição 9+n do char e salvar como id do TreeNode
+
+    //EXEMPLO:
+    //---->o id fica com valor = 5, então ----> arv->insert(id, No); <----- passa como parametro o id tratado e o No correspondente<------//
+
+    //ao final dessa função precisamos da arvore completa, é só dar os inserts mesmo, fazer um loop deve dar, só nao sei como fazer o tratamento do id a partir da leitura
+    //do arquivo
+
+
+
+
+    high_resolution_clock::time_point fim = high_resolution_clock::now();//termina o cronometro
+    double tempo;
+    tempo = duration_cast<duration<double>>(fim - inicio).count();
+    return tempo;
+}
+
+void menuArvoreB(){
+    cout << "Indique a ordem da arvore B" << endl;
+    int ordem;
+    cin >> ordem;
+    if(ordem > 0){
+        arvoreb *arv = new arvoreb(ordem); //cria a arvore B com a ordem passada
+        double tempo;
+        tempo = InsereNosArvoreB(arv);//monta a arvore a partir da leitura do arquivo
+        metodosArvoreB(arv, tempo);
+    }
+    else{
+        cout << "ordem invalida" << endl;
+        menuArvoreB();
+    }
+    return;
+}
+
+
+void menuArvoreVP(){//precisa ser implementado
+
+}
+
+
+void menuArvores()
+{
+    while (true)
+    {
+        cout << "Escolha qual metodo usar" << endl;
+        cout << "1. Arvore Vermelho-Preto" << endl;
+        cout << "2. Arvore B" << endl;
+        cout << "3. Sair" << endl;
+        int x;
+        cin >> x;
+        switch (x)
+        {
+        case 1:
+            menuArvoreVP();
+            break;
+        case 2:
+            menuArvoreB();
+            break;
+        case 3:
+            return ;
+            break;
+        }
+        if (x < 1 || x > 3)
+        {
+            cout << "Valor Invalido!" << endl;
+            menuArvores();
+        }
+        return;
+    }
+}
+
 
 int menu(DatabaseArquitetura dbA, ifstream &arqBin)
 {
@@ -107,12 +219,11 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             {
                 vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
                 high_resolution_clock::time_point inicio = high_resolution_clock::now();
-                quickSort(vetOrdenados, 0, imp,imp);
+                quickSort(vetOrdenados, 0, imp, imp);
                 int tempo = 0;
                 high_resolution_clock::time_point fim = high_resolution_clock::now();
                 tempo = duration_cast<duration<double>>(fim - inicio).count();
                 cout << "Tempo  de ordenação: " << tempo << " segundos" << endl;
-
             }
             // Selecionar tipo de ordenação _FIM
             // Impressão
@@ -133,7 +244,7 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             {
                 vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
                 high_resolution_clock::time_point inicio = high_resolution_clock::now();
-                quickSort(vetOrdenados, 0, imp,imp);
+                quickSort(vetOrdenados, 0, imp, imp);
                 double tempo = 0;
                 high_resolution_clock::time_point fim = high_resolution_clock::now();
                 tempo = duration_cast<duration<double>>(fim - inicio).count();
@@ -144,7 +255,7 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
             {
                 // le do .bin em um arquivo de saida de final a escolha (recomendo que seja .txt)
 
-                    dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
+                dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
 
                 delete[] vetValSorteados;
                 delete[] vetOrdenados;
@@ -236,7 +347,7 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
 
         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
         delete[] vetOrdenados;
-        arqSaida << "=========================================================================================="<< endl
+        arqSaida << "==========================================================================================" << endl
                  << endl;
         arqSaida << "HeapSort" << endl;
         /// heap
@@ -244,16 +355,16 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
 
         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados2, arqBin, imp);
         delete[] vetOrdenados2;
-        arqSaida << "=========================================================================================="<< endl
+        arqSaida << "==========================================================================================" << endl
                  << endl;
         arqSaida << "QuickSort" << endl;
         /// quick
         vetOrdenados3 = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados3);
-        quickSort(vetOrdenados3, 0, imp,imp);
-        
+        quickSort(vetOrdenados3, 0, imp, imp);
+
         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados3, arqBin, imp);
         delete[] vetOrdenados3;
-        arqSaida << "=========================================================================================="<< endl
+        arqSaida << "==========================================================================================" << endl
                  << endl;
         arqSaida << "Hashing" << endl;
         /// hash
