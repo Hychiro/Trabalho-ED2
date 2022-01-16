@@ -11,22 +11,32 @@ class ArvoreVP
 {
 public:
 
-    ArvoreVP(){
-        this->raiz=nullptr;
-        this->Nill->cor=true;
-    };
-    ~ArvoreVP(){};
+    ArvoreVP();
+    ~ArvoreVP();
+
+
     noVP *raiz=new noVP;
     noVP *Nill=new noVP;
-    void insere(SubNo noInserindo);
-    noVP *buscaPorId(char id[90]);
-    noVP *buscaPorNo(noVP no);
-    void calcAlturaNegra(noVP no);
-    void rotacaoSimplesEsq(noVP *no);
-    void rotacaoSimplesDir(noVP *no);
-    void rotacaoDuplaEsq(noVP *no);
-    void rotacaoDuplaDir(noVP *no);
+
+
+    void insere(No *noInserindo);
+    int buscaPorId(char id[90]);
+    void MetodoBusca(int vetorId[], int tam, ifstream &arqBin);
+    void verificaRaiz(noVP *no);
+    void rotacaoSimplesEsq(noVP *no,noVP *pai,noVP *avo);
+    void rotacaoSimplesDir(noVP *no,noVP *pai,noVP *avo);
+    void rotacaoDuplaEsq(noVP *no,noVP *pai,noVP *avo);
+    void rotacaoDuplaDir(noVP *no,noVP *pai,noVP *avo);
     void verificaQuebraDePropriedade(noVP *no);
+    bool comparacaoAmaiorB(noVP* noA, noVP *noB);
+    bool comparacaoAmenorB(noVP* noA, noVP *noB);
+    bool comparacaoiDmaiorB(char noA[], noVP *noB);
+    bool comparacaoiDmenorB(char noA[], noVP *noB);
+    bool comparacaoiDigualB(char noA[], noVP *noB);
+    void trocaCor(noVP *no);
+    noVP *SubNoParanoVP(No *noInserindo);
+    void criaArvore(int vetorId[], int tam, ifstream &arqBin);
+    void ImprimeArvore(noVP *no);
 };
 
 

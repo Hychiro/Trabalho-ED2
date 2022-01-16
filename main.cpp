@@ -3,12 +3,16 @@
 #include <sstream>
 #include <string>
 #include "databaseArquitetura.h"
+#include "databaseArquitetura.cpp"
 #include <ctime>
 #include "ordenacao.cpp"
 #include <random>
 #include <iostream>
 #include "arvoreb.h"
 #include "TreeNode.h"
+#include "TreeNode.cpp"
+#include "ArvoreVP.h"
+#include "ArvoreVP.cpp"
 
 using namespace std;
 
@@ -27,7 +31,22 @@ int *sorteia(int max, int n)
     while (qtdSorteados != n)
     {
         int numeroSorteado;
-        numeroSorteado = ((rand() * rand()) % max) + 1;
+        bool repete;
+        do
+        {
+            repete = false;
+            int igual=0;
+            numeroSorteado = ((rand() * rand()) % max) + 1;
+            for (int i = 0; i < qtdSorteados; i++)
+            {
+                if(numeroSorteado==vetorN[i]){
+                    igual++;
+                }
+            }
+            if(igual>0){
+                repete=true;
+            }
+        }while(repete);
         vetorN[qtdSorteados] = numeroSorteado;
         qtdSorteados++;
     }
@@ -35,88 +54,92 @@ int *sorteia(int max, int n)
     return vetorN;
 }
 
-void metodosArvoreB(arvoreb *arv, double tempo, int comparacoes){
+void metodosArvoreB(arvoreb *arv, double tempo, int comparacoes)
+{
     cout << "Escolha o que deseja fazer" << endl;
     cout << "1. Modo de analise" << endl;
     cout << "2. Modo de teste" << endl;
     cout << "3. Sair" << endl;
     int x;
     cin >> x;
-    if(x == 1){
+    if (x == 1)
+    {
         cout << "Relatorio:" << endl;
         cout << "Numero de comparacoes de chaves: ";
         cout << comparacoes << endl;
         cout << "Tempo decorrido: ";
         cout << tempo << endl;
     }
-    else if(x == 2){
+    else if (x == 2)
+    {
         cout << "Defina qual valor deseja procurar na arvore" << endl;
         int id;
-        cin >> id; //nessa parte, provavelmente sera inserido o id de um review, entao todo o esquema feito pra definir o id na 
-        //hora de inserir sera igual
-        //id vai precisar do tratamento para pegar pos 9+n do char id
+        cin >> id; // nessa parte, provavelmente sera inserido o id de um review, entao todo o esquema feito pra definir o id na
+        // hora de inserir sera igual
+        // id vai precisar do tratamento para pegar pos 9+n do char id
 
-
-        (arv->search(id) != NULL) ? cout << endl << id << " encontrou" : cout << endl << id << " nao encontrou"; //caso encontre ou não, printa na tela
+        (arv->search(id) != NULL) ? cout << endl
+                                         << id << " encontrou"
+                                  : cout << endl
+                                         << id << " nao encontrou"; // caso encontre ou não, printa na tela
     }
-    else if(x == 3){
+    else if (x == 3)
+    {
         return;
     }
-    else{
+    else
+    {
         cout << "valor invalido" << endl;
         metodosArvoreB(arv, tempo, comparacoes);
     }
-
 }
 
-void InsereNosArvoreB(arvoreb *arv){ //precisa ser feito
-    high_resolution_clock::time_point inicio = high_resolution_clock::now();//começa o cronometro
+void InsereNosArvoreB(arvoreb *arv)
+{                                                                            // precisa ser feito
+    high_resolution_clock::time_point inicio = high_resolution_clock::now(); // começa o cronometro
     int comparacoes = 0;
 
-    //Essa função Monta a arvore B a partir da leitura do arquivo
-    //precisa ler o arquivo binario, pegar o id do review e usar a posição 9+n do char e salvar como id do TreeNode
+    // Essa função Monta a arvore B a partir da leitura do arquivo
+    // precisa ler o arquivo binario, pegar o id do review e usar a posição 9+n do char e salvar como id do TreeNode
 
-    //EXEMPLO:
+    // EXEMPLO:
     //---->o id fica com valor = 5, então ---->comparacoes = comparacoes + arv->insert(id, No, comparacoes); <----- passa como parametro o id tratado e o No correspondente<------//
 
-    //exemplo:
-    //while(arqBin)
-        //-->metodo de transformar o id em int<--//
-        //comparacoes = comparacoes + arv->insert(id, No, comparacoes);
+    // exemplo:
+    // while(arqBin)
+    //-->metodo de transformar o id em int<--//
+    // comparacoes = comparacoes + arv->insert(id, No, comparacoes);
 
+    // ao final dessa função precisamos da arvore completa, é só dar os inserts mesmo, fazer um loop deve dar, só nao sei como fazer o tratamento do id a partir da leitura
+    // do arquivo
 
-    //ao final dessa função precisamos da arvore completa, é só dar os inserts mesmo, fazer um loop deve dar, só nao sei como fazer o tratamento do id a partir da leitura
-    //do arquivo
-
-
-
-
-    high_resolution_clock::time_point fim = high_resolution_clock::now();//termina o cronometro
+    high_resolution_clock::time_point fim = high_resolution_clock::now(); // termina o cronometro
     double tempo;
     tempo = duration_cast<duration<double>>(fim - inicio).count();
     metodosArvoreB(arv, tempo, comparacoes);
 }
 
-void menuArvoreB(){
+void menuArvoreB()
+{
     cout << "Indique a ordem da arvore B" << endl;
     int ordem;
     cin >> ordem;
-    if(ordem > 0){
-        arvoreb *arv = new arvoreb(ordem); //cria a arvore B com a ordem passada
-        InsereNosArvoreB(arv);//monta a arvore a partir da leitura do arquivo
+    if (ordem > 0)
+    {
+        arvoreb *arv = new arvoreb(ordem); // cria a arvore B com a ordem passada
+        InsereNosArvoreB(arv);             // monta a arvore a partir da leitura do arquivo
     }
-    else{
+    else
+    {
         cout << "ordem invalida" << endl;
         menuArvoreB();
     }
     return;
 }
 
-
-void menuArvoreVP(){//precisa ser implementado
-
+void menuArvoreVP()
+{ // precisa ser implementado
 }
-
 
 void menuArvores()
 {
@@ -137,7 +160,7 @@ void menuArvores()
             menuArvoreB();
             break;
         case 3:
-            return ;
+            return;
             break;
         }
         if (x < 1 || x > 3)
@@ -149,7 +172,6 @@ void menuArvores()
     }
 }
 
-
 int menu(DatabaseArquitetura dbA, ifstream &arqBin)
 {
     cout << "Digite a Operacao Desejada" << endl;
@@ -157,7 +179,8 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
     cout << "(2) Ordenacao" << endl;
     cout << "(3) Hash" << endl;
     cout << "(4) Modulo de Teste" << endl;
-    cout << "(5) Limpar o console" << endl;
+    cout << "(5) ArvoreVP" << endl;
+    cout << "(6) Limpar o console" << endl;
     cout << "(0) Fechar Programa" << endl;
     int entrada;
     cin >> entrada;
@@ -419,6 +442,23 @@ int menu(DatabaseArquitetura dbA, ifstream &arqBin)
         return entrada;
     }
     if (entrada == 5)
+    {
+        cout << "ultima pos = " << dbA.getIdUltimaPosicao(arqBin) << endl;
+        cout << "Digite o Numero de Registros N que deve ser importado" << endl;
+        int imp;
+        cin >> imp;
+        int *vetValSorteados = new int[imp];
+        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
+        ArvoreVP *vp = new ArvoreVP;
+        vp->criaArvore(vetValSorteados, imp, arqBin);
+        //cout << "Digite o Numero de Registros N que deve ser buscado" << endl;
+        //cin >> imp;
+        //int *vetValSorteados2 = new int[imp];
+        //vetValSorteados2 = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
+        //vp->MetodoBusca(vetValSorteados2, imp, arqBin);
+        cin >> imp;
+    }
+    if (entrada == 6)
     {
         return entrada;
     }

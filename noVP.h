@@ -15,16 +15,22 @@ class noVP
     int iD;
 
 public:
-    noVP *esq=new noVP;
-    noVP *dir=new noVP;
-    noVP *pai=new noVP;
+    noVP *esq;
+    noVP *dir;
+    noVP *pai;
     noVP(){
-        this->esq=nullptr;
-        this->dir=nullptr;
-        this->pai=nullptr;
-        this->cor=false;};
+        cor=false;
+        esq=nullptr;
+        dir=nullptr;
+        pai=nullptr;};
     ~noVP(){};
     char review_id[90];
+    void setreview_id(char a[90]){
+        for (int i = 0; i < 90; i++)
+        {
+            review_id[i]=a[i];
+        }   
+        };
     bool cor;//falso = vermelho; verdadeiro=preto;
     int getId() { return iD; };
     void setId(int i) { iD = i; };
