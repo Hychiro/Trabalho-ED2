@@ -146,9 +146,6 @@ void ArvoreVP::insere(No *noInserindo)
     //ImprimeArvore(raiz, 0);
     // cout << endl;
 
-    //delete noPai;
-    //delete noAnalisado;
-    //delete noInserindo;
     return;
 }
 
@@ -321,12 +318,6 @@ void ArvoreVP::verificaQuebraDePropriedade(NoVP *no)
             trocaCor(tio);
         if (avo != this->Nill)
             trocaCor(avo);
-
-        //verificaQuebraDePropriedade(avo);
-
-        //delete pai;
-        //delete tio;
-        //delete avo;
         return;
     }
 
@@ -342,7 +333,7 @@ void ArvoreVP::verificaQuebraDePropriedade(NoVP *no)
                     trocaCor(avo);
                 //cout << "rotacaoDuplaEsq" << endl;
                 rotacaoDuplaEsq(no, pai, avo);
-                //verificaQuebraDePropriedade(avo);
+
             }
             if (noDirPai)
             {
@@ -351,7 +342,7 @@ void ArvoreVP::verificaQuebraDePropriedade(NoVP *no)
                     trocaCor(avo);
                 //cout << "rotacaosimplesEsq" << endl;
                 rotacaoSimplesEsq(no, pai, avo);
-                //verificaQuebraDePropriedade(avo);
+
             }
         }
         if (!paiDirAvo)
@@ -363,7 +354,7 @@ void ArvoreVP::verificaQuebraDePropriedade(NoVP *no)
                     trocaCor(avo);
                 //cout << "rotacaoDuplaDir" << endl;
                 rotacaoDuplaDir(no, pai, avo);
-                //verificaQuebraDePropriedade(avo);
+
             }
             if (!noDirPai)
             {
@@ -372,7 +363,6 @@ void ArvoreVP::verificaQuebraDePropriedade(NoVP *no)
                 trocaCor(avo);
                 //cout << "rotacaoSimplesDir" << endl;
                 rotacaoSimplesDir(no, pai, avo);
-                //verificaQuebraDePropriedade(avo);
             }
         }
     }
@@ -448,18 +438,6 @@ void ArvoreVP::rotacaoDuplaDir(NoVP *no, NoVP *pai, NoVP *avo) // verificar
     rotacaoSimplesEsq(no->dir, no, pai);
     avo->esq = no;
     rotacaoSimplesDir(pai, no, avo);
-
-    //no->pai = avo->pai;
-    //no->dir = avo; // o  pai  passa  a ser o filho do no
-    //no->esq = pai; // o avo passa a serr o filho  do  no
-
-    // ajeitando o pai
-    //pai->pai = no; // o pai do pai passa a ser o no
-    //pai->dir = this->Nill;
-
-    // ajeitando o avo
-    //avo->pai = no;
-    //avo->esq = this->Nill;
 }
 
 void ArvoreVP::rotacaoDuplaEsq(NoVP *no, NoVP *pai, NoVP *avo) // verificar
@@ -467,18 +445,6 @@ void ArvoreVP::rotacaoDuplaEsq(NoVP *no, NoVP *pai, NoVP *avo) // verificar
     rotacaoSimplesDir(no->esq, no, pai);
     avo->dir = no;
     rotacaoSimplesEsq(pai, no, avo);
-
-    //no->pai = avo->pai;
-    //no->esq = avo; // o  pai  passa  a ser o filho do no
-    //no->dir = pai; // o avo passa a serr o filho  do  no
-
-    // ajeitando o pai
-    //pai->pai = no; // o pai do pai passa a ser o no
-    //pai->esq = this->Nill;
-
-    // ajeitando o avo
-    //avo->pai = no;
-    //avo->dir = this->Nill;
 }
 
 bool ArvoreVP::comparacaoAmaiorB(NoVP *noA, NoVP *noB)
