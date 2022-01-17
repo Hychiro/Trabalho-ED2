@@ -13,12 +13,14 @@ public:
 
     ArvoreVP();
     ~ArvoreVP();
+    int comparacaoIns;
+    int comparacaoBus;
 
 
     noVP *raiz=new noVP;
     noVP *Nill=new noVP;
 
-
+    noVP *Libera(noVP *no);
     void insere(No *noInserindo);
     int buscaPorId(char id[90]);
     void MetodoBusca(int vetorId[], int tam, ifstream &arqBin);

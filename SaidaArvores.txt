@@ -1,0 +1,28 @@
+Arvore Vp
+
+M=1
+Tempo de insercao: 76.9751
+Total de comparaçoes ao Inserir: 21385811
+busca=100
+Total Encontrado = 30
+Total Nao Encontrado = 70
+Tempo de Busca: 0.009009
+Total de comparacao ao Buscar: 2352
+
+M=2
+Tempo de insercao: 81.3581
+Total de comparacao ao Inserir: 21874075
+busca=100
+Total Encontrado = 33
+Total Nao Encontrado = 67
+Tempo de Busca: 0.0050043
+Total de comparacao ao Buscar: 2389
+
+M=3
+Tempo de insercao: 80.6086
+Total de comparacao ao Inserir: 21725391
+busca=100
+Total Encontrado = 29
+Total Nao Encontrado = 71
+Tempo de Busca: 0.0080078
+Total de comparacao ao Buscar: 2395
