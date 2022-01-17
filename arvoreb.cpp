@@ -11,30 +11,9 @@ Arvoreb::~Arvoreb()
   //dtor
 }
 
-void Arvoreb::criaArvore(int vetorId[], int tam, ifstream &arqBin)
-{
-  cout << "Carregando upvotes dos registro" << endl;
-  for (int i = 0; i < tam; i++)
-  {
-    No *aux = new No();
-    arqBin.seekg((sizeof(No)) * (vetorId[i] - 1), ios_base::beg);
-    while (arqBin.read((char *)aux, sizeof(No)))
-    {
-      if (aux->getId() == vetorId[i])
-      {
-        No p = *aux;
-        cout << i << " -- " << aux->getId() << " -- " << p.getId() << endl;
-        this->insert(aux->review_id, p, comparacoes);
-        //cout << "passa  do insere" << endl;
-        delete aux;
-        break;
-      }
-    }
-  }
-}
-
 int Arvoreb::insert(char k[], No no, int comp)// aqui
 {
+ // cout<<"insert id: "<<k<<endl;
   if (root == NULL)
   {
     root = new TreeNode(t, true);

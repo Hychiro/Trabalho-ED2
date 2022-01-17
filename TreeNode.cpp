@@ -6,7 +6,8 @@
 
 using namespace std;
 
-TreeNode::TreeNode(int t1, bool leaf1) {//aqui
+TreeNode::TreeNode(int t1, bool leaf1)
+{ //aqui
   t = t1;
   leaf = leaf1;
 
@@ -19,33 +20,37 @@ TreeNode::TreeNode(int t1, bool leaf1) {//aqui
 
 TreeNode::~TreeNode()
 {
-    //dtor
+  //dtor
 }
 
-void TreeNode::traverse() {//aqui
+void TreeNode::traverse()
+{ //aqui
   int i;
-  for (i = 0; i < n; i++) {
-    if (leaf == false){
-        C[i]->traverse();
+  for (i = 0; i < n; i++)
+  {
+    if (leaf == false)
+    {
+      C[i]->traverse();
+    }{
+
     }
-    cout << " " << C[i]->nos->review_id;
+    cout << " " << nos[i].review_id;
   }
 
-  if (leaf == false){
-       C[i]->traverse();
+  if (leaf == false)
+  {
+    C[i]->traverse();
   }
 }
 
+TreeNode *TreeNode::search(char k[])
+{ //aqui
 
-
-
-TreeNode *TreeNode::search(char k[]) {//aqui
-  
   int i = 0;
-  while (i < n && comparacaoiDmaiorB( k ,this->nos[i]))
+  while (i < n && comparacaoiDmaiorB(k, this->nos[i]))
     i++;
 
-  if (comparacaoiDigualB( k ,this->nos[i]))
+  if (comparacaoiDigualB(k, this->nos[i]))
     return this;
 
   if (leaf == true)
@@ -54,56 +59,72 @@ TreeNode *TreeNode::search(char k[]) {//aqui
   return C[i]->search(k);
 }
 
-int TreeNode::insertVal(char k[], No no, int comp) {//aqui
+int TreeNode::insertVal(char k[], No no, int comp)
+{ //aqui
   int i = n - 1;
-
-  if (leaf == true) {
-    while (i >= 0 && comparacaoiDmenorB( k ,this->nos[i])) {
+  //cout<<"id insertVal: "<< k<<endl;
+  if (leaf == true)
+  {
+    //cout << "" << endl;
+    while (i >= 0 && comparacaoiDmenorB(k, this->nos[i]))
+    {
       comp++;
       nos[i + 1] = nos[i];
       i--;
     }
 
     int j = n - 1;
-    while(i >= 0 && comparacaoiDmaiorB( k ,this->nos[i])){
-        comp++;
-        j--;
+    while (i >= 0 && comparacaoiDmaiorB(k, this->nos[j]))
+    {
+      comp++;
+      j--;
     }
     nos[i + 1] = no;
     n = n + 1;
-  } else {
-    while (i >= 0 && comparacaoiDmaiorB( k ,this->nos[i])){
+  }
+  else
+  {
+   // cout<< "entra aqui 2"<< endl;
+    while (i >= 0 && comparacaoiDmenorB(k, this->nos[i]))
+    {
       comp++;
-        i--;
+      i--;
     }
 
     int j = n - 1;
-    while(i >= 0 && comparacaoiDmaiorB( k ,this->nos[i])){
-        comp++;
-        j--;
+    while (i >= 0 && comparacaoiDmaiorB(k, this->nos[j]))
+    {
+      comp++;
+      j--;
     }
 
-    if (C[i + 1]->n == 2 * t - 1) {
+    if (C[i + 1]->n == 2 * t - 1)
+    {
       splitChild(i + 1, C[i + 1]);
 
-      if (comparacaoiDmaiorB( k ,this->nos[i])){
+      if (comparacaoiDmaiorB(k, this->nos[i+1]))
+      {
         comp++;
-        i++; 
+        i++;
       }
     }
-    C[i + 1]->insertVal(k,no, comp);
+    C[i + 1]->insertVal(k, no, comp);
   }
+  comp++;
+  //cout<<" comparacoes: "<< comp<<endl;
   return comp;
 }
 
-void TreeNode::splitChild(int i, TreeNode *y) {//aqui
+void TreeNode::splitChild(int i, TreeNode *y)
+{ //aqui
   TreeNode *z = new TreeNode(y->t, y->leaf);
   z->n = t - 1;
 
   for (int j = 0; j < t - 1; j++)
     z->nos[j] = y->nos[j + t];
 
-  if (y->leaf == false) {
+  if (y->leaf == false)
+  {
     for (int j = 0; j < t; j++)
       z->C[j] = y->C[j + t];
   }
@@ -123,83 +144,82 @@ void TreeNode::splitChild(int i, TreeNode *y) {//aqui
 
 bool TreeNode::comparacaoiDmaiorB(char noA[], No noB)
 { // retornar Maior
-    int n = 0;
-    char a, b;
-    while (1)
+  int n = 0;
+  char a, b;
+  while ((9 + n)<90)
+  {
+    a = noA[9 + n];
+    b = noB.review_id[9 + n];
+
+    if ((int)a == (int)b)
     {
-        a = noA[9 + n];
-        b = noB.review_id[9 + n];
-
-        if ((int)a == (int)b)
-        {
-            n++;
-        }
-
-        if ((int)a != (int)b)
-        {
-            break;
-        }
+      n++;
     }
 
-    if ((int)a > (int)b)
+    if ((int)a != (int)b)
     {
-        return true;
+      break;
     }
-    else
-    {
-        return false;
-    }
+  }
+
+  if ((int)a > (int)b)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 bool TreeNode::comparacaoiDmenorB(char noA[], No noB)
 { // retornar Maior
-    int n = 0;
-    char a, b;
-    while (1)
+  int n = 0;
+  char a, b;
+  while ((9 + n)<90)
+  {
+    a = noA[9 + n];
+    b = noB.review_id[9 + n];
+
+    if ((int)a == (int)b)
     {
-        a = noA[9 + n];
-        b = noB.review_id[9 + n];
-
-        if ((int)a == (int)b)
-        {
-            n++;
-        }
-
-        if ((int)a != (int)b)
-        {
-            break;
-        }
+      n++;
     }
 
-    if ((int)a > (int)b)
+    if ((int)a != (int)b)
     {
-        return true;
+      break;
     }
-    else
-    {
-        return false;
-    }
+  }
+
+  if ((int)a > (int)b)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 bool TreeNode::comparacaoiDigualB(char noA[], No noB)
 { // retornar Maior
-    int n = 0;
-    char a, b;
-    while (n < 90)
+  int n = 0;
+  char a, b;
+  while (n < 90)
+  {
+    a = noA[n];
+    b = noB.review_id[n];
+
+    if ((int)a == (int)b)
     {
-        a = noA[n];
-        b = noB.review_id[n];
-
-        if ((int)a == (int)b)
-        {
-            n++;
-        }
-
-        if ((int)a != (int)b)
-        {
-            return false;
-        }
+      n++;
     }
-    return true;
-}
 
+    if ((int)a != (int)b)
+    {
+      return false;
+    }
+  }
+  return true;
+}

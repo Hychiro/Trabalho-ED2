@@ -58,70 +58,74 @@ int *sorteia(int max, int n)
 
 void metodosArvoreb(Arvoreb *arv, double tempo, int comparacoes, DatabaseArquitetura dbA, ifstream &arqBin)
 {
-    cout << "Escolha o que deseja fazer" << endl;
-    cout << "1. Modo de analise" << endl;
-    cout << "2. Modo de teste" << endl;
-    cout << "3. Sair" << endl;
-    int x;
-    cin >> x;
-    if (x == 1)
+    while (1)
     {
-        cout << "Relatorio:" << endl;
-        cout << "Numero de comparacoes de chaves: ";
-        cout << comparacoes << endl;
-        cout << "Tempo decorrido: ";
-        cout << tempo << endl;
-    }
-    else if (x == 2)
-    {
-        // nessa parte, provavelmente sera inserido o id de um review, entao todo o esquema feito pra definir o id na
-        // hora de inserir sera igual
-        // id vai precisar do tratamento para pegar pos 9+n do char id
+        /* code */
 
-        cout << "ultima pos = " << dbA.getIdUltimaPosicao(arqBin) << endl;
-        cout << "Digite o Numero de Registros N que deve ser importado" << endl;
-        int imp;
-        cin >> imp;
-        int *vetValSorteados = new int[imp];
-        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
-        cout << "Carregando upvotes dos registro para busca" << endl;
-        int enc = 0;
-        int Nenc = 0;
-        for (int i = 0; i < imp; i++)
+        cout << "Escolha o que deseja fazer" << endl;
+        cout << "1. Modo de analise" << endl;
+        cout << "2. Modo de teste" << endl;
+        cout << "3. Sair" << endl;
+        int x;
+        cin >> x;
+        if (x == 1)
         {
-            No *aux2 = new No();
-            arqBin.seekg((sizeof(No)) * (vetValSorteados[i] - 1), ios_base::beg);
-            while (arqBin.read((char *)aux2, sizeof(No)))
+            cout << "Relatorio:" << endl;
+            cout << "Numero de comparacoes de chaves: ";
+            cout << comparacoes << endl;
+            cout << "Tempo decorrido: ";
+            cout << tempo << endl;
+        }
+        else if (x == 2)
+        {
+            // nessa parte, provavelmente sera inserido o id de um review, entao todo o esquema feito pra definir o id na
+            // hora de inserir sera igual
+            // id vai precisar do tratamento para pegar pos 9+n do char id
+
+            cout << "ultima pos = " << dbA.getIdUltimaPosicao(arqBin) << endl;
+            cout << "Digite o Numero de Registros N que deve ser importado" << endl;
+            int imp;
+            cin >> imp;
+            int *vetValSorteados = new int[imp];
+            vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
+            cout << "Carregando upvotes dos registro para busca" << endl;
+            int enc = 0;
+            int Nenc = 0;
+            for (int i = 0; i < imp; i++)
             {
-                if (aux2->getId() == vetValSorteados[i])
+                No *aux2 = new No();
+                arqBin.seekg((sizeof(No)) * (vetValSorteados[i] - 1), ios_base::beg);
+                while (arqBin.read((char *)aux2, sizeof(No)))
                 {
-                    cout << "buscando pelo id: " << aux2->review_id << "naArvore//Pos = " << aux2->getId() << endl;
-                    if (arv->search(aux2->review_id) != NULL)
+                    if (aux2->getId() == vetValSorteados[i])
                     {
-                        cout << "id encontrado" << endl;
-                        enc++;
+                       // cout << "buscando pelo id: " << aux2->review_id << "naArvore//Pos = " << aux2->getId() << endl;
+                        if (arv->search(aux2->review_id) != NULL)
+                        {
+                            cout << "id encontrado" << endl;
+                            enc++;
+                        }
+                        else
+                        {
+                            cout << "id nao encontrado" << endl;
+                            Nenc++;
+                        }
+                        delete aux2;
+                        break;
                     }
-                    else
-                    {
-                        cout << "id nao encontrado" << endl;
-                        Nenc++;
-                    }
-                    delete aux2;
-                    break;
                 }
             }
+            cout << "Total Encontrado = " << enc << endl;
+            cout << "Total Nao Encontrado = " << Nenc << endl;
         }
-        cout << "Total Encontrado = " << enc << endl;
-        cout << "Total Nao Encontrado = " << Nenc << endl;
-    }
-    else if (x == 3)
-    {
-        return;
-    }
-    else
-    {
-        cout << "valor invalido" << endl;
-        metodosArvoreb(arv, tempo, comparacoes, dbA, arqBin);
+        else if (x == 3)
+        {
+            return;
+        }
+        else
+        {
+            cout << "valor invalido" << endl;
+        }
     }
 }
 
@@ -152,8 +156,11 @@ void InsereNosArvoreb(Arvoreb *arv, DatabaseArquitetura dbA, ifstream &arqBin)
             if (aux->getId() == vetValSorteados[i])
             {
                 No p = *aux;
+                //cout<<"id "<< p.review_id<<endl;
+                cout<< i <<endl;
                 comparacoes = comparacoes + arv->insert(aux->review_id, p, comparacoes);
                 //cout << "passa  do insere" << endl;
+                //cout<<endl;
                 delete aux;
                 break;
             }
