@@ -33,7 +33,7 @@ void TreeNode::traverse()
       C[i]->traverse();
     }
 
-    cout << "id: " << nos[i].review_id<<endl;
+    cout << "id: " << nos[i].review_id << endl;
   }
 
   if (leaf == false)
@@ -42,14 +42,14 @@ void TreeNode::traverse()
   }
 }
 
-TreeNode *TreeNode::search(char k[], int* comp)
+TreeNode *TreeNode::search(char k[], int *comp)
 { //aqui
 
   int i = 0;
-  while (i < n && comparacaoiDmaiorB(k, this->nos[i],comp))
+  while (i < n && comparacaoiDmaiorB(k, this->nos[i], comp))
     i++;
 
-  if (comparacaoiDigualB(k, this->nos[i],comp))
+  if (comparacaoiDigualB(k, this->nos[i], comp))
     return this;
 
   if (leaf == true)
@@ -58,22 +58,21 @@ TreeNode *TreeNode::search(char k[], int* comp)
   return C[i]->search(k, comp);
 }
 
-void TreeNode::insertVal(char k[], No no, int* comp)
+void TreeNode::insertVal(char k[], No no, int *comp)
 { //aqui
   int i = n - 1;
   //cout<<"id insertVal: "<< k<<endl;
-
   if (leaf == true)
   {
     //cout << "" << endl;
     while (i >= 0 && comparacaoiDmenorB(k, this->nos[i], comp))
     {
-      cout<<"id insertVal: "<< nos[i].review_id<<endl;
+      //cout<<"id insertVal: "<< nos[i].review_id<<endl;
       nos[i + 1] = nos[i];
 
       i--;
     }
-    cout << "while 2" << endl;
+    //cout << "while 2" << endl;
     int j = n - 1;
 
     // while (i >= 0 && comparacaoiDmaiorB(k, this->nos[j]))
@@ -87,12 +86,12 @@ void TreeNode::insertVal(char k[], No no, int* comp)
   }
   else
   {
-    cout << "while 3" << endl;
+    //cout << "while 3" << endl;
     while (i >= 0 && comparacaoiDmenorB(k, this->nos[i], comp))
     {
       i--;
     }
-    cout << "while 4" << endl;
+    //cout << "while 4" << endl;
     int j = n - 1;
 
     // while (i >= 0 && comparacaoiDmaiorB(k, this->nos[j]))
@@ -101,18 +100,18 @@ void TreeNode::insertVal(char k[], No no, int* comp)
     //   j--;
     // }
 
-    cout << "splitChild" << endl;
+    //cout << "splitChild" << endl;
     if (C[i + 1]->n == 2 * t - 1)
     {
       splitChild(i + 1, C[i + 1]);
 
-      if (comparacaoiDmaiorB(k, this->nos[i+1],comp))
+      if (comparacaoiDmaiorB(k, this->nos[i + 1], comp))
       {
-        
+
         i++;
       }
     }
-    cout << "foi tudo" << endl;
+    //cout << "foi tudo" << endl;
     C[i + 1]->insertVal(k, no, comp);
   }
 
@@ -158,8 +157,8 @@ bool TreeNode::comparacaoiDmaiorB(char noA[], No noB, int *comp)
       break;
     }
   }
-  
-  *comp=1+*comp;
+
+  *comp = 1 + *comp;
 
   if ((int)a > (int)b)
   {
@@ -191,7 +190,7 @@ bool TreeNode::comparacaoiDmenorB(char noA[], No noB, int *comp)
     }
   }
 
-  *comp=1+*comp;
+  *comp = 1 + *comp;
 
   if ((int)a < (int)b)
   {
@@ -203,7 +202,7 @@ bool TreeNode::comparacaoiDmenorB(char noA[], No noB, int *comp)
   }
 }
 
-bool TreeNode::comparacaoiDigualB(char noA[], No noB, int* comp)
+bool TreeNode::comparacaoiDigualB(char noA[], No noB, int *comp)
 { // retornar Maior
   int n = 0;
   char a, b;
@@ -216,13 +215,13 @@ bool TreeNode::comparacaoiDigualB(char noA[], No noB, int* comp)
     {
       n++;
     }
-  
+
     if ((int)a != (int)b)
     {
-      *comp=1+*comp;
+      *comp = 1 + *comp;
       return false;
     }
   }
-  *comp=1+*comp;
+  *comp = 1 + *comp;
   return true;
 }

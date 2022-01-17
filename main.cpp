@@ -13,8 +13,6 @@
 #include "ArvoreVP.h"
 #include "ArvoreVP.cpp"
 
-
-
 using namespace std;
 using namespace std::chrono;
 
@@ -75,28 +73,14 @@ void metodosArvoreb(Arvoreb *arv, double tempo, int comparacoes, DatabaseArquite
             cout << "Relatorio:" << endl;
             cout << "Numero de comparacoes de chaves na insercao: ";
             cout << comparacoes << endl;
-            cout << "Tempo decorrido: ";
+            cout << "Tempo decorrido para insercao: ";
             cout << tempo << endl;
-            arv->traverse();
-        }
-        else if (x == 2)
-        {
-            // nessa parte, provavelmente sera inserido o id de um review, entao todo o esquema feito pra definir o id na
-            // hora de inserir sera igual
-            // id vai precisar do tratamento para pegar pos 9+n do char id
             int comp = 0;
-            //cout << "ultima pos = " << dbA.getIdUltimaPosicao(arqBin) << endl;
-            cout << "Digite o Numero de Registros N que deve ser importado" << endl;
-            // int imp;
-            // cin >> imp;
-            // int *vetValSorteados = new int[imp];
-            // vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
-            int imp = 25;
+            int imp;
+            imp = 100;
             int *vetValSorteados = new int[imp];
-            for (int i = 0; i < imp; i++)
-            {
-                vetValSorteados[i] = i + 1;
-            }
+            vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
+            high_resolution_clock::time_point inicio = high_resolution_clock::now();
             cout << "Carregando upvotes dos registro para busca" << endl;
             int enc = 0;
             int Nenc = 0;
@@ -111,12 +95,12 @@ void metodosArvoreb(Arvoreb *arv, double tempo, int comparacoes, DatabaseArquite
                         cout << "buscando pelo id: " << aux2->review_id << "naArvore//Pos = " << aux2->getId() << endl;
                         if (arv->search(aux2->review_id, &comp) != NULL)
                         {
-                            cout << "id encontrado" << endl;
+                            //cout << "id encontrado" << endl;
                             enc++;
                         }
                         else
                         {
-                            cout << "id nao encontrado" << endl;
+                            //cout << "id nao encontrado" << endl;
                             Nenc++;
                         }
                         delete aux2;
@@ -124,10 +108,32 @@ void metodosArvoreb(Arvoreb *arv, double tempo, int comparacoes, DatabaseArquite
                     }
                 }
             }
+            high_resolution_clock::time_point fim = high_resolution_clock::now(); // termina o cronometro
+            double tempoBusca;
+            tempoBusca = duration_cast<duration<double>>(fim - inicio).count();
             cout << "Total Encontrado = " << enc << endl;
             cout << "Total Nao Encontrado = " << Nenc << endl;
-            cout << "Total comparacoes de busca = " << comp << endl;
-
+            cout << "Total Comparacoes de Busca = " << comp << endl;
+            cout << "Tempo de Busca = " << tempoBusca << endl;
+        }
+        else if (x == 2)
+        {
+            char a[90];
+            int comparacao = 0;
+            cout << "Digite o id Para Busca: " << endl;
+            cout << "Exemplo de id: gp:AOqpTOEDQ9__FJihY_0V4iwqy4P2OK8tGVR1tFBixYbnsY3FmxNyewvxi4Yjd-ZCiyecVPB8MKH-DpWG5QLLnA" << endl;
+            cin >> a;
+            // nessa parte, provavelmente sera inserido o id de um review, entao todo o esquema feito pra definir o id na
+            // hora de inserir sera igual
+            // id vai precisar do tratamento para pegar pos 9+n do char id
+            if (arv->search(a, &comparacao) != NULL)
+            {
+                cout << "id encontrado" << endl;
+            }
+            else
+            {
+                cout << "id nao encontrado" << endl;
+            }
         }
         else if (x == 3)
         {
@@ -143,15 +149,11 @@ void metodosArvoreb(Arvoreb *arv, double tempo, int comparacoes, DatabaseArquite
 void InsereNosArvoreb(Arvoreb *arv, DatabaseArquitetura dbA, ifstream &arqBin)
 {
     cout << "ultima pos = " << dbA.getIdUltimaPosicao(arqBin) << endl;
-    cout << "Digite o Numero de Registros N que deve ser importado" << endl;
-    int imp = 25;
+    int imp = 1000000;
     //cin >> imp;
     int *vetValSorteados = new int[imp];
-    for (int i = 0; i < imp; i++)
-    {
-        vetValSorteados[i] = i + 1;
-    }
-    // vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);          // precisa ser feito
+
+    vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);          // precisa ser feito
     high_resolution_clock::time_point inicio = high_resolution_clock::now(); // começa o cronometro
     int comparacoes = 0;
 
@@ -165,11 +167,10 @@ void InsereNosArvoreb(Arvoreb *arv, DatabaseArquitetura dbA, ifstream &arqBin)
             if (aux->getId() == vetValSorteados[i])
             {
                 No p = *aux;
-                cout << "id: " << i << " -- " << p.review_id << endl;
+                //cout << "id: " << i << " -- " << p.review_id << endl;
 
                 arv->insert(p.review_id, p, &comparacoes);
-                //cout << "passa  do insere" << endl;
-                //cout<<endl;
+
                 delete aux;
                 break;
             }
@@ -184,18 +185,49 @@ void InsereNosArvoreb(Arvoreb *arv, DatabaseArquitetura dbA, ifstream &arqBin)
 
 void menuArvoreb(DatabaseArquitetura dbA, ifstream &arqBin)
 {
-    cout << "Indique a ordem da arvore B" << endl;
     int ordem;
-    cin >> ordem;
-    if (ordem > 0)
+    int escolha = 0;
+    cout << "Escolha o que deseja fazer" << endl;
+    cout << "1. Modo de Ordem 20" << endl;
+    cout << "2. Modo de Ordem 200" << endl;
+    cout << "3. Sair" << endl;
+    cin >> escolha;
+    while (escolha != 3)
     {
-        Arvoreb *arv = new Arvoreb(ordem);  // cria a arvore B com a ordem passada
-        InsereNosArvoreb(arv, dbA, arqBin); // monta a arvore a partir da leitura do arquivo
-    }
-    else
-    {
-        cout << "ordem invalida" << endl;
-        menuArvoreb(dbA, arqBin);
+        if (escolha == 1)
+        {
+            ordem = 20;
+
+            for (int i = 0; i < 3; i++)
+            {
+                cout << "=============== Arvore de ordem 20 ===== Repeticao " << i + 1 << " ================================" << endl;
+                Arvoreb *arv = new Arvoreb(ordem);  // cria a arvore B com a ordem passada
+                InsereNosArvoreb(arv, dbA, arqBin); // monta a arvore a partir da leitura do arquivo
+
+                cout << "=============================================================================================" << endl;
+            }
+        }
+        else if (escolha == 2)
+        {
+            ordem = 200;
+            for (int i = 0; i < 3; i++)
+            {
+                cout << "=============== Arvore de ordem 200 ===== Repeticao " << i + 1 << " ===============================" << endl;
+                Arvoreb *arv = new Arvoreb(ordem);  // cria a arvore B com a ordem passada
+                InsereNosArvoreb(arv, dbA, arqBin); // monta a arvore a partir da leitura do arquivo
+
+                cout << "=============================================================================================" << endl;
+            }
+        }
+        else
+        {
+            cout << "Digite uma alternativa valida! " << endl;
+        }
+        cout << "Escolha o que deseja fazer" << endl;
+        cout << "1. Modo de Ordem 20" << endl;
+        cout << "2. Modo de Ordem 200" << endl;
+        cout << "3. Sair" << endl;
+        cin >> escolha;
     }
     return;
 }
@@ -289,22 +321,33 @@ int menuArvores(DatabaseArquitetura dbA, ifstream &arqBin)
     switch (x)
     {
     case 1:
-        cout << "Escolha entre o modo analise(1) ou o modo teste(2)" << endl;
+
+        cout << "Escolha entre o modo" << endl;
+        cout << "1. Modo de analise" << endl;
+        cout << "2. Modo de teste" << endl;
+        cout << "3. Sair" << endl;
         cin >> y;
-        switch (y)
+        while (y != 3)
         {
-        case 1:
-            menuArvoreVP(dbA, arqBin);
-            break;
-        case 2:
-            menuArvoreVP2(dbA, arqBin);
-            break;
+            if (y == 1)
+            {
+                menuArvoreVP(dbA, arqBin);
+            }
+            if (y == 2)
+            {
+                menuArvoreVP2(dbA, arqBin);
+                
+            }else{
+                 cout << "Valor Invalido!" << endl;
+            }
+
+            cout << "Escolha entre o modo" << endl;
+            cout << "1. Modo de analise" << endl;
+            cout << "2. Modo de teste" << endl;
+            cout << "3. Sair" << endl;
+            cin >> y;
         }
-        if (x < 1 || x > 2)
-        {
-            cout << "Valor Invalido!" << endl;
-            return -1;
-        }
+
         break;
     case 2:
         menuArvoreb(dbA, arqBin);

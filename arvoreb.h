@@ -11,7 +11,6 @@ class Arvoreb
     int t;
 
 public:
-    int comparacoes;
     void criaArvore(int vetorId[], int tam, ifstream &arqBin);
 
 
@@ -19,7 +18,6 @@ public:
     {
         root = NULL;
         t = temp;
-        comparacoes = 0;
     }
     ~Arvoreb();
 
