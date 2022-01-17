@@ -19,15 +19,17 @@ class TreeNode
 
     //char **keys; //armazena um ponteiro para as chaves, que serão = posição 9+n do char id
 
-    int insertVal(char k[], No no, int comp); //aqui
+    int *keys;
+
+    void insertVal(char k[], No no, int* comp); //aqui
     void splitChild(int i, TreeNode *y);
     void traverse();
 
-    TreeNode *search(char k[]);
+    TreeNode *search(char k[],int* comp);
 
-    bool comparacaoiDmaiorB(char noA[], No noB);
-    bool comparacaoiDmenorB(char noA[], No noB);
-    bool comparacaoiDigualB(char noA[], No noB);
+    bool comparacaoiDmaiorB(char noA[], No noB, int *comp);
+    bool comparacaoiDmenorB(char noA[], No noB, int *comp);
+    bool comparacaoiDigualB(char noA[], No noB, int *comp);
 
     friend class arvoreb;
 };

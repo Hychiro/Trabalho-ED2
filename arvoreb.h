@@ -29,12 +29,12 @@ public:
             root->traverse();
     }
 
-    TreeNode *search(char* k)//aqui
+    TreeNode *search(char k[], int*comp)//aqui
     {
-        return (root == NULL) ? NULL : root->search(k);
+        return (root == NULL) ? NULL : root->search(k,comp);
     }
 
-    int insert(char k[], No no, int comp);//aqui
+    void insert(char k[], No no, int* comp);//aqui
 };
 
 #endif // ARVOREB_H
