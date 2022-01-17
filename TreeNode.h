@@ -21,6 +21,8 @@ class TreeNode
 
     int *keys;
 
+    //TreeNode* LiberaNode(TreeNode * p);
+    TreeNode* LiberaNode(TreeNode *p);
     void insertVal(char k[], No no, int* comp); //aqui
     void splitChild(int i, TreeNode *y);
     void traverse();

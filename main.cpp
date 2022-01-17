@@ -1,20 +1,19 @@
 #include <sstream>
 #include <string>
-#include "databaseArquitetura.h"
-#include "databaseArquitetura.cpp"
+#include "DatabaseArquitetura.h"
 #include <ctime>
-#include "Ordenacao.cpp"
+#include <chrono>
 #include <random>
 #include <iostream>
 #include "Arvoreb.h"
-#include "Arvoreb.cpp"
 #include "TreeNode.h"
-#include "TreeNode.cpp"
 #include "ArvoreVP.h"
-#include "ArvoreVP.cpp"
 
 using namespace std;
 using namespace std::chrono;
+
+double mediaTempo = 0;
+int mediaComp = 0;
 
 int *sorteia(int max, int n)
 {
@@ -58,18 +57,23 @@ int *sorteia(int max, int n)
 
 void metodosArvoreb(Arvoreb *arv, double tempo, int comparacoes, DatabaseArquitetura dbA, ifstream &arqBin)
 {
+    mediaTempo = mediaTempo + tempo;
+    mediaComp = mediaComp + comparacoes;
     while (1)
     {
         /* code */
 
-        cout << "Escolha o que deseja fazer" << endl;
+        cout << "Escolha o que deseja fazer NESSA Repeticao!" << endl;
         cout << "1. Modo de analise" << endl;
         cout << "2. Modo de teste" << endl;
         cout << "3. Sair" << endl;
+        cout << "OBS: Ao escolher 3. Sair, a proxima repeticao sera inicializada!" << endl;
         int x;
         cin >> x;
         if (x == 1)
         {
+            cout << endl;
+            cout << "=========================================================================================================================" << endl;
             cout << "Relatorio:" << endl;
             cout << "Numero de comparacoes de chaves na insercao: ";
             cout << comparacoes << endl;
@@ -92,7 +96,7 @@ void metodosArvoreb(Arvoreb *arv, double tempo, int comparacoes, DatabaseArquite
                 {
                     if (aux2->getId() == vetValSorteados[i])
                     {
-                        cout << "buscando pelo id: " << aux2->review_id << "naArvore//Pos = " << aux2->getId() << endl;
+                        //cout << "buscando pelo id: " << aux2->review_id << "naArvore//Pos = " << aux2->getId() << endl;
                         if (arv->search(aux2->review_id, &comp) != NULL)
                         {
                             //cout << "id encontrado" << endl;
@@ -115,6 +119,8 @@ void metodosArvoreb(Arvoreb *arv, double tempo, int comparacoes, DatabaseArquite
             cout << "Total Nao Encontrado = " << Nenc << endl;
             cout << "Total Comparacoes de Busca = " << comp << endl;
             cout << "Tempo de Busca = " << tempoBusca << endl;
+            cout << "=========================================================================================================================" << endl;
+            cout << endl;
         }
         else if (x == 2)
         {
@@ -128,11 +134,23 @@ void metodosArvoreb(Arvoreb *arv, double tempo, int comparacoes, DatabaseArquite
             // id vai precisar do tratamento para pegar pos 9+n do char id
             if (arv->search(a, &comparacao) != NULL)
             {
+                cout << endl;
+                cout << "=========================================================================================================================" << endl;
+                cout << endl;
                 cout << "id encontrado" << endl;
+                cout << endl;
+                cout << "=========================================================================================================================" << endl;
+                cout << endl;
             }
             else
             {
+                cout << endl;
+                cout << "=========================================================================================================================" << endl;
+                cout << endl;
                 cout << "id nao encontrado" << endl;
+                cout << endl;
+                cout << "=========================================================================================================================" << endl;
+                cout << endl;
             }
         }
         else if (x == 3)
@@ -149,7 +167,7 @@ void metodosArvoreb(Arvoreb *arv, double tempo, int comparacoes, DatabaseArquite
 void InsereNosArvoreb(Arvoreb *arv, DatabaseArquitetura dbA, ifstream &arqBin)
 {
     cout << "ultima pos = " << dbA.getIdUltimaPosicao(arqBin) << endl;
-    int imp = 1000000;
+    int imp = 2000; //<---- tem q ser 1MILHAO ======================
     //cin >> imp;
     int *vetValSorteados = new int[imp];
 
@@ -200,29 +218,35 @@ void menuArvoreb(DatabaseArquitetura dbA, ifstream &arqBin)
 
             for (int i = 0; i < 3; i++)
             {
-                cout << "=============== Arvore de ordem 20 ===== Repeticao " << i + 1 << " ================================" << endl;
+                cout << "================================ Arvore de ordem 20 ===== Repeticao " << i + 1 << " ================================" << endl;
                 Arvoreb *arv = new Arvoreb(ordem);  // cria a arvore B com a ordem passada
                 InsereNosArvoreb(arv, dbA, arqBin); // monta a arvore a partir da leitura do arquivo
-
+                delete arv;
                 cout << "=============================================================================================" << endl;
             }
+            cout << "Media de tempo: " <<mediaTempo/3 << endl;
+            cout << "Media de comparacoes: " <<mediaComp/3 << endl;
         }
         else if (escolha == 2)
         {
             ordem = 200;
             for (int i = 0; i < 3; i++)
             {
-                cout << "=============== Arvore de ordem 200 ===== Repeticao " << i + 1 << " ===============================" << endl;
+                cout << "=============================== Arvore de ordem 200 ===== Repeticao " << i + 1 << " ===============================" << endl;
                 Arvoreb *arv = new Arvoreb(ordem);  // cria a arvore B com a ordem passada
                 InsereNosArvoreb(arv, dbA, arqBin); // monta a arvore a partir da leitura do arquivo
-
+                delete arv;
                 cout << "=============================================================================================" << endl;
             }
+            cout << "Media de tempo: " <<mediaTempo/3 << endl;
+            cout << "Media de comparacoes: " <<mediaComp/3 << endl;
         }
         else
         {
             cout << "Digite uma alternativa valida! " << endl;
         }
+        mediaComp = 0;
+        mediaTempo = 0;
         cout << "Escolha o que deseja fazer" << endl;
         cout << "1. Modo de Ordem 20" << endl;
         cout << "2. Modo de Ordem 200" << endl;
@@ -366,306 +390,306 @@ int menuArvores(DatabaseArquitetura dbA, ifstream &arqBin)
     return x;
 }
 
-int menu(DatabaseArquitetura dbA, ifstream &arqBin)
-{
-    cout << "Digite a Operacao Desejada" << endl;
-    cout << "(1) acessaRegistro(i)" << endl;
-    cout << "(2) Ordenacao" << endl;
-    cout << "(3) Hash" << endl;
-    cout << "(4) Modulo de Teste" << endl;
-    cout << "(5) ArvoreVP" << endl;
-    cout << "(6) ArvoreB" << endl;
-    cout << "(7) Limpar o console" << endl;
-    cout << "(0) Fechar Programa" << endl;
-    int entrada;
-    cin >> entrada;
-    if (entrada == 1)
-    {
-        cout << "Digite o i-esimo registro desejado: " << endl;
-        int i;
-        cin >> i;
-        // le do .bin
-        dbA.leituraBinarioConsole(i, arqBin);
-    }
+// int menu(DatabaseArquitetura dbA, ifstream &arqBin)
+// {
+//     cout << "Digite a Operacao Desejada" << endl;
+//     cout << "(1) acessaRegistro(i)" << endl;
+//     cout << "(2) Ordenacao" << endl;
+//     cout << "(3) Hash" << endl;
+//     cout << "(4) Modulo de Teste" << endl;
+//     cout << "(5) ArvoreVP" << endl;
+//     cout << "(6) ArvoreB" << endl;
+//     cout << "(7) Limpar o console" << endl;
+//     cout << "(0) Fechar Programa" << endl;
+//     int entrada;
+//     cin >> entrada;
+//     if (entrada == 1)
+//     {
+//         cout << "Digite o i-esimo registro desejado: " << endl;
+//         int i;
+//         cin >> i;
+//         // le do .bin
+//         dbA.leituraBinarioConsole(i, arqBin);
+//     }
 
-    if (entrada == 2)
-    {
-        cout << "Digite (1) Para Saida em Console" << endl;
-        cout << "Digite (2) Para Saida em Arquivo" << endl;
-        int aux;
-        cin >> aux;
-        string nome;
-        ofstream arqSaida;
+//     if (entrada == 2)
+//     {
+//         cout << "Digite (1) Para Saida em Console" << endl;
+//         cout << "Digite (2) Para Saida em Arquivo" << endl;
+//         int aux;
+//         cin >> aux;
+//         string nome;
+//         ofstream arqSaida;
 
-        while (aux != 1 && aux != 2)
-        {
-            cout << "Digite uma Opcao valida!" << endl;
-            cout << "Digite (1) Para Saida em Console" << endl;
-            cout << "Digite (2) Para Saida em Arquivo" << endl;
-            cin >> aux;
-        }
-        if (aux == 2)
-        {
-            cout << "De um nome ao arquivo de saida: " << endl;
-            cin >> nome;
-            arqSaida.open(nome, ios::out);
-        }
-        cout << "Qual tipo de Sort usar?" << endl;
-        cout << "Digite (1) para RadixSort" << endl;
-        cout << "Digite (2) para HeapSort" << endl;
-        cout << "Digite (3) para QuickSort" << endl;
-        int type;
-        cin >> type;
-        while (type != 1 && type != 2 && type != 3)
-        {
-            cout << "Digite uma Opcao valida!" << endl;
-            cout << "Digite (1) para RadixSort" << endl;
-            cout << "Digite (2) para HeapSort" << endl;
-            cout << "Digite (3) para QuickSort" << endl;
-            cin >> type;
-        }
+//         while (aux != 1 && aux != 2)
+//         {
+//             cout << "Digite uma Opcao valida!" << endl;
+//             cout << "Digite (1) Para Saida em Console" << endl;
+//             cout << "Digite (2) Para Saida em Arquivo" << endl;
+//             cin >> aux;
+//         }
+//         if (aux == 2)
+//         {
+//             cout << "De um nome ao arquivo de saida: " << endl;
+//             cin >> nome;
+//             arqSaida.open(nome, ios::out);
+//         }
+//         cout << "Qual tipo de Sort usar?" << endl;
+//         cout << "Digite (1) para RadixSort" << endl;
+//         cout << "Digite (2) para HeapSort" << endl;
+//         cout << "Digite (3) para QuickSort" << endl;
+//         int type;
+//         cin >> type;
+//         while (type != 1 && type != 2 && type != 3)
+//         {
+//             cout << "Digite uma Opcao valida!" << endl;
+//             cout << "Digite (1) para RadixSort" << endl;
+//             cout << "Digite (2) para HeapSort" << endl;
+//             cout << "Digite (3) para QuickSort" << endl;
+//             cin >> type;
+//         }
 
-        cout << "Digite o Numero de Registros N que deve ser importado" << endl;
-        int imp;
-        cin >> imp;
-        int *vetValSorteados = new int[imp];
-        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
-        if (aux == 1)
-        {
+//         cout << "Digite o Numero de Registros N que deve ser importado" << endl;
+//         int imp;
+//         cin >> imp;
+//         int *vetValSorteados = new int[imp];
+//         vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
+//         if (aux == 1)
+//         {
 
-            // Selecionar tipo de ordenação _INICIO
-            SubNo *vetOrdenados = new SubNo[imp];
-            if (type == 1)
-                vetOrdenados = radix(vetValSorteados, imp, arqBin);
-            if (type == 2)
-                vetOrdenados = getVet(vetValSorteados, imp, arqBin);
-            if (type == 3)
-            {
-                vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
-                high_resolution_clock::time_point inicio = high_resolution_clock::now();
-                quickSort(vetOrdenados, 0, imp, imp);
-                int tempo = 0;
-                high_resolution_clock::time_point fim = high_resolution_clock::now();
-                tempo = duration_cast<duration<double>>(fim - inicio).count();
-                cout << "Tempo  de ordenação: " << tempo << " segundos" << endl;
-            }
-            // Selecionar tipo de ordenação _FIM
-            // Impressão
-            dbA.impressaoConsole(vetOrdenados, arqBin, imp);
+//             // Selecionar tipo de ordenação _INICIO
+//             SubNo *vetOrdenados = new SubNo[imp];
+//             if (type == 1)
+//                 vetOrdenados = radix(vetValSorteados, imp, arqBin);
+//             if (type == 2)
+//                 vetOrdenados = getVet(vetValSorteados, imp, arqBin);
+//             if (type == 3)
+//             {
+//                 vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
+//                 high_resolution_clock::time_point inicio = high_resolution_clock::now();
+//                 quickSort(vetOrdenados, 0, imp, imp);
+//                 int tempo = 0;
+//                 high_resolution_clock::time_point fim = high_resolution_clock::now();
+//                 tempo = duration_cast<duration<double>>(fim - inicio).count();
+//                 cout << "Tempo  de ordenação: " << tempo << " segundos" << endl;
+//             }
+//             // Selecionar tipo de ordenação _FIM
+//             // Impressão
+//             dbA.impressaoConsole(vetOrdenados, arqBin, imp);
 
-            delete[] vetValSorteados;
-            delete[] vetOrdenados;
-        }
-        if (aux == 2)
-        {
-            SubNo *vetOrdenados = new SubNo[imp];
+//             delete[] vetValSorteados;
+//             delete[] vetOrdenados;
+//         }
+//         if (aux == 2)
+//         {
+//             SubNo *vetOrdenados = new SubNo[imp];
 
-            if (type == 1)
-                vetOrdenados = radix(vetValSorteados, imp, arqBin);
-            if (type == 2)
-                vetOrdenados = getVet(vetValSorteados, imp, arqBin);
-            if (type == 3)
-            {
-                vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
-                high_resolution_clock::time_point inicio = high_resolution_clock::now();
-                quickSort(vetOrdenados, 0, imp, imp);
-                double tempo = 0;
-                high_resolution_clock::time_point fim = high_resolution_clock::now();
-                tempo = duration_cast<duration<double>>(fim - inicio).count();
-                cout << "Tempo  de ordenação: " << tempo << " segundos" << endl;
-                imprimeTC();
-            }
-            if (arqSaida.is_open())
-            {
-                // le do .bin em um arquivo de saida de final a escolha (recomendo que seja .txt)
+//             if (type == 1)
+//                 vetOrdenados = radix(vetValSorteados, imp, arqBin);
+//             if (type == 2)
+//                 vetOrdenados = getVet(vetValSorteados, imp, arqBin);
+//             if (type == 3)
+//             {
+//                 vetOrdenados = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados);
+//                 high_resolution_clock::time_point inicio = high_resolution_clock::now();
+//                 quickSort(vetOrdenados, 0, imp, imp);
+//                 double tempo = 0;
+//                 high_resolution_clock::time_point fim = high_resolution_clock::now();
+//                 tempo = duration_cast<duration<double>>(fim - inicio).count();
+//                 cout << "Tempo  de ordenação: " << tempo << " segundos" << endl;
+//                 imprimeTC();
+//             }
+//             if (arqSaida.is_open())
+//             {
+//                 // le do .bin em um arquivo de saida de final a escolha (recomendo que seja .txt)
 
-                dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
+//                 dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
 
-                delete[] vetValSorteados;
-                delete[] vetOrdenados;
-            }
-            else
-            {
-                cout << "ERRO NA ESCRITA EM ARQUIVO" << endl;
-            }
-        }
+//                 delete[] vetValSorteados;
+//                 delete[] vetOrdenados;
+//             }
+//             else
+//             {
+//                 cout << "ERRO NA ESCRITA EM ARQUIVO" << endl;
+//             }
+//         }
 
-        return entrada;
-    }
-    if (entrada == 3)
-    {
-        cout << "Digite o Numero de Registros N que deve ser importado" << endl;
-        int imp;
-        cin >> imp;
-        int *vetValSorteados = new int[imp];
-        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
-        versao **tabela = criaTabela(arqBin, imp, vetValSorteados);
-        // imprimeTabela(tabela, 1087);
+//         return entrada;
+//     }
+//     if (entrada == 3)
+//     {
+//         cout << "Digite o Numero de Registros N que deve ser importado" << endl;
+//         int imp;
+//         cin >> imp;
+//         int *vetValSorteados = new int[imp];
+//         vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
+//         versao **tabela = criaTabela(arqBin, imp, vetValSorteados);
+//         // imprimeTabela(tabela, 1087);
 
-        int m = 1087;
-        int chaves[m * 2];
-        for (int i = 0; i < (m * 2); i++)
-        {
-            chaves[i] = -1;
-        }
+//         int m = 1087;
+//         int chaves[m * 2];
+//         for (int i = 0; i < (m * 2); i++)
+//         {
+//             chaves[i] = -1;
+//         }
 
-        int next = 0;
-        for (int j = 0; j < m; j++)
-        {
-            if (tabela[j] != NULL)
-            {
-                if (tabela[j]->prox != NULL)
-                {
-                    for (versao *p = tabela[j]; p != NULL; p = p->prox)
-                    {
-                        chaves[next] = p->chave;
-                        next++;
-                    }
-                }
-                else
-                {
-                    chaves[next] = tabela[j]->chave;
-                    next++;
-                }
-            }
-        }
-        int tam = next;
-        int *resultado = new int[tam];
-        for (int i = 0; i < tam; i++)
-        {
-            resultado[i] = chaves[i];
-        }
-        resultado = radix2(resultado, tabela, tam);
+//         int next = 0;
+//         for (int j = 0; j < m; j++)
+//         {
+//             if (tabela[j] != NULL)
+//             {
+//                 if (tabela[j]->prox != NULL)
+//                 {
+//                     for (versao *p = tabela[j]; p != NULL; p = p->prox)
+//                     {
+//                         chaves[next] = p->chave;
+//                         next++;
+//                     }
+//                 }
+//                 else
+//                 {
+//                     chaves[next] = tabela[j]->chave;
+//                     next++;
+//                 }
+//             }
+//         }
+//         int tam = next;
+//         int *resultado = new int[tam];
+//         for (int i = 0; i < tam; i++)
+//         {
+//             resultado[i] = chaves[i];
+//         }
+//         resultado = radix2(resultado, tabela, tam);
 
-        int quantidade;
-        cout << "sabendo que existem " << tam << " versoes, de uma quantidade de versoes: " << endl;
-        cin >> quantidade;
+//         int quantidade;
+//         cout << "sabendo que existem " << tam << " versoes, de uma quantidade de versoes: " << endl;
+//         cin >> quantidade;
 
-        for (int i = tam - 1; i >= tam - quantidade; i--)
-        {
-            cout << "Versao : " << busca(resultado[i], tabela)->versao_app << "      Repeticoes : " << busca(resultado[i], tabela)->reps << endl;
-        }
+//         for (int i = tam - 1; i >= tam - quantidade; i--)
+//         {
+//             cout << "Versao : " << busca(resultado[i], tabela)->versao_app << "      Repeticoes : " << busca(resultado[i], tabela)->reps << endl;
+//         }
 
-        return entrada;
-    }
-    if (entrada == 4)
-    {
-        string nome;
-        ofstream arqSaida;
+//         return entrada;
+//     }
+//     if (entrada == 4)
+//     {
+//         string nome;
+//         ofstream arqSaida;
 
-        cout << "De um nome ao arquivo de saida: " << endl;
-        cin >> nome;
-        arqSaida.open(nome, ios::out);
+//         cout << "De um nome ao arquivo de saida: " << endl;
+//         cin >> nome;
+//         arqSaida.open(nome, ios::out);
 
-        int imp = 100;
-        int *vetValSorteados = new int[imp];
-        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
+//         int imp = 100;
+//         int *vetValSorteados = new int[imp];
+//         vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
 
-        SubNo *vetOrdenados = new SubNo[imp];
-        SubNo *vetOrdenados2 = new SubNo[imp];
-        SubNo *vetOrdenados3 = new SubNo[imp];
+//         SubNo *vetOrdenados = new SubNo[imp];
+//         SubNo *vetOrdenados2 = new SubNo[imp];
+//         SubNo *vetOrdenados3 = new SubNo[imp];
 
-        arqSaida << "Radix" << endl;
-        /// radix
-        vetOrdenados = radix(vetValSorteados, imp, arqBin);
+//         arqSaida << "Radix" << endl;
+//         /// radix
+//         vetOrdenados = radix(vetValSorteados, imp, arqBin);
 
-        dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
-        delete[] vetOrdenados;
-        arqSaida << "==========================================================================================" << endl
-                 << endl;
-        arqSaida << "HeapSort" << endl;
-        /// heap
-        vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
+//         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados, arqBin, imp);
+//         delete[] vetOrdenados;
+//         arqSaida << "==========================================================================================" << endl
+//                  << endl;
+//         arqSaida << "HeapSort" << endl;
+//         /// heap
+//         vetOrdenados2 = getVet(vetValSorteados, imp, arqBin);
 
-        dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados2, arqBin, imp);
-        delete[] vetOrdenados2;
-        arqSaida << "==========================================================================================" << endl
-                 << endl;
-        arqSaida << "QuickSort" << endl;
-        /// quick
-        vetOrdenados3 = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados3);
-        quickSort(vetOrdenados3, 0, imp, imp);
+//         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados2, arqBin, imp);
+//         delete[] vetOrdenados2;
+//         arqSaida << "==========================================================================================" << endl
+//                  << endl;
+//         arqSaida << "QuickSort" << endl;
+//         /// quick
+//         vetOrdenados3 = criaVetSubNo(arqBin, vetValSorteados, imp, vetOrdenados3);
+//         quickSort(vetOrdenados3, 0, imp, imp);
 
-        dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados3, arqBin, imp);
-        delete[] vetOrdenados3;
-        arqSaida << "==========================================================================================" << endl
-                 << endl;
-        arqSaida << "Hashing" << endl;
-        /// hash
-        versao **tabela = criaTabela(arqBin, imp, vetValSorteados);
-        // imprimeTabela(tabela, 1087);
-        int m = 1087;
-        int chaves[m * 2];
-        for (int i = 0; i < (m * 2); i++)
-        {
-            chaves[i] = -1;
-        }
+//         dbA.leArqBinarioEmArquivoTexto(arqSaida, vetOrdenados3, arqBin, imp);
+//         delete[] vetOrdenados3;
+//         arqSaida << "==========================================================================================" << endl
+//                  << endl;
+//         arqSaida << "Hashing" << endl;
+//         /// hash
+//         versao **tabela = criaTabela(arqBin, imp, vetValSorteados);
+//         // imprimeTabela(tabela, 1087);
+//         int m = 1087;
+//         int chaves[m * 2];
+//         for (int i = 0; i < (m * 2); i++)
+//         {
+//             chaves[i] = -1;
+//         }
 
-        int next = 0;
-        for (int j = 0; j < m; j++)
-        {
-            if (tabela[j] != NULL)
-            {
-                if (tabela[j]->prox != NULL)
-                {
-                    for (versao *p = tabela[j]; p != NULL; p = p->prox)
-                    {
-                        chaves[next] = p->chave;
-                        next++;
-                    }
-                }
-                else
-                {
-                    chaves[next] = tabela[j]->chave;
-                    next++;
-                }
-            }
-        }
-        int tam = next;
-        int *resultado = new int[tam];
-        for (int i = 0; i < tam; i++)
-        {
-            resultado[i] = chaves[i];
-        }
-        resultado = radix2(resultado, tabela, tam);
-        for (int i = tam - 1; i >= 0; i--)
-        {
-            arqSaida << "Versao : " << busca(resultado[i], tabela)->versao_app << " --- Repeticoes : " << busca(resultado[i], tabela)->reps << endl;
-        }
-        system("cls");
-        delete[] vetValSorteados;
-        arqSaida.close();
-        return entrada;
-    }
-    if (entrada == 5)
-    {
-        cout << "ultima pos = " << dbA.getIdUltimaPosicao(arqBin) << endl;
-        cout << "Digite o Numero de Registros N que deve ser importado" << endl;
-        int imp;
-        cin >> imp;
-        int *vetValSorteados = new int[imp];
-        vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
-        ArvoreVP *vp = new ArvoreVP;
-        vp->criaArvore(vetValSorteados, imp, arqBin);
-        cout << "Total de comparacao ao Inserir: " << vp->comparacaoIns << endl;
-        cout << "Digite o Numero de Registros N que deve ser buscado" << endl;
-        cin >> imp;
-        int *vetValSorteados2 = new int[imp];
-        vetValSorteados2 = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
-        vp->MetodoBusca(vetValSorteados2, imp, arqBin);
-        cout << "Total de comparacao ao Buscar: " << vp->comparacaoBus << endl;
-        cin >> imp;
-    }
-    if (entrada == 6)
-    {
-        return entrada;
-    }
-    if (entrada == 0)
-    {
-        return entrada;
-    }
-    return entrada;
-}
+//         int next = 0;
+//         for (int j = 0; j < m; j++)
+//         {
+//             if (tabela[j] != NULL)
+//             {
+//                 if (tabela[j]->prox != NULL)
+//                 {
+//                     for (versao *p = tabela[j]; p != NULL; p = p->prox)
+//                     {
+//                         chaves[next] = p->chave;
+//                         next++;
+//                     }
+//                 }
+//                 else
+//                 {
+//                     chaves[next] = tabela[j]->chave;
+//                     next++;
+//                 }
+//             }
+//         }
+//         int tam = next;
+//         int *resultado = new int[tam];
+//         for (int i = 0; i < tam; i++)
+//         {
+//             resultado[i] = chaves[i];
+//         }
+//         resultado = radix2(resultado, tabela, tam);
+//         for (int i = tam - 1; i >= 0; i--)
+//         {
+//             arqSaida << "Versao : " << busca(resultado[i], tabela)->versao_app << " --- Repeticoes : " << busca(resultado[i], tabela)->reps << endl;
+//         }
+//         system("cls");
+//         delete[] vetValSorteados;
+//         arqSaida.close();
+//         return entrada;
+//     }
+//     if (entrada == 5)
+//     {
+//         cout << "ultima pos = " << dbA.getIdUltimaPosicao(arqBin) << endl;
+//         cout << "Digite o Numero de Registros N que deve ser importado" << endl;
+//         int imp;
+//         cin >> imp;
+//         int *vetValSorteados = new int[imp];
+//         vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
+//         ArvoreVP *vp = new ArvoreVP;
+//         vp->criaArvore(vetValSorteados, imp, arqBin);
+//         cout << "Total de comparacao ao Inserir: " << vp->comparacaoIns << endl;
+//         cout << "Digite o Numero de Registros N que deve ser buscado" << endl;
+//         cin >> imp;
+//         int *vetValSorteados2 = new int[imp];
+//         vetValSorteados2 = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);
+//         vp->MetodoBusca(vetValSorteados2, imp, arqBin);
+//         cout << "Total de comparacao ao Buscar: " << vp->comparacaoBus << endl;
+//         cin >> imp;
+//     }
+//     if (entrada == 6)
+//     {
+//         return entrada;
+//     }
+//     if (entrada == 0)
+//     {
+//         return entrada;
+//     }
+//     return entrada;
+// }
 
 int main(int argc, char const *argv[])
 {

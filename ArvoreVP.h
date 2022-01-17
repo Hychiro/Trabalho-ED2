@@ -2,7 +2,7 @@
 #define ArvoreVP_H
 #include <iostream>
 #include <string>
-#include "noVP.h"
+#include "NoVP.h"
 #include "No.h"
 
 using namespace std;
@@ -17,28 +17,28 @@ public:
     int comparacaoBus;
 
 
-    noVP *raiz=new noVP;
-    noVP *Nill=new noVP;
+    NoVP *raiz=new NoVP;
+    NoVP *Nill=new NoVP;
 
-    noVP *Libera(noVP *no);
+    NoVP *Libera(NoVP *no);
     void insere(No *noInserindo);
     int buscaPorId(char id[90]);
     void MetodoBusca(int vetorId[], int tam, ifstream &arqBin);
-    void verificaRaiz(noVP *no);
-    void rotacaoSimplesEsq(noVP *no,noVP *pai,noVP *avo);
-    void rotacaoSimplesDir(noVP *no,noVP *pai,noVP *avo);
-    void rotacaoDuplaEsq(noVP *no,noVP *pai,noVP *avo);
-    void rotacaoDuplaDir(noVP *no,noVP *pai,noVP *avo);
-    void verificaQuebraDePropriedade(noVP *no);
-    bool comparacaoAmaiorB(noVP* noA, noVP *noB);
-    bool comparacaoAmenorB(noVP* noA, noVP *noB);
-    bool comparacaoiDmaiorB(char noA[], noVP *noB);
-    bool comparacaoiDmenorB(char noA[], noVP *noB);
-    bool comparacaoiDigualB(char noA[], noVP *noB);
-    void trocaCor(noVP *no);
-    noVP *SubNoParanoVP(No *noInserindo);
+    void verificaRaiz(NoVP *no);
+    void rotacaoSimplesEsq(NoVP *no,NoVP *pai,NoVP *avo);
+    void rotacaoSimplesDir(NoVP *no,NoVP *pai,NoVP *avo);
+    void rotacaoDuplaEsq(NoVP *no,NoVP *pai,NoVP *avo);
+    void rotacaoDuplaDir(NoVP *no,NoVP *pai,NoVP *avo);
+    void verificaQuebraDePropriedade(NoVP *no);
+    bool comparacaoAmaiorB(NoVP* noA, NoVP *noB);
+    bool comparacaoAmenorB(NoVP* noA, NoVP *noB);
+    bool comparacaoiDmaiorB(char noA[], NoVP *noB);
+    bool comparacaoiDmenorB(char noA[], NoVP *noB);
+    bool comparacaoiDigualB(char noA[], NoVP *noB);
+    void trocaCor(NoVP *no);
+    NoVP *SubNoParanoVP(No *noInserindo);
     void criaArvore(int vetorId[], int tam, ifstream &arqBin);
-    void ImprimeArvore(noVP *no, int i);
+    void ImprimeArvore(NoVP *no, int i);
 };
 
 

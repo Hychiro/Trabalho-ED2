@@ -1,5 +1,5 @@
-#include "databaseArquitetura.h"
-#include "no.h"
+#include "DatabaseArquitetura.h"
+#include "No.h"
 #include <iostream>
 #include <string>
 #include <fstream>

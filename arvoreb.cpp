@@ -8,7 +8,8 @@ using namespace std;
 
 Arvoreb::~Arvoreb()
 {
-  //dtor
+  //root = root->LiberaNode(root);
+  root = root->LiberaNode(root);
 }
 
 void Arvoreb::insert(char k[], No no, int* comp) // aqui

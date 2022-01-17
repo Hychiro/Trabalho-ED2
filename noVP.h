@@ -8,22 +8,22 @@
 
 using namespace std;
 
-class noVP
+class NoVP
 {
 
     private:
     int iD;
 
 public:
-    noVP *esq;
-    noVP *dir;
-    noVP *pai;
-    noVP(){
+    NoVP *esq;
+    NoVP *dir;
+    NoVP *pai;
+    NoVP(){
         cor=false;
         esq=nullptr;
         dir=nullptr;
         pai=nullptr;};
-    ~noVP(){};
+    ~NoVP(){};
     char review_id[90];
     void setreview_id(char a[90]){
         for (int i = 0; i < 90; i++)

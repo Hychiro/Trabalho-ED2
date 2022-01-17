@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "noVP.h"
+#include "NoVP.h"
 #include "ArvoreVP.h"
 #include "No.h"
 
@@ -23,7 +23,7 @@ ArvoreVP::~ArvoreVP() {
     delete Nill;
 }
 
-noVP *ArvoreVP::Libera(noVP *p) {
+NoVP *ArvoreVP::Libera(NoVP *p) {
     if(p->getId() != Nill->getId())
     {
         p->esq=Libera(p->esq);
@@ -34,7 +34,7 @@ noVP *ArvoreVP::Libera(noVP *p) {
     return p;
 }
 
-void ArvoreVP::ImprimeArvore(noVP *no, int i)
+void ArvoreVP::ImprimeArvore(NoVP *no, int i)
 {
     if (no->getId() > 0)
     {
@@ -69,7 +69,7 @@ void ArvoreVP::insere(No *noInserindo)
 {
     verificaRaiz(raiz);
 
-    noVP *noNovo;
+    NoVP *noNovo;
     noNovo = SubNoParanoVP(noInserindo);
 
     if (raiz->getId() == Nill->getId())
@@ -82,9 +82,9 @@ void ArvoreVP::insere(No *noInserindo)
         return;
     }
 
-    noVP *noPai;
+    NoVP *noPai;
     noPai = this->raiz;
-    noVP *noAnalisado;
+    NoVP *noAnalisado;
     noAnalisado = this->raiz;
     bool add_esq;
 
@@ -152,9 +152,9 @@ void ArvoreVP::insere(No *noInserindo)
     return;
 }
 
-noVP *ArvoreVP::SubNoParanoVP(No *noInserindo)
+NoVP *ArvoreVP::SubNoParanoVP(No *noInserindo)
 {
-    noVP *no = new noVP;
+    NoVP *no = new NoVP;
     no->cor = false;
     no->dir = this->Nill;
     no->esq = this->Nill;
@@ -168,7 +168,7 @@ noVP *ArvoreVP::SubNoParanoVP(No *noInserindo)
     return no;
 }
 
-void ArvoreVP::verificaRaiz(noVP *no)
+void ArvoreVP::verificaRaiz(NoVP *no)
 {
     while (1)
     {
@@ -222,7 +222,7 @@ void ArvoreVP::MetodoBusca(int vetorId[], int tam, ifstream &arqBin)
 int ArvoreVP::buscaPorId(char id[])
 {
     //cout<<"entra aqui"<<endl;
-    noVP *atual;
+    NoVP *atual;
     atual = this->raiz;
 
     while (1)
@@ -264,7 +264,7 @@ int ArvoreVP::buscaPorId(char id[])
     return atual->getId();
 }
 
-void ArvoreVP::verificaQuebraDePropriedade(noVP *no)
+void ArvoreVP::verificaQuebraDePropriedade(NoVP *no)
 { // verifica se existe caso 1,2 ou 3
 
     if (this->raiz->cor == false) //caso 1
@@ -273,9 +273,9 @@ void ArvoreVP::verificaQuebraDePropriedade(noVP *no)
         this->raiz->cor = true;
     }
 
-    noVP *pai;
-    noVP *tio;
-    noVP *avo;
+    NoVP *pai;
+    NoVP *tio;
+    NoVP *avo;
     bool paiDirAvo = false;
     bool noDirPai = false;
     pai = no->pai;
@@ -378,7 +378,7 @@ void ArvoreVP::verificaQuebraDePropriedade(noVP *no)
     }
 }
 
-void ArvoreVP::trocaCor(noVP *no)
+void ArvoreVP::trocaCor(NoVP *no)
 {
 
     if (no->cor == false)
@@ -391,11 +391,11 @@ void ArvoreVP::trocaCor(noVP *no)
     }
 }
 
-void ArvoreVP::rotacaoSimplesDir(noVP *no, noVP *pai, noVP *avo) // verificar
+void ArvoreVP::rotacaoSimplesDir(NoVP *no, NoVP *pai, NoVP *avo) // verificar
 {
     // pai->dir = avo;      // passa o avo para a direita do pai
     // avo->esq = this->Nill;
-    noVP *bis = avo->pai;
+    NoVP *bis = avo->pai;
     if (bis->getId() != this->Nill->getId())
     {
         if (bis->dir->getId() == avo->getId())
@@ -419,9 +419,9 @@ void ArvoreVP::rotacaoSimplesDir(noVP *no, noVP *pai, noVP *avo) // verificar
     //avo->pai = pai;      // o topo do avo passa a ser o pai
 }
 
-void ArvoreVP::rotacaoSimplesEsq(noVP *no, noVP *pai, noVP *avo) // verificar
+void ArvoreVP::rotacaoSimplesEsq(NoVP *no, NoVP *pai, NoVP *avo) // verificar
 {
-    noVP *bis = avo->pai;
+    NoVP *bis = avo->pai;
     if (bis->getId() != this->Nill->getId())
     {
         if (bis->dir->getId() == avo->getId())
@@ -443,7 +443,7 @@ void ArvoreVP::rotacaoSimplesEsq(noVP *no, noVP *pai, noVP *avo) // verificar
         avo->dir->pai = avo;
 }
 
-void ArvoreVP::rotacaoDuplaDir(noVP *no, noVP *pai, noVP *avo) // verificar
+void ArvoreVP::rotacaoDuplaDir(NoVP *no, NoVP *pai, NoVP *avo) // verificar
 {
     rotacaoSimplesEsq(no->dir, no, pai);
     avo->esq = no;
@@ -462,7 +462,7 @@ void ArvoreVP::rotacaoDuplaDir(noVP *no, noVP *pai, noVP *avo) // verificar
     //avo->esq = this->Nill;
 }
 
-void ArvoreVP::rotacaoDuplaEsq(noVP *no, noVP *pai, noVP *avo) // verificar
+void ArvoreVP::rotacaoDuplaEsq(NoVP *no, NoVP *pai, NoVP *avo) // verificar
 {
     rotacaoSimplesDir(no->esq, no, pai);
     avo->dir = no;
@@ -481,7 +481,7 @@ void ArvoreVP::rotacaoDuplaEsq(noVP *no, noVP *pai, noVP *avo) // verificar
     //avo->dir = this->Nill;
 }
 
-bool ArvoreVP::comparacaoAmaiorB(noVP *noA, noVP *noB)
+bool ArvoreVP::comparacaoAmaiorB(NoVP *noA, NoVP *noB)
 { // retornar Maior
     int n = 0;
     char a, b;
@@ -512,7 +512,7 @@ bool ArvoreVP::comparacaoAmaiorB(noVP *noA, noVP *noB)
     }
 }
 
-bool ArvoreVP::comparacaoAmenorB(noVP *noA, noVP *noB)
+bool ArvoreVP::comparacaoAmenorB(NoVP *noA, NoVP *noB)
 { // retorna menor
     int n = 0;
     char a, b;
@@ -543,7 +543,7 @@ bool ArvoreVP::comparacaoAmenorB(noVP *noA, noVP *noB)
     }
 }
 
-bool ArvoreVP::comparacaoiDmaiorB(char noA[], noVP *noB)
+bool ArvoreVP::comparacaoiDmaiorB(char noA[], NoVP *noB)
 { // retornar Maior
     int n = 0;
     char a, b;
@@ -574,7 +574,7 @@ bool ArvoreVP::comparacaoiDmaiorB(char noA[], noVP *noB)
     }
 }
 
-bool ArvoreVP::comparacaoiDmenorB(char noA[], noVP *noB)
+bool ArvoreVP::comparacaoiDmenorB(char noA[], NoVP *noB)
 { // retornar Maior
     int n = 0;
     char a, b;
@@ -604,7 +604,7 @@ bool ArvoreVP::comparacaoiDmenorB(char noA[], noVP *noB)
     }
 }
 
-bool ArvoreVP::comparacaoiDigualB(char noA[], noVP *noB)
+bool ArvoreVP::comparacaoiDigualB(char noA[], NoVP *noB)
 { // retornar Maior
     int n = 0;
     char a, b;
