@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include "noVP.h"
-#include "no.h"
+#include "No.h"
 
 using namespace std;
 
@@ -36,7 +36,7 @@ public:
     void trocaCor(noVP *no);
     noVP *SubNoParanoVP(No *noInserindo);
     void criaArvore(int vetorId[], int tam, ifstream &arqBin);
-    void ImprimeArvore(noVP *no);
+    void ImprimeArvore(noVP *no, int i);
 };
 
 

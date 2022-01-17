@@ -5,22 +5,23 @@
 
 using namespace std;
 
-class arvoreb
+class Arvoreb
 {
     TreeNode *root;
     int t;
 
 public:
-
     int comparacoes;
+    void criaArvore(int vetorId[], int tam, ifstream &arqBin);
 
-    arvoreb(int temp)
+
+    Arvoreb(int temp)
     {
         root = NULL;
         t = temp;
         comparacoes = 0;
     }
-    ~arvoreb();
+    ~Arvoreb();
 
     void traverse()
     {
@@ -28,12 +29,12 @@ public:
             root->traverse();
     }
 
-    TreeNode *search(int k)
+    TreeNode *search(char* k)//aqui
     {
         return (root == NULL) ? NULL : root->search(k);
     }
 
-    int insert(int k, No no, int comp);
+    int insert(char k[], No no, int comp);//aqui
 };
 
 #endif // ARVOREB_H
