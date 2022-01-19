@@ -715,7 +715,7 @@ int main(int argc, char const *argv[])
 
             if (selecao == 3)
             {
-                system("cls");
+                system("clear");
                 system("cls");
             }
             if (selecao == -1)
