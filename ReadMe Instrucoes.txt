@@ -1,5 +1,5 @@
 compilação:
-g++ main.cpp -o "nomeDoExecutavel".exe
+g++ *.cpp -o "nomeDoExecutavel".exe
 
 execução:
 ./"nomeDoExecutavel".exe  caminho/do/arquivo/tiktok_app_reviews.csv
