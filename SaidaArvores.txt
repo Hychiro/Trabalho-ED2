@@ -26,3 +26,57 @@ Total Encontrado = 29
 Total Nao Encontrado = 71
 Tempo de Busca: 0.0080078
 Total de comparacao ao Buscar: 2395
+
+Arvore B
+
+Ordem 20
+
+M=1
+Numero de comparacoes de chaves na insercao: 55955971
+Tempo decorrido para insercao: 197.303
+Total Encontrado = 32
+Total Nao Encontrado = 68
+Total Comparacoes de Busca = 6156
+Tempo de Busca = 0.0170061
+
+M=2
+Numero de comparacoes de chaves na insercao: 55693696
+Tempo decorrido para insercao: 199.6
+Total Encontrado = 35
+Total Nao Encontrado = 65
+Total Comparacoes de Busca = 6070
+Tempo de Busca = 0.0170157
+
+M=3
+Numero de comparacoes de chaves na insercao: 54889830
+Tempo decorrido para insercao: 202.015
+Total Encontrado = 32
+Total Nao Encontrado = 68
+Total Comparacoes de Busca = 6343
+Tempo de Busca = 0.0170151
+
+Ordem 200
+
+M=1
+Numero de comparacoes de chaves na insercao: 281194602
+Tempo decorrido para insercao: 285.823
+Total Encontrado = 33
+Total Nao Encontrado = 67
+Total Comparacoes de Busca = 27122
+Tempo de Busca = 0.0210203
+
+M=2
+Numero de comparacoes de chaves na insercao: 278880653
+Carregando upvotes dos registro para busca
+Total Encontrado = 26
+Total Nao Encontrado = 74
+Total Comparacoes de Busca = 27247
+Tempo de Busca = 0.0280259
+
+M=3
+Numero de comparacoes de chaves na insercao: 279960196
+Tempo decorrido para insercao: 307.031
+Total Encontrado = 24
+Total Nao Encontrado = 76
+Total Comparacoes de Busca = 24693
+Tempo de Busca = 0.026024

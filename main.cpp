@@ -166,7 +166,7 @@ void metodosArvoreb(Arvoreb *arv, double tempo, int comparacoes, DatabaseArquite
 void InsereNosArvoreb(Arvoreb *arv, DatabaseArquitetura dbA, ifstream &arqBin)
 {
     cout << "ultima pos = " << dbA.getIdUltimaPosicao(arqBin) << endl;
-    int imp = 10000; //<---- tem q ser 1MILHAO ======================
+    int imp = 1000000; //<---- tem q ser 1MILHAO ======================
     //cin >> imp;
     int *vetValSorteados = new int[imp];
 
