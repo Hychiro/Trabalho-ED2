@@ -49,6 +49,7 @@
         "ctime": "cpp",
         "ratio": "cpp",
         "string_view": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "xiosbase": "cpp"
     }
 }

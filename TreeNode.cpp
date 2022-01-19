@@ -137,7 +137,6 @@ void TreeNode::splitChild(int i, TreeNode *y)
     nos[j + 1] = nos[j];
   nos[i] = y->nos[t - 1];
   n = n + 1;
-  delete z;
 }
 bool TreeNode::comparacaoiDmaiorB(char noA[], NoB noB, int *comp)
 { // retornar Maior
