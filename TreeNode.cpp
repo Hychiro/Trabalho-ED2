@@ -1,8 +1,9 @@
 #include "TreeNode.h"
 #include <iostream>
 
-#include "No.h"
+
 #include "Arvoreb.h"
+#include "NoB.h"
 
 using namespace std;
 
@@ -13,61 +14,13 @@ TreeNode::TreeNode(int t1, bool leaf1)
 
   C = new TreeNode *[2 * t];
   //keys = new int[2 * t - 1];
-  nos = new No[2 * t - 1]; //inicializa o vetor de nós
+  nos = new NoB [2 * t - 1]; //inicializa o vetor de nós
 
   n = 0;
 }
 
 TreeNode::~TreeNode()
 {
-}
-
-TreeNode *TreeNode::LiberaNode(TreeNode *p)
-{
-  int i = 0;
-  TreeNode *aux;
-  for (i = 0; i < n; i++)
-  {
-    if (leaf == false)
-    {
-      if (C[i] != nullptr)
-      {
-        aux = p->LiberaNode(C[i]);
-        C[i] = aux;
-      }
-    }
-    else
-    {
-      cout << "deletei" << endl;
-      p = C[i];
-      cout << "cheguei1" << endl;
-      if (p != nullptr)
-      {
-        p->nos = nullptr;
-        cout << "cheguei2" << endl;
-        delete p;
-      }
-      cout << "cheguei3" << endl;
-      p = nullptr;
-    }
-  }
-  cout << "-1 No" << endl;
-  if (aux == nullptr)
-  {
-    cout << "deletei2" << endl;
-    p = C[i];
-    cout << "cheguei12" << endl;
-    if (p != nullptr)
-    {
-      p->nos = nullptr;
-      cout << "cheguei22" << endl;
-      delete p;
-    }
-    cout << "cheguei32" << endl;
-    p = nullptr;
-  }
-
-  return p;
 }
 
 void TreeNode::traverse()
@@ -105,7 +58,7 @@ TreeNode *TreeNode::search(char k[], int *comp)
   return C[i]->search(k, comp);
 }
 
-void TreeNode::insertVal(char k[], No no, int *comp)
+void TreeNode::insertVal(char k[], NoB no, int *comp)
 { //aqui
   int i = n - 1;
   //cout<<"id insertVal: "<< k<<endl;
@@ -185,7 +138,7 @@ void TreeNode::splitChild(int i, TreeNode *y)
   nos[i] = y->nos[t - 1];
   n = n + 1;
 }
-bool TreeNode::comparacaoiDmaiorB(char noA[], No noB, int *comp)
+bool TreeNode::comparacaoiDmaiorB(char noA[], NoB noB, int *comp)
 { // retornar Maior
   int n = 0;
   char a, b;
@@ -217,7 +170,7 @@ bool TreeNode::comparacaoiDmaiorB(char noA[], No noB, int *comp)
   }
 }
 
-bool TreeNode::comparacaoiDmenorB(char noA[], No noB, int *comp)
+bool TreeNode::comparacaoiDmenorB(char noA[], NoB noB, int *comp)
 { // retornar Maior
   int n = 0;
   char a, b;
@@ -249,7 +202,7 @@ bool TreeNode::comparacaoiDmenorB(char noA[], No noB, int *comp)
   }
 }
 
-bool TreeNode::comparacaoiDigualB(char noA[], No noB, int *comp)
+bool TreeNode::comparacaoiDigualB(char noA[], NoB noB, int *comp)
 { // retornar Maior
   int n = 0;
   char a, b;

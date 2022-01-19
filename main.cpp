@@ -6,6 +6,7 @@
 #include <random>
 #include <iostream>
 #include "Arvoreb.h"
+#include "NoB.h"
 #include "TreeNode.h"
 #include "ArvoreVP.h"
 
@@ -95,16 +96,14 @@ void metodosArvoreb(Arvoreb *arv, double tempo, int comparacoes, DatabaseArquite
                 while (arqBin.read((char *)aux2, sizeof(No)))
                 {
                     if (aux2->getId() == vetValSorteados[i])
-                    {
-                        //cout << "buscando pelo id: " << aux2->review_id << "naArvore//Pos = " << aux2->getId() << endl;
-                        if (arv->search(aux2->review_id, &comp) != NULL)
+                    {                    
+                        char a[90] = "gp:AOqpTOEDQ9__FJihY_0V4iwqy4P2OK8tGVR1tFBixYbnsY3FmxNyewvxi4Yjd-ZCiyecVPB8MKH-DpWG5QLLnA";
+                        if (arv->search(aux2->review_id, &comp)/* arv->search(a, &comp)*/ != NULL)
                         {
-                            //cout << "id encontrado" << endl;
                             enc++;
                         }
                         else
                         {
-                            //cout << "id nao encontrado" << endl;
                             Nenc++;
                         }
                         delete aux2;
@@ -167,14 +166,13 @@ void metodosArvoreb(Arvoreb *arv, double tempo, int comparacoes, DatabaseArquite
 void InsereNosArvoreb(Arvoreb *arv, DatabaseArquitetura dbA, ifstream &arqBin)
 {
     cout << "ultima pos = " << dbA.getIdUltimaPosicao(arqBin) << endl;
-    int imp = 2000; //<---- tem q ser 1MILHAO ======================
+    int imp = 10000; //<---- tem q ser 1MILHAO ======================
     //cin >> imp;
     int *vetValSorteados = new int[imp];
 
     vetValSorteados = sorteia(dbA.getIdUltimaPosicao(arqBin), imp);          // precisa ser feito
     high_resolution_clock::time_point inicio = high_resolution_clock::now(); // começa o cronometro
     int comparacoes = 0;
-
     cout << "Carregando upvotes dos registro" << endl;
     for (int i = 0; i < imp; i++)
     {
@@ -184,13 +182,15 @@ void InsereNosArvoreb(Arvoreb *arv, DatabaseArquitetura dbA, ifstream &arqBin)
         {
             if (aux->getId() == vetValSorteados[i])
             {
-                No p = *aux;
+                //No p = *aux;
+                NoB p;
+                p.setReviewId(aux->review_id);
                 //cout << "id: " << i << " -- " << p.review_id << endl;
 
                 arv->insert(p.review_id, p, &comparacoes);
 
                 delete aux;
-                break;
+                break;  
             }
         }
     }
@@ -221,7 +221,7 @@ void menuArvoreb(DatabaseArquitetura dbA, ifstream &arqBin)
                 cout << "================================ Arvore de ordem 20 ===== Repeticao " << i + 1 << " ================================" << endl;
                 Arvoreb *arv = new Arvoreb(ordem);  // cria a arvore B com a ordem passada
                 InsereNosArvoreb(arv, dbA, arqBin); // monta a arvore a partir da leitura do arquivo
-                delete arv;
+                //delete arv; 
                 cout << "=============================================================================================" << endl;
             }
             cout << "Media de tempo: " <<mediaTempo/3 << endl;
@@ -235,7 +235,7 @@ void menuArvoreb(DatabaseArquitetura dbA, ifstream &arqBin)
                 cout << "=============================== Arvore de ordem 200 ===== Repeticao " << i + 1 << " ===============================" << endl;
                 Arvoreb *arv = new Arvoreb(ordem);  // cria a arvore B com a ordem passada
                 InsereNosArvoreb(arv, dbA, arqBin); // monta a arvore a partir da leitura do arquivo
-                delete arv;
+                //delete arv;
                 cout << "=============================================================================================" << endl;
             }
             cout << "Media de tempo: " <<mediaTempo/3 << endl;

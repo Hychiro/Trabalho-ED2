@@ -3,16 +3,28 @@
 #include <sstream>
 #include <string>
 #include "Arvoreb.h"
+#include "NoB.h"
 
 using namespace std;
 
 Arvoreb::~Arvoreb()
 {
-  //root = root->LiberaNode(root);
-  root = root->LiberaNode(root);
+  Deletar(root);
 }
 
-void Arvoreb::insert(char k[], No no, int* comp) // aqui
+void Arvoreb::Deletar(TreeNode *p){
+  int i = 0;
+  for(i = 0; i < p->t; i++){
+    if(p->C[i] != nullptr){
+      Deletar(p->C[i]);
+    }
+    if(i == (p->t) - 1){
+      delete p;
+    }
+  }
+}
+
+void Arvoreb::insert(char k[], NoB no, int* comp) // aqui
 {
   // cout<<"insert id: "<<k<<endl;
 

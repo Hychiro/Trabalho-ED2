@@ -32,7 +32,8 @@ public:
         return (root == NULL) ? NULL : root->search(k,comp);
     }
 
-    void insert(char k[], No no, int* comp);//aqui
+    void insert(char k[], NoB no, int* comp);//aqui
+    void Deletar(TreeNode *p);
 };
 
 #endif // ARVOREB_H

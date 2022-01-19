@@ -1,37 +1,33 @@
 #ifndef TREENODE_H
 #define TREENODE_H
 
-#include "No.h"
+#include "NoB.h"
 
 class TreeNode
 {
     public:
-    //int *keys; //armazena um ponteiro para as chaves, que serão = posição 9+n do char id
     int t;
     TreeNode **C;
     int n;
     bool leaf;
 
-    No *nos; //<---- um vetor de nós, o id do nó precisa ser igual ao seu id em -->*keys<--//exemplo keys[0] precisa armazenar o id de nos[0]<---
+    NoB *nos; //<---- um vetor de nós, o id do nó precisa ser igual ao seu id em -->*keys<--//exemplo keys[0] precisa armazenar o id de nos[0]<---
 
     TreeNode(int temp, bool bool_leaf);
     ~TreeNode();
 
-    //char **keys; //armazena um ponteiro para as chaves, que serão = posição 9+n do char id
 
     int *keys;
 
-    //TreeNode* LiberaNode(TreeNode * p);
-    TreeNode* LiberaNode(TreeNode *p);
-    void insertVal(char k[], No no, int* comp); //aqui
+    void insertVal(char k[], NoB no, int* comp); //aqui
     void splitChild(int i, TreeNode *y);
     void traverse();
 
     TreeNode *search(char k[],int* comp);
 
-    bool comparacaoiDmaiorB(char noA[], No noB, int *comp);
-    bool comparacaoiDmenorB(char noA[], No noB, int *comp);
-    bool comparacaoiDigualB(char noA[], No noB, int *comp);
+    bool comparacaoiDmaiorB(char noA[], NoB noB, int *comp);
+    bool comparacaoiDmenorB(char noA[], NoB noB, int *comp);
+    bool comparacaoiDigualB(char noA[], NoB noB, int *comp);
 
     friend class arvoreb;
 };
