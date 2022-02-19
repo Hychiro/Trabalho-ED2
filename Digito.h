@@ -13,7 +13,9 @@ int repeticoes;
 bool jaBuscado;
 Digito *proximo;
 Digito *anterior;
-    
+Digito *filhoEsq;
+Digito *filhoDir;
+
 };
 
 #endif // DIGITO_HS
