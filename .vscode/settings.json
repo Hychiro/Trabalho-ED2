@@ -50,6 +50,7 @@
         "ratio": "cpp",
         "string_view": "cpp",
         "stack": "cpp",
-        "xiosbase": "cpp"
+        "xiosbase": "cpp",
+        "optional": "cpp"
     }
 }
