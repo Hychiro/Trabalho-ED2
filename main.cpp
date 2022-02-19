@@ -16,6 +16,46 @@ using namespace std::chrono;
 double mediaTempo = 0;
 int mediaComp = 0;
 
+void swap(int *a, int *b)
+{
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+int partition(int arr[], int low, int high)
+{
+    int pivot = arr[high]; // pivot
+    int i = (low - 1);     // Index of smaller element and indicates the right position of pivot found so far
+
+    for (int j = low; j <= high - 1; j++)
+    {
+        // If current element is smaller than the pivot
+        if (arr[j] < pivot)
+        {
+            i++; // increment index of smaller element
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+
+void quickSort(int arr[], int low, int high)
+{
+    if (low < high)
+    {
+        /* pi is partitioning index, arr[p] is now
+                                            at right place */
+        int pi = partition(arr, low, high);
+
+        // Separately sort elements before
+        // partition and after partition
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
 int *sorteia(int max, int n)
 {
     srand(time(NULL));
@@ -31,30 +71,17 @@ int *sorteia(int max, int n)
     while (qtdSorteados != n)
     {
         int numeroSorteado;
-        bool repete;
-        //do
-        //{
-        //repete = false;
-        //int igual = 0;
         numeroSorteado = ((rand() * rand()) % max) + 1;
-        //for (int i = 0; i < qtdSorteados; i++)
-        //{
-        //if (numeroSorteado == vetorN[i])
-        //{
-        //    igual++;
-        //}
-        //}
-        //if (igual > 0)
-        //{
-        //    repete = true;
-        //}
-        //} while (repete);
         vetorN[qtdSorteados] = numeroSorteado;
         qtdSorteados++;
     }
 
+    //Ordenação do Vetor
+    cout << "ordenando" << endl;
+    quickSort(vetorN, 0, n);
+
     return vetorN;
-}
+} 
 
 void metodosArvoreb(Arvoreb *arv, double tempo, int comparacoes, DatabaseArquitetura dbA, ifstream &arqBin)
 {
