@@ -76,34 +76,26 @@ void Digito::imprimePorNivel(Digito *p, int nivel)
 
 void Digito::comprime(char dig, ofstream &comprimido)
 {
-    bool encontrou = false;
     string text = "";
-    auxComprime(this, dig, text, &encontrou, comprimido);
+    auxComprime(this, dig, text, comprimido);
 }
 
-void Digito::auxComprime(Digito *p, char dig, string text, bool *encontrou, ofstream &comprimido)
+void Digito::auxComprime(Digito *p, char dig, string text, ofstream &comprimido)
 {
     if (p != NULL)
     {
         if (p->digito == dig)
         {
-            *encontrou = true;
             comprimido << text;
             return;
         }
 
         text = text + '0';
-        if (!*encontrou)
-        {
-            auxComprime(p->esq, dig, text, encontrou, comprimido);
-            text.pop_back();
-        }
+        auxComprime(p->esq, dig, text, comprimido);
+        text.pop_back();
         text = text + '1';
-        if (!*encontrou)
-        {
-            auxComprime(p->dir, dig, text, encontrou, comprimido);
-            text.pop_back();
-        }
+        auxComprime(p->dir, dig, text, comprimido);
+        text.pop_back();
     }
 }
 

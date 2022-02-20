@@ -14,7 +14,6 @@ public:
 
     char digito;
     int repeticoes;
-    bool jaBuscado;
     Digito *proximo;
     Digito *anterior;
     Digito *esq;
@@ -25,7 +24,7 @@ public:
     void imprimePorNivel(Digito *p, int nivel);
 
     void comprime(char dig, ofstream &comprimido);
-    void auxComprime(Digito *p, char dig, string text, bool *encontrou, ofstream &comprimido);
+    void auxComprime(Digito *p, char dig, string text, ofstream &comprimido);
     void descomprimir(char *buffer, int tamanho, ofstream &descomprimido);
     void auxDescomprimir(Digito *p, char *buffer, int* i, ofstream &descomprimido);
 };

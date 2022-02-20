@@ -16,8 +16,8 @@ public:
     Digito* fim= new Digito();
     int tamanhoLista;
 
-    void ConstroiLista(ifstream &arqBin,int vetorId[],int tam);
-    void AdicionaReview(char review[3000]);
+    void ConstroiLista(ofstream &consultaReview, ifstream &arqBin,int vetorId[],int tam);
+    void AdicionaReview(char review[3000],ofstream &consultaReview);
     Digito* BuscaMaisRepeticoes();
     void AdicionaFimDaLista(char a);
     void ImprimeLista();

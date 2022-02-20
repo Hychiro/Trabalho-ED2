@@ -134,18 +134,20 @@ int main()
 {
     string arqNome = "tiktok_app_reviews.bin";
     ifstream arqBin;
+    ofstream consultaReview;
     DatabaseArquitetura dbA;
     arqBin.open(arqNome, ios::in | ios_base::binary | ios_base::app);
+    consultaReview.open("arqConsulta.bin", ios::out | ios_base::binary | ios_base::app);
 
-    int tam = 1;
+    int tam = 100000;
     ListaDigitos a;
     cout << "Digite o Numero 1 de reviews Sorteadas: " << endl;
     int *vetorId = new int[tam];
-    vetorId = sorteia(1000, tam);
+    vetorId = sorteia(3500000, tam);
     cout << "aqui 1" << endl;
-    a.ConstroiLista(arqBin, vetorId, tam);
+    a.ConstroiLista(consultaReview,arqBin, vetorId, tam);
     cout << "acaba de construir a lista" << endl;
-    a.ImprimeLista();
+    consultaReview.close();
 
     int nArvores = a.tamanhoLista;
 
@@ -181,15 +183,6 @@ int main()
         }
     }
 
-    p = &vet[0];
-    while (p != nullptr)
-    {
-        cout << p->repeticoes << endl;
-        p = p->proximo;
-    }
-    cout << "=======================================" << endl
-         << endl
-         << endl;
 
     Digito *primeiro = &vet[0];
     Digito *newPrimeiro;
@@ -232,18 +225,19 @@ int main()
 
     cout << "FINAL: " << primeiro->repeticoes << endl;
 
-    primeiro->imprimeN();
+
 
     ofstream comprimido;
     comprimido.open("comprimido.bin", ios::binary | ios::trunc);
+    ifstream consultaReview2;
+    consultaReview2.open("arqConsulta.bin", ios::in | ios_base::binary | ios_base::app);
 
     ListaDigitos b;
-    b.constroiArquivoComprimida(arqBin, comprimido, vetorId, tam, primeiro);
+    b.constroiArquivoComprimida(consultaReview2, comprimido, vetorId, tam, primeiro);//arqBin
     comprimido.close();
     ifstream descomprimir;
     ofstream descomprimido;
-    // ifstream arqBin;
-    // arqBin.open(arqNome, ios_base::binary);
+
 
     descomprimir.open("comprimido.bin", ios::in | ios_base::binary | ios_base::app);
     descomprimido.open("descomprimido.txt", ios::out);
@@ -258,5 +252,6 @@ int main()
     primeiro->descomprimir(buffer, tamanho, descomprimido);
     descomprimir.close();
     descomprimido.close();
+    cin>>tamanho;
     return 0;
 }

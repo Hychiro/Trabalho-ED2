@@ -18,23 +18,23 @@ ListaDigitos::ListaDigitos()
     this->tamanhoLista = 0;
 }
 
-void ListaDigitos::ConstroiLista(ifstream &arqBin, int vetorId[], int tam)
+void ListaDigitos::ConstroiLista(ofstream &consultaReview,ifstream &arqBin, int vetorId[], int tam)
 {
-    cout << "erro que as vezes acontece e n faz sentido 1" << endl;
     No *aux = new No();
-    cout << "erro que as vezes acontece e n faz sentido 2" << endl;
     arqBin.seekg(0, ios_base::beg);
     int i = 0;
     while (arqBin.read((char *)aux, sizeof(No)))
     {
         while (vetorId[i + 1] == aux->getId())
         {
-            this->AdicionaReview(aux->review_text);
+            this->AdicionaReview(aux->review_text,consultaReview);
+            consultaReview<<aux->review_text;
             i++;
         }
         if (aux->getId() == vetorId[i])
         {
-            this->AdicionaReview(aux->review_text);
+            this->AdicionaReview(aux->review_text,consultaReview);
+            consultaReview<<aux->review_text;
             i++;
             if (i >= tam)
             {
@@ -53,7 +53,6 @@ void ListaDigitos::AdicionaFimDaLista(char a)
     { // caso ele seja o primeiro elemento da lista
         novo->digito = a;
         novo->repeticoes = 1;
-        novo->jaBuscado = false;
         novo->dir = NULL;
         novo->esq = NULL;
 
@@ -68,7 +67,6 @@ void ListaDigitos::AdicionaFimDaLista(char a)
     { // caso contrario
         novo->digito = a;
         novo->repeticoes = 1;
-        novo->jaBuscado = false;
         novo->dir = NULL;
         novo->esq = NULL;
 
@@ -81,7 +79,7 @@ void ListaDigitos::AdicionaFimDaLista(char a)
     }
 }
 
-void ListaDigitos::AdicionaReview(char review[3000])
+void ListaDigitos::AdicionaReview(char review[3000],ofstream &consultaReview)
 {
     Digito *aux = new Digito();
     for (int i = 0; i < 3000; i++) // para todo caractere da review
@@ -108,26 +106,6 @@ void ListaDigitos::AdicionaReview(char review[3000])
         }
     }
     delete aux;
-}
-
-Digito *ListaDigitos::BuscaMaisRepeticoes()
-{
-    Digito *aux = new Digito();
-    Digito *Resultado;
-    int maior = 0;
-    for (Digito *aux = this->inicio; aux != NULL; aux = aux->proximo) // percorrer toda a lista
-    {
-        if (aux->repeticoes > maior)
-        {
-            Resultado = aux;
-            maior = aux->repeticoes;
-        }
-    }
-    delete aux;
-
-    Resultado->jaBuscado = true;
-
-    return Resultado;
 }
 
 void ListaDigitos::ImprimeLista()
@@ -262,30 +240,29 @@ void ListaDigitos::apagaDaLista(Digito *a, Digito *b) //botar na struct da lista
 
 void ListaDigitos::constroiArquivoComprimida(ifstream &arqBin, ofstream &comprimido, int vetorId[], int tam, Digito *raiz)
 {
-    cout << "erro que as vezes acontece e n faz sentido 1" << endl;
-    No *aux = new No();
-    cout << "erro que as vezes acontece e n faz sentido 2" << endl;
-    arqBin.seekg(0, ios_base::beg);
-    int i = 0;
-    while (arqBin.read((char *)aux, sizeof(No)))
-    {
-        while (vetorId[i + 1] == aux->getId())
-        {
-            this->adicionaReviewComprimido(aux->review_text, comprimido, raiz);
-            i++;
-        }
-        if (aux->getId() == vetorId[i])
-        {
-            this->adicionaReviewComprimido(aux->review_text, comprimido, raiz);
-            i++;
-            if (i >= tam)
-            {
-                cout << "ACABOU" << endl;
-                break;
-            }
-        }
+
+
+    arqBin.seekg(0, arqBin.end);
+    int tamanho = arqBin.tellg();
+    arqBin.seekg(0, arqBin.beg);
+    char *buffer = new char[tamanho];
+    arqBin.read(buffer, tamanho);
+
+    int i=0;
+
+    while(i<tamanho){
+        raiz->comprime(buffer[i],comprimido);
+        i++;
     }
-    delete aux;
+
+    // char *aux = new char[3000];
+    // arqBin.seekg(0, ios_base::beg);
+    // int i = 0;
+    // while (arqBin.read((char *)aux, sizeof(char[3000])))
+    // {
+    //     this->adicionaReviewComprimido(aux, comprimido, raiz);
+    // }
+    // delete aux;
 }
 
 void ListaDigitos::adicionaReviewComprimido(char review[3000], ofstream &comprimido, Digito *raiz)
