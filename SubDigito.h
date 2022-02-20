@@ -20,6 +20,7 @@ public:
     char getDigito() { return digito; };
     void setDigito(char i) { digito = i; };
 
+    double getTamCodigo() { return codigo.size(); };
     string getCodigo() { return codigo; };
     void setCodigo(string i) { codigo = i; };
 

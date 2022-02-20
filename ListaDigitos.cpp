@@ -47,25 +47,27 @@ void ListaDigitos::ConstroiLista(ofstream &constroiConsultaReview, ifstream &arq
     delete aux;
 }
 
+void ListaDigitos::AdicionaPrimeiroElemento(char a)
+{
+    Digito *novo = new Digito();
+
+    novo->digito = a;
+    novo->repeticoes = 1;
+    novo->dir = NULL;
+    novo->esq = NULL;
+
+    novo->anterior = NULL;
+    novo->proximo = NULL;
+    this->inicio = novo;
+    this->fim = novo;
+
+    this->tamanhoLista++;
+}
+
 void ListaDigitos::AdicionaFimDaLista(char a)
 {
     Digito *novo = new Digito();
-    if (this->inicio == NULL)
-    { // caso ele seja o primeiro elemento da lista
-        novo->digito = a;
-        novo->repeticoes = 1;
-        novo->dir = NULL;
-        novo->esq = NULL;
 
-        novo->anterior = NULL;
-        novo->proximo = NULL;
-        this->inicio = novo;
-        this->fim = novo;
-
-        this->tamanhoLista++;
-    }
-    else
-    { // caso contrario
         novo->digito = a;
         novo->repeticoes = 1;
         novo->dir = NULL;
@@ -77,32 +79,34 @@ void ListaDigitos::AdicionaFimDaLista(char a)
         this->fim = novo;
 
         this->tamanhoLista++;
-    }
 }
 
 void ListaDigitos::AdicionaReview(char review[3000])
 {
+
     Digito *aux = new Digito();
-    for (int i = 0; i < 3000; i++) // para todo caractere da review
+    int i = 0;
+
+    if (this->inicio == NULL) // se a lista é vazia
     {
-        if (this->inicio == NULL)
+        AdicionaPrimeiroElemento(review[0]);
+        i++;
+    }
+
+    for (i; i < 3000; i++) // para todo caractere da review
+    {
+
+        for (Digito *aux = this->inicio; aux != NULL; aux = aux->proximo) // percorrer toda a lista
         {
-            AdicionaFimDaLista(review[i]);
-        }
-        else
-        {
-            for (Digito *aux = this->inicio; aux != NULL; aux = aux->proximo) // percorrer toda a lista
-            {
-                if (aux->digito == review[i])
-                {                                          // se achar um caractere igual na lista
-                    aux->repeticoes = aux->repeticoes + 1; // soma 1 nas reptições
-                    break;                                 // e para de percorrer a lista
-                }
-                else if (aux->proximo == NULL)
-                { // se não achar um caractere igual na lista
-                    this->AdicionaFimDaLista(review[i]);
-                    break; // adiciona no final da lista
-                }
+            if (aux->digito == review[i])
+            {                                          // se achar um caractere igual na lista
+                aux->repeticoes = aux->repeticoes + 1; // soma 1 nas reptições
+                break;                                 // e para de percorrer a lista
+            }
+            else if (aux->proximo == NULL)
+            { // se não achar um caractere igual na lista
+                this->AdicionaFimDaLista(review[i]);
+                break; // adiciona no final da lista
             }
         }
     }

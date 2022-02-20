@@ -178,12 +178,12 @@ void funcCompDecomp(int tam, int numMaxReviews, ofstream &consultaReview, ifstre
 
 void modTest(int tam, int numMaxReviews, ofstream &consultaReview, ifstream &arqBin, ofstream &saida)
 {
-
     double tempo;
-    int taxaCompressao;
-    int numComparacoes;
+    double taxaCompressao=0;
+    int numComparacoes=0;
     for (int i = 0; i < 3; i++)
     {
+        cout<<"Para "<<tam<<" repeticao "<<i<<endl;
         high_resolution_clock::time_point inicio1 = high_resolution_clock::now();
 
         /// Primeira Parte
@@ -213,16 +213,6 @@ void modTest(int tam, int numMaxReviews, ofstream &consultaReview, ifstream &arq
         Digito *raiz = a.criaArvoreNaLista(primeiro);
         /// Segunda Parte
 
-        int tamOriginal = 0;
-        int tamNovo = 0;
-        for (int k = 0; k < tamanhoVetDigitos; k++)
-        {
-            tamOriginal = tamOriginal + (vetorDigitos[k].getNumReps() * 8);
-            tamNovo = tamNovo + (vetorDigitos[k].getNumReps() * vetorDigitos[k].getCodigo().length());
-        }
-
-        taxaCompressao = tamNovo / tamOriginal;
-
         numComparacoes = a.getNumComps();
 
         high_resolution_clock::time_point fim2 = high_resolution_clock::now();
@@ -239,6 +229,25 @@ void modTest(int tam, int numMaxReviews, ofstream &consultaReview, ifstream &arq
         consultaReview2.open("arqConsulta.bin", ios::in | ios_base::binary | ios_base::app);
 
         a.adicionaCodigoDigitoComprimido(vetorDigitos, raiz, tamanhoVetDigitos);
+
+        double tamOriginal = 0;
+        double tamNovo = 0;
+        for (int k = 0; k < tamanhoVetDigitos; k++)
+        {
+            if(vetorDigitos[k].getDigito()!='\0'){
+            tamOriginal = (double)tamOriginal + ((double)vetorDigitos[k].getNumReps());
+            tamNovo = (double)tamNovo + ((double)vetorDigitos[k].getNumReps() * (double)vetorDigitos[k].getTamCodigo());
+            }
+        }
+        
+        if(((int)tamNovo%8)==0){
+            tamNovo=tamNovo/8;
+        }else{
+            tamNovo=(int)((tamNovo/8)+1);
+        }
+
+        taxaCompressao = taxaCompressao+(double)((tamOriginal-tamNovo)/tamOriginal);
+
         a.constroiArquivoComprimida(consultaReview2, comprimido, vetorDigitos, tamanhoVetDigitos);
 
         comprimido.close();
@@ -279,9 +288,11 @@ void modTest(int tam, int numMaxReviews, ofstream &consultaReview, ifstream &arq
         mediaTempo = tempo + mediaTempo;
     }
     saida << "Tempo medio de execucao total para " << tam << ": " << mediaTempo / 3 << endl;
-    saida << "Taxa de compressao para " << tam << ": " << taxaCompressao << endl;
-    saida << "Numero de comparacoes para " << tam << ": " << numComparacoes << endl;
+    saida << "Taxa de compressao media para " << tam << ": " << (double)((taxaCompressao*100)/3)<<"%" << endl;
+    saida << "Numero de comparacoes media para " << tam << ": " << numComparacoes/3 << endl;
     mediaTempo = 0;
+    taxaCompressao=0;
+    numComparacoes=0;
 }
 
 int menu(DatabaseArquitetura dbA, ifstream &arqBin)

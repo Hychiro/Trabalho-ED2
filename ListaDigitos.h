@@ -23,6 +23,7 @@ public:
     Digito *BuscaMaisRepeticoes();
 
     void AdicionaFimDaLista(char a);
+    void AdicionaPrimeiroElemento(char a);
     void ImprimeLista();
 
     void apagaDaLista(Digito *a, Digito *b);
