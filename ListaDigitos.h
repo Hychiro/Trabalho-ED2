@@ -20,6 +20,7 @@ public:
     void ConstroiLista(ofstream &constroiConsultaReview, ifstream &arqBin, int vetorId[], int tam);
     void AdicionaReview(char review[3000]);
     Digito *BuscaMaisRepeticoes();
+
     void AdicionaFimDaLista(char a);
     void ImprimeLista();
 

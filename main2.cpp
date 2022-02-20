@@ -143,6 +143,7 @@ int main()
     arqBin.open(arqNome, ios::in | ios_base::binary | ios_base::app);
     consultaReview.open("arqConsulta.bin", ios::out | ios_base::binary);
 
+
     int tam = 100000;
     ListaDigitos a;
 
@@ -155,6 +156,7 @@ int main()
     consultaReview.close();
 
     cout << "acaba de construir a lista" << endl;
+
 
     SubDigito *vetDigitos = new SubDigito[a.tamanhoLista];
     int tamanhoVetDigitos = a.tamanhoLista;
@@ -224,6 +226,7 @@ int main()
 
     ////////////////////////////////////////////////////////
     ////func constroi arv
+
     Digito *primeiro = &vet[0];
     Digito *newPrimeiro;
     while (nArvores > 1)
@@ -280,13 +283,16 @@ int main()
     //     cout << "Posicao: " << o << " ; Digito: " << vetDigitos[o].getDigito() << " ; Codigo: " << vetDigitos[o].getCodigo() << endl;
     // }
 
+
     ofstream comprimido;
     comprimido.open("comprimido.bin", ios::binary | ios::trunc);
     ifstream consultaReview2;
     consultaReview2.open("arqConsulta.bin", ios::in | ios_base::binary | ios_base::app);
 
     ListaDigitos b;
+
     b.constroiArquivoComprimida(consultaReview2, comprimido, vetDigitos, tamanhoVetDigitos);
+
     comprimido.close();
 
     high_resolution_clock::time_point fim2 = high_resolution_clock::now(); // termina o cronometro
@@ -318,5 +324,6 @@ int main()
     cout << "Tempo: " << tempoBusca << endl;
     descomprimir.close();
     descomprimido.close();
+   
     return 0;
 }

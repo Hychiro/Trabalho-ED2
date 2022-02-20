@@ -15,7 +15,6 @@ public:
 
     char digito;
     int repeticoes;
-    bool jaBuscado;
     Digito *proximo;
     Digito *anterior;
     Digito *esq;

@@ -20,9 +20,7 @@ ListaDigitos::ListaDigitos()
 
 void ListaDigitos::ConstroiLista(ofstream &constroiConsultaReview, ifstream &arqBin, int vetorId[], int tam)
 {
-    cout << "erro que as vezes acontece e n faz sentido 1" << endl;
     No *aux = new No();
-    cout << "erro que as vezes acontece e n faz sentido 2" << endl;
     arqBin.seekg(0, ios_base::beg);
     int i = 0;
     while (arqBin.read((char *)aux, sizeof(No)))
@@ -55,7 +53,6 @@ void ListaDigitos::AdicionaFimDaLista(char a)
     { // caso ele seja o primeiro elemento da lista
         novo->digito = a;
         novo->repeticoes = 1;
-        novo->jaBuscado = false;
         novo->dir = NULL;
         novo->esq = NULL;
 
@@ -70,7 +67,6 @@ void ListaDigitos::AdicionaFimDaLista(char a)
     { // caso contrario
         novo->digito = a;
         novo->repeticoes = 1;
-        novo->jaBuscado = false;
         novo->dir = NULL;
         novo->esq = NULL;
 
@@ -110,26 +106,6 @@ void ListaDigitos::AdicionaReview(char review[3000])
         }
     }
     delete aux;
-}
-
-Digito *ListaDigitos::BuscaMaisRepeticoes()
-{
-    Digito *aux = new Digito();
-    Digito *Resultado;
-    int maior = 0;
-    for (Digito *aux = this->inicio; aux != NULL; aux = aux->proximo) // percorrer toda a lista
-    {
-        if (aux->repeticoes > maior)
-        {
-            Resultado = aux;
-            maior = aux->repeticoes;
-        }
-    }
-    delete aux;
-
-    Resultado->jaBuscado = true;
-
-    return Resultado;
 }
 
 void ListaDigitos::ImprimeLista()
@@ -264,7 +240,6 @@ void ListaDigitos::apagaDaLista(Digito *a, Digito *b) // botar na struct da list
 
 void ListaDigitos::constroiArquivoComprimida(ifstream &arqBin, ofstream &comprimido, SubDigito *vetorDigitos, int tam)
 {
-   
     arqBin.seekg(0, arqBin.end);
     int tamanho = arqBin.tellg();
     arqBin.seekg(0, arqBin.beg);
