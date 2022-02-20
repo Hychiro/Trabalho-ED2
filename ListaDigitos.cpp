@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <stdio.h>
 
+
 using namespace std;
 
 ListaDigitos::ListaDigitos()
@@ -19,9 +20,9 @@ ListaDigitos::ListaDigitos()
 
 void ListaDigitos::ConstroiLista(ifstream &arqBin, int vetorId[], int tam)
 {
-    cout<<"erro que as vezes acontece e n faz sentido 1"<<endl;
+    cout << "erro que as vezes acontece e n faz sentido 1" << endl;
     No *aux = new No();
-    cout<<"erro que as vezes acontece e n faz sentido 2"<<endl;
+    cout << "erro que as vezes acontece e n faz sentido 2" << endl;
     arqBin.seekg(0, ios_base::beg);
     int i = 0;
     while (arqBin.read((char *)aux, sizeof(No)))
@@ -53,14 +54,13 @@ void ListaDigitos::AdicionaFimDaLista(char a)
         novo->digito = a;
         novo->repeticoes = 1;
         novo->jaBuscado = false;
-        novo->dir=NULL;
-        novo->esq=NULL;
+        novo->dir = NULL;
+        novo->esq = NULL;
 
-        novo->anterior=NULL;
+        novo->anterior = NULL;
         novo->proximo = NULL;
         this->inicio = novo;
         this->fim = novo;
-
 
         this->tamanhoLista++;
     }
@@ -69,16 +69,13 @@ void ListaDigitos::AdicionaFimDaLista(char a)
         novo->digito = a;
         novo->repeticoes = 1;
         novo->jaBuscado = false;
-        novo->dir=NULL;
-        novo->esq=NULL;
+        novo->dir = NULL;
+        novo->esq = NULL;
 
-        novo->anterior=this->fim;
+        novo->anterior = this->fim;
         this->fim->proximo = novo;
         novo->proximo = NULL;
-        this->fim=novo;
-        
-
-
+        this->fim = novo;
 
         this->tamanhoLista++;
     }
@@ -98,13 +95,14 @@ void ListaDigitos::AdicionaReview(char review[3000])
             for (Digito *aux = this->inicio; aux != NULL; aux = aux->proximo) // percorrer toda a lista
             {
                 if (aux->digito == review[i])
-                { // se achar um caractere igual na lista
-                    aux->repeticoes = aux->repeticoes + 1;      // soma 1 nas reptições
-                    break;                                      // e para de percorrer a lista
-                }else if (aux->proximo == NULL)
-                {// se não achar um caractere igual na lista
+                {                                          // se achar um caractere igual na lista
+                    aux->repeticoes = aux->repeticoes + 1; // soma 1 nas reptições
+                    break;                                 // e para de percorrer a lista
+                }
+                else if (aux->proximo == NULL)
+                { // se não achar um caractere igual na lista
                     this->AdicionaFimDaLista(review[i]);
-                    break;          // adiciona no final da lista
+                    break; // adiciona no final da lista
                 }
             }
         }
@@ -148,13 +146,15 @@ void ListaDigitos::apagaDaLista(Digito *a, Digito *b) //botar na struct da lista
     Digito *auxAnt;
     Digito *auxProx;
 
-    if(a->anterior == nullptr && b->proximo == nullptr){
+    if (a->anterior == nullptr && b->proximo == nullptr)
+    {
         //chegamos ao fim
         a->proximo = nullptr;
         b->anterior = nullptr;
         return;
     }
-    else if(b->anterior == nullptr && a->proximo == nullptr){
+    else if (b->anterior == nullptr && a->proximo == nullptr)
+    {
         b->proximo = nullptr;
         a->anterior = nullptr;
         return;
@@ -257,6 +257,43 @@ void ListaDigitos::apagaDaLista(Digito *a, Digito *b) //botar na struct da lista
             b->anterior = nullptr;
             b->proximo = nullptr;
         }
+    }
+}
 
+void ListaDigitos::constroiArquivoComprimida(ifstream &arqBin, ofstream &comprimido, int vetorId[], int tam, Digito *raiz)
+{
+    cout << "erro que as vezes acontece e n faz sentido 1" << endl;
+    No *aux = new No();
+    cout << "erro que as vezes acontece e n faz sentido 2" << endl;
+    arqBin.seekg(0, ios_base::beg);
+    int i = 0;
+    while (arqBin.read((char *)aux, sizeof(No)))
+    {
+        while (vetorId[i + 1] == aux->getId())
+        {
+            this->adicionaReviewComprimido(aux->review_text, comprimido, raiz);
+            i++;
+        }
+        if (aux->getId() == vetorId[i])
+        {
+            this->adicionaReviewComprimido(aux->review_text, comprimido, raiz);
+            i++;
+            if (i >= tam)
+            {
+                cout << "ACABOU" << endl;
+                break;
+            }
+        }
+    }
+    delete aux;
+}
+
+void ListaDigitos::adicionaReviewComprimido(char review[3000], ofstream &comprimido, Digito *raiz)
+{
+
+    for (int i = 0; i < 3000; i++) // para todo caractere da review
+    {
+        raiz->comprime(review[i],comprimido);
+        
     }
 }

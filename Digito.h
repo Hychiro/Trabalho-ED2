@@ -8,7 +8,7 @@ using namespace std;
 class Digito
 {
 public:
-    Digito(Digito* a, Digito* b);
+    Digito(Digito *a, Digito *b);
     Digito();
     ~Digito();
 
@@ -26,6 +26,8 @@ public:
 
     void comprime(char dig, ofstream &comprimido);
     void auxComprime(Digito *p, char dig, string text, bool *encontrou, ofstream &comprimido);
+    void descomprimir(char *buffer, int tamanho, ofstream &descomprimido);
+    void auxDescomprimir(Digito *p, char *buffer, int* i, ofstream &descomprimido);
 };
 
 #endif // DIGITO_HS

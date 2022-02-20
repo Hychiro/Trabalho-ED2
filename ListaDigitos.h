@@ -23,6 +23,9 @@ public:
     void ImprimeLista();
 
     void apagaDaLista(Digito *a, Digito *b);
+
+    void constroiArquivoComprimida(ifstream &arqBin, ofstream &comprimido, int vetorId[], int tam, Digito *raiz);
+    void adicionaReviewComprimido(char review[3000], ofstream &comprimido, Digito *raiz);
 };
 
 #endif // LISTADIGITO_HS
