@@ -51,6 +51,7 @@
         "string_view": "cpp",
         "stack": "cpp",
         "xiosbase": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "xstring": "cpp"
     }
 }

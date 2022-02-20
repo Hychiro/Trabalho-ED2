@@ -16,43 +16,52 @@
 using namespace std;
 using namespace std::chrono;
 
-void swap(int *a, int *b)
+int particao(int vetor[], int inicio, int fim,int imp)
 {
-    int t = *a;
-    *a = *b;
-    *b = t;
-}
 
-int partition(int arr[], int low, int high)
-{
-    int pivot = arr[high]; // pivot
-    int i = (low - 1);     // Index of smaller element and indicates the right position of pivot found so far
-
-    for (int j = low; j <= high - 1; j++)
-    {
-        // If current element is smaller than the pivot
-        if (arr[j] < pivot)
-        {
-            i++; // increment index of smaller element
-            swap(&arr[i], &arr[j]);
-        }
+    int i, j;
+    int v, temp;
+    v = vetor[inicio];
+    i = inicio;
+    j = fim+1;
+    if(j>=imp){
+        j=imp;
     }
-    swap(&arr[i + 1], &arr[high]);
-    return (i + 1);
-}
 
-void quickSort(int arr[], int low, int high)
-{
-    if (low < high)
+    do
     {
-        /* pi is partitioning index, arr[p] is now
-                                            at right place */
-        int pi = partition(arr, low, high);
+        do
+        {
+            i++;
+        } while (vetor[i] < v && i <= fim);
 
-        // Separately sort elements before
-        // partition and after partition
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
+        do
+        {
+            j--;
+        } while (v < vetor[j]);
+
+        if (i < j)
+        {
+            temp = vetor[i];
+            vetor[i] = vetor[j];
+            vetor[j] = temp;
+        }
+
+    } while (i < j);
+
+    vetor[inicio] = vetor[j];
+    vetor[j] = v;
+
+    return j;
+}
+void quickSort(int vetor[], int inicio, int fim,int imp)
+{
+    int j;
+    if (inicio < fim)
+    {
+        j = particao(vetor, inicio, fim, imp);
+        quickSort(vetor, inicio, j - 1, imp);
+        quickSort(vetor, j + 1, fim, imp);
     }
 }
 
@@ -77,12 +86,12 @@ int *sorteia(int max, int n)
 
     // Ordenação do Vetor
     cout << "ordenando" << endl;
-    quickSort(vetorN, 0, n);
+    quickSort(vetorN, 0, n, n);
 
     return vetorN;
 }
 
-int particao(Digito *vetorStruct, int inicio, int fim, int imp)
+int particao2(Digito *vetorStruct, int inicio, int fim, int imp)
 {
 
     int i, j;
@@ -126,7 +135,7 @@ void quickSort2(Digito *vetorStruct, int inicio, int fim, int imp)
     int j;
     if (inicio < fim)
     {
-        j = particao(vetorStruct, inicio, fim, imp);
+        j = particao2(vetorStruct, inicio, fim, imp);
         quickSort2(vetorStruct, inicio, j - 1, imp);
         quickSort2(vetorStruct, j + 1, fim, imp);
     }
@@ -144,13 +153,13 @@ int main()
     consultaReview.open("arqConsulta.bin", ios::out | ios_base::binary);
 
 
-    int tam = 100000;
+    int tam = 100;
     ListaDigitos a;
 
     high_resolution_clock::time_point inicio = high_resolution_clock::now();
     cout << "Digite o Numero 1 de reviews Sorteadas: " << endl;
     int *vetorId = new int[tam];
-    vetorId = sorteia(3500000, tam);
+    vetorId = sorteia(350, tam);
 
     a.ConstroiLista(consultaReview, arqBin, vetorId, tam);
     consultaReview.close();
