@@ -75,14 +75,14 @@ void Digito::imprimePorNivel(Digito *p, int nivel)
     }
 }
 
-void Digito::comprime(SubDigito *subDigito)
+void Digito::comprime(SubDigito *subDigito, int *compara)
 {
     bool encontrou = false;
     string text = "";
-    auxComprime(this, subDigito->getDigito(), text, &encontrou, subDigito);
+    auxComprime(this, subDigito->getDigito(), text, &encontrou, subDigito, compara);
 }
 
-void Digito::auxComprime(Digito *p, char dig, string text, bool *encontrou, SubDigito *subDigito)
+void Digito::auxComprime(Digito *p, char dig, string text, bool *encontrou, SubDigito *subDigito, int *compara)
 {
     if (p != NULL)
     {
@@ -96,13 +96,15 @@ void Digito::auxComprime(Digito *p, char dig, string text, bool *encontrou, SubD
         text = text + '0';
         if (!*encontrou)
         {
-            auxComprime(p->esq, dig, text, encontrou, subDigito);
+            *compara = *compara + 1;
+            auxComprime(p->esq, dig, text, encontrou, subDigito, compara);
             text.pop_back();
         }
         text = text + '1';
         if (!*encontrou)
         {
-            auxComprime(p->dir, dig, text, encontrou, subDigito);
+            *compara = *compara + 1;
+            auxComprime(p->dir, dig, text, encontrou, subDigito, compara);
             text.pop_back();
         }
     }
@@ -115,12 +117,10 @@ void Digito::descomprimir(char *buffer, int tamanho, ofstream &descomprimido)
     Digito *p = this;
     // cout << p->repeticoes << endl;
     // cout << p->esq->repeticoes << endl;
-    cout << tamanho << endl;
     while (i < tamanho)
     {
         auxDescomprimir(p, buffer, &i, descomprimido);
     }
-    cout << i << endl;
 }
 
 void Digito::auxDescomprimir(Digito *p, char *buffer, int *i, ofstream &descomprimido)

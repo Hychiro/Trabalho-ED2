@@ -10,7 +10,7 @@ class SubDigito
 private:
     char digito;
     string codigo;
-    // int chave;
+    int numReps;
     // SubDigito * prox;
 
 public:
@@ -23,8 +23,8 @@ public:
     string getCodigo() { return codigo; };
     void setCodigo(string i) { codigo = i; };
 
-    // int getChave() { return chave; };
-    // void setChave(int i) { chave = i; };
+    int getNumReps() { return numReps; };
+    void setNumReps(int i) { numReps = i; };
 
     
     // SubDigito* getProx() { return prox; };

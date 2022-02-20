@@ -24,8 +24,8 @@ public:
     void imprimeN();
     void imprimePorNivel(Digito *p, int nivel);
 
-    void comprime(SubDigito* subDigito);
-    void auxComprime(Digito *p, char dig, string text, bool *encontrou, SubDigito* subDigito);
+    void comprime(SubDigito* subDigito, int* compara);
+    void auxComprime(Digito *p, char dig, string text, bool *encontrou, SubDigito* subDigito, int *compara);
 
 
     void descomprimir(char *buffer, int tamanho, ofstream &descomprimido);

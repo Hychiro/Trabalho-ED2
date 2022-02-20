@@ -11,6 +11,7 @@ using namespace std;
 
 class ListaDigitos
 {
+    int comparacoes;
 public:
     ListaDigitos();
     Digito *inicio = new Digito();
@@ -28,6 +29,14 @@ public:
 
     void constroiArquivoComprimida(ifstream &arqBin, ofstream &comprimido, SubDigito *vetorDigitos, int tam);
     void adicionaCodigoDigitoComprimido(SubDigito *vetorDigitos, Digito *raiz, int tam);
+
+    SubDigito *criaVetDigitos();
+
+    Digito *ordenaListaDigitos();
+    Digito *criaArvoreNaLista(Digito *primeiro);
+
+    int getNumComps() { return comparacoes; };
+    void setNumComps(int i) { comparacoes = i; };
 };
 
 #endif // LISTADIGITO_HS

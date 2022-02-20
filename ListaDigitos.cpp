@@ -20,6 +20,7 @@ ListaDigitos::ListaDigitos()
 
 void ListaDigitos::ConstroiLista(ofstream &constroiConsultaReview, ifstream &arqBin, int vetorId[], int tam)
 {
+    cout << "Contruindo Lista" << endl;
     No *aux = new No();
     arqBin.seekg(0, ios_base::beg);
     int i = 0;
@@ -28,17 +29,17 @@ void ListaDigitos::ConstroiLista(ofstream &constroiConsultaReview, ifstream &arq
         while (vetorId[i + 1] == aux->getId())
         {
             this->AdicionaReview(aux->review_text);
-            constroiConsultaReview<<aux->review_text;
+            constroiConsultaReview << aux->review_text;
             i++;
         }
         if (aux->getId() == vetorId[i])
         {
             this->AdicionaReview(aux->review_text);
-            constroiConsultaReview<<aux->review_text;
+            constroiConsultaReview << aux->review_text;
             i++;
             if (i >= tam)
             {
-                cout << "ACABOU" << endl;
+                cout << "Lista Contruida!" << endl;
                 break;
             }
         }
@@ -245,7 +246,7 @@ void ListaDigitos::constroiArquivoComprimida(ifstream &arqBin, ofstream &comprim
     arqBin.seekg(0, arqBin.beg);
     char *buffer = new char[tamanho];
     arqBin.read(buffer, tamanho);
-    
+
     int i = 0;
 
     while (i < tamanho)
@@ -255,19 +256,168 @@ void ListaDigitos::constroiArquivoComprimida(ifstream &arqBin, ofstream &comprim
             if (buffer[i] == vetorDigitos[k].getDigito())
             {
                 comprimido << vetorDigitos[k].getCodigo();
-                //break;
+                // break;
             }
         }
         i++;
     }
-    
 }
 
 void ListaDigitos::adicionaCodigoDigitoComprimido(SubDigito *vetorDigitos, Digito *raiz, int tam)
 {
-
+    int compara = 0;
     for (int i = 0; i < tam; i++) // para todo caractere da review
     {
-        raiz->comprime(&vetorDigitos[i]);
+        raiz->comprime(&vetorDigitos[i], &compara);
     }
+    this->comparacoes = compara;
+}
+
+SubDigito *ListaDigitos::criaVetDigitos()
+{
+    int tamanhoVetDigitos = this->tamanhoLista;
+    int l = tamanhoVetDigitos - 1;
+    SubDigito *vetDigitos = new SubDigito[tamanhoVetDigitos];
+
+    for (Digito *g = this->inicio; g != nullptr; g = g->proximo)
+    {
+        SubDigito *caractere = new SubDigito();
+        caractere->setCodigo("");
+        caractere->setDigito(g->digito);
+        caractere->setNumReps(g->repeticoes);
+        vetDigitos[l] = *caractere;
+        delete caractere;
+        l--;
+    }
+    return vetDigitos;
+}
+
+int particao(Digito *vetorStruct, int inicio, int fim, int imp)
+{
+
+    int i, j;
+    Digito v, temp;
+    v = vetorStruct[inicio];
+    i = inicio;
+    j = fim + 1;
+    if (j >= imp)
+    {
+        j = imp;
+    }
+
+    do
+    {
+        do
+        {
+            i++;
+        } while (vetorStruct[i].repeticoes < v.repeticoes && i <= fim);
+
+        do
+        {
+            j--;
+        } while (v.repeticoes < vetorStruct[j].repeticoes);
+
+        if (i < j)
+        {
+            temp = vetorStruct[i];
+            vetorStruct[i] = vetorStruct[j];
+            vetorStruct[j] = temp;
+        }
+
+    } while (i < j);
+
+    vetorStruct[inicio] = vetorStruct[j];
+    vetorStruct[j] = v;
+
+    return j;
+}
+void quickSort2(Digito *vetorStruct, int inicio, int fim, int imp)
+{
+    int j;
+    if (inicio < fim)
+    {
+        j = particao(vetorStruct, inicio, fim, imp);
+        quickSort2(vetorStruct, inicio, j - 1, imp);
+        quickSort2(vetorStruct, j + 1, fim, imp);
+    }
+}
+
+Digito *ListaDigitos::ordenaListaDigitos()
+{
+    int tam = this->tamanhoLista;
+    Digito *vet = new Digito[tam];
+    Digito *p = this->inicio;
+    int i = 0;
+    while (p != nullptr)
+    {
+        vet[i] = *p;
+        i++;
+        p = p->proximo;
+    }
+
+    quickSort2(vet, 0, tam, tam);
+
+    for (int j = 0; j < tam; j++)
+    {
+        if (j == 0)
+        {
+            vet[j].proximo = &vet[j + 1];
+            vet[j].anterior = nullptr;
+        }
+        if (j == (tam - 1))
+        {
+            vet[j].proximo = nullptr;
+            vet[j].anterior = &vet[j - 1];
+        }
+        else
+        {
+            vet[j].proximo = &vet[j + 1];
+            vet[j].anterior = &vet[j - 1];
+        }
+    }
+    Digito *primeiro = &vet[0];
+    return primeiro;
+}
+
+Digito *ListaDigitos::criaArvoreNaLista(Digito *primeiro)
+{
+
+    int tam = this->tamanhoLista;
+    Digito *newPrimeiro;
+    Digito *p;
+    while (tam > 1)
+    {
+        Digito *aux = new Digito(primeiro, primeiro->proximo);
+        p = primeiro;
+        while (p != nullptr)
+        {
+            if (p->repeticoes >= aux->repeticoes)
+            {
+                Digito *ant = p->anterior;
+
+                ant->proximo = aux;
+                aux->anterior = ant;
+
+                aux->proximo = p;
+                p->anterior = aux;
+                break;
+            }
+            else if (p->proximo == nullptr)
+            {
+                p->proximo = aux;
+                aux->anterior = p;
+                aux->proximo = nullptr;
+                break;
+            }
+            p = p->proximo;
+        }
+
+        Digito *teste = primeiro->proximo;
+        newPrimeiro = teste->proximo;
+        this->apagaDaLista(primeiro, primeiro->proximo);
+        tam--;
+
+        primeiro = newPrimeiro;
+    }
+    return primeiro;
 }
