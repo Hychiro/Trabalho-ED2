@@ -11,14 +11,18 @@ using namespace std;
 class ListaDigitos
 {
 public:
-Digito* inicio;
-Digito* fim;
-int tamanhoLista;
+    ListaDigitos();
+    Digito* inicio= new Digito();
+    Digito* fim= new Digito();
+    int tamanhoLista;
 
-void ConstroiLista(ifstream &arqBin,int vetorId[],int tam);
-void AdicionaReview(char review[3000]);
-Digito* BuscaMaisRepeticoes();
-void AdicionaFimDaLista(char a);
+    void ConstroiLista(ifstream &arqBin,int vetorId[],int tam);
+    void AdicionaReview(char review[3000]);
+    Digito* BuscaMaisRepeticoes();
+    void AdicionaFimDaLista(char a);
+    void ImprimeLista();
+
+    void apagaDaLista(Digito *a, Digito *b);
 };
 
 #endif // LISTADIGITO_HS

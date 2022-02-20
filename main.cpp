@@ -9,6 +9,8 @@
 #include "NoB.h"
 #include "TreeNode.h"
 #include "ArvoreVP.h"
+#include "ListaDigitos.h"
+#include "Digito.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -367,6 +369,7 @@ int menuArvores(DatabaseArquitetura dbA, ifstream &arqBin)
     cout << "2. Arvore B" << endl;
     cout << "3. Limpar a tela" << endl;
     cout << "4. Sair" << endl;
+    cout << "5. Teste Lista Digitos"<<endl;
     int x, y;
     cin >> x;
     switch (x)
@@ -408,6 +411,18 @@ int menuArvores(DatabaseArquitetura dbA, ifstream &arqBin)
     case 4:
         return 0;
         break;
+    case 5:
+        int tam;
+        ListaDigitos a;
+        cout<<"Digite o Numero N de reviews Sorteadas: "<<endl;
+        cin>>tam;
+        int *vetorId=new int[tam];
+        vetorId=sorteia(dbA.getIdUltimaPosicao(arqBin),tam);
+        cout<<"aqui 1"<<endl;
+        a.ConstroiLista(arqBin, vetorId,tam);
+        cout<<"acaba de construir a lista"<<endl;
+        a.ImprimeLista();
+    break;
     }
     if (x < 1 || x > 4)
     {

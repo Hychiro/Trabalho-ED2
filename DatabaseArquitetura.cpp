@@ -6,6 +6,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <stdio.h>
+#include "Digito.h"
 
 using namespace std;
 DatabaseArquitetura::DatabaseArquitetura()
@@ -319,3 +320,4 @@ int DatabaseArquitetura::getIdUltimaPosicao(ifstream &arqBin)
     arqBin.read((char *)aux, sizeof(No));
     return aux->getId();
 }
+
