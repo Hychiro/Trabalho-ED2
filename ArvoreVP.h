@@ -42,4 +42,4 @@ public:
 };
 
 
-#endif // ArvoreVP_HS
+#endif // ArvoreVP_H

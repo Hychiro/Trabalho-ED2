@@ -28,7 +28,7 @@ Digito::Digito(Digito *a, Digito *b)
 
     // a->jaBuscado = true;
     // b->jaBuscado = true;
-    //nArvores--;
+    // nArvores--;
 }
 Digito::Digito()
 {
@@ -36,7 +36,7 @@ Digito::Digito()
 
 Digito::~Digito()
 {
-    //dtor
+    // dtor
 }
 
 void Digito::imprime()
@@ -64,9 +64,10 @@ void Digito::imprimePorNivel(Digito *p, int nivel)
         cout << "(" << nivel << ")";
         for (int i = 1; i <= nivel; i++)
             cout << "--";
-        if(p->digito!='\0')
+        if (p->digito != '\0')
             cout << p->digito << endl;
-        else{
+        else
+        {
             cout << "null" << endl;
         }
         imprimePorNivel(p->esq, nivel + 1);
@@ -74,34 +75,34 @@ void Digito::imprimePorNivel(Digito *p, int nivel)
     }
 }
 
-void Digito::comprime(char dig, ofstream &comprimido)
+void Digito::comprime(SubDigito *subDigito)
 {
     bool encontrou = false;
     string text = "";
-    auxComprime(this, dig, text, &encontrou, comprimido);
+    auxComprime(this, subDigito->getDigito(), text, &encontrou, subDigito);
 }
 
-void Digito::auxComprime(Digito *p, char dig, string text, bool *encontrou, ofstream &comprimido)
+void Digito::auxComprime(Digito *p, char dig, string text, bool *encontrou, SubDigito *subDigito)
 {
     if (p != NULL)
     {
         if (p->digito == dig)
         {
             *encontrou = true;
-            comprimido << text;
+            subDigito->setCodigo(text);
             return;
         }
 
         text = text + '0';
         if (!*encontrou)
         {
-            auxComprime(p->esq, dig, text, encontrou, comprimido);
+            auxComprime(p->esq, dig, text, encontrou, subDigito);
             text.pop_back();
         }
         text = text + '1';
         if (!*encontrou)
         {
-            auxComprime(p->dir, dig, text, encontrou, comprimido);
+            auxComprime(p->dir, dig, text, encontrou, subDigito);
             text.pop_back();
         }
     }
@@ -112,8 +113,8 @@ void Digito::descomprimir(char *buffer, int tamanho, ofstream &descomprimido)
     int i = 0;
 
     Digito *p = this;
-    //cout << p->repeticoes << endl;
-    //cout << p->esq->repeticoes << endl;
+    // cout << p->repeticoes << endl;
+    // cout << p->esq->repeticoes << endl;
     cout << tamanho << endl;
     while (i < tamanho)
     {
@@ -122,7 +123,7 @@ void Digito::descomprimir(char *buffer, int tamanho, ofstream &descomprimido)
     cout << i << endl;
 }
 
-void Digito::auxDescomprimir(Digito *p, char* buffer, int *i, ofstream &descomprimido)
+void Digito::auxDescomprimir(Digito *p, char *buffer, int *i, ofstream &descomprimido)
 {
     Digito *aux;
     if (p != NULL)
@@ -130,7 +131,7 @@ void Digito::auxDescomprimir(Digito *p, char* buffer, int *i, ofstream &descompr
         // cout<<this->repeticoes<<endl;
         if (p->esq == nullptr && p->dir == nullptr)
         {
-            //cout << p->digito;
+            // cout << p->digito;
             descomprimido << p->digito;
             return;
         }
@@ -142,7 +143,6 @@ void Digito::auxDescomprimir(Digito *p, char* buffer, int *i, ofstream &descompr
             aux = p->esq;
 
             auxDescomprimir(aux, buffer, i, descomprimido);
-         
         }
 
         if (buffer[*i] == '1')
@@ -152,7 +152,6 @@ void Digito::auxDescomprimir(Digito *p, char* buffer, int *i, ofstream &descompr
             aux = p->dir;
 
             auxDescomprimir(aux, buffer, i++, descomprimido);
-          
         }
     }
 }

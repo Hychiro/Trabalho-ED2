@@ -7,7 +7,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <stdio.h>
-
+#include "SubDigito.h"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ ListaDigitos::ListaDigitos()
     this->tamanhoLista = 0;
 }
 
-void ListaDigitos::ConstroiLista(ifstream &arqBin, int vetorId[], int tam)
+void ListaDigitos::ConstroiLista(ofstream &constroiConsultaReview, ifstream &arqBin, int vetorId[], int tam)
 {
     cout << "erro que as vezes acontece e n faz sentido 1" << endl;
     No *aux = new No();
@@ -30,11 +30,13 @@ void ListaDigitos::ConstroiLista(ifstream &arqBin, int vetorId[], int tam)
         while (vetorId[i + 1] == aux->getId())
         {
             this->AdicionaReview(aux->review_text);
+            constroiConsultaReview<<aux->review_text;
             i++;
         }
         if (aux->getId() == vetorId[i])
         {
             this->AdicionaReview(aux->review_text);
+            constroiConsultaReview<<aux->review_text;
             i++;
             if (i >= tam)
             {
@@ -141,14 +143,14 @@ void ListaDigitos::ImprimeLista()
     }
 }
 
-void ListaDigitos::apagaDaLista(Digito *a, Digito *b) //botar na struct da lista
+void ListaDigitos::apagaDaLista(Digito *a, Digito *b) // botar na struct da lista
 {
     Digito *auxAnt;
     Digito *auxProx;
 
     if (a->anterior == nullptr && b->proximo == nullptr)
     {
-        //chegamos ao fim
+        // chegamos ao fim
         a->proximo = nullptr;
         b->anterior = nullptr;
         return;
@@ -260,40 +262,37 @@ void ListaDigitos::apagaDaLista(Digito *a, Digito *b) //botar na struct da lista
     }
 }
 
-void ListaDigitos::constroiArquivoComprimida(ifstream &arqBin, ofstream &comprimido, int vetorId[], int tam, Digito *raiz)
+void ListaDigitos::constroiArquivoComprimida(ifstream &arqBin, ofstream &comprimido, SubDigito *vetorDigitos, int tam)
 {
-    cout << "erro que as vezes acontece e n faz sentido 1" << endl;
-    No *aux = new No();
-    cout << "erro que as vezes acontece e n faz sentido 2" << endl;
-    arqBin.seekg(0, ios_base::beg);
+   
+    arqBin.seekg(0, arqBin.end);
+    int tamanho = arqBin.tellg();
+    arqBin.seekg(0, arqBin.beg);
+    char *buffer = new char[tamanho];
+    arqBin.read(buffer, tamanho);
+    
     int i = 0;
-    while (arqBin.read((char *)aux, sizeof(No)))
+
+    while (i < tamanho)
     {
-        while (vetorId[i + 1] == aux->getId())
+        for (int k = 0; k < tam; k++)
         {
-            this->adicionaReviewComprimido(aux->review_text, comprimido, raiz);
-            i++;
-        }
-        if (aux->getId() == vetorId[i])
-        {
-            this->adicionaReviewComprimido(aux->review_text, comprimido, raiz);
-            i++;
-            if (i >= tam)
+            if (buffer[i] == vetorDigitos[k].getDigito())
             {
-                cout << "ACABOU" << endl;
-                break;
+                comprimido << vetorDigitos[k].getCodigo();
+                //break;
             }
         }
+        i++;
     }
-    delete aux;
+    
 }
 
-void ListaDigitos::adicionaReviewComprimido(char review[3000], ofstream &comprimido, Digito *raiz)
+void ListaDigitos::adicionaCodigoDigitoComprimido(SubDigito *vetorDigitos, Digito *raiz, int tam)
 {
 
-    for (int i = 0; i < 3000; i++) // para todo caractere da review
+    for (int i = 0; i < tam; i++) // para todo caractere da review
     {
-        raiz->comprime(review[i],comprimido);
-        
+        raiz->comprime(&vetorDigitos[i]);
     }
 }

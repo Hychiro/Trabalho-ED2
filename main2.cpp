@@ -11,8 +11,10 @@
 #include "ArvoreVP.h"
 #include "ListaDigitos.h"
 #include "Digito.h"
+#include "SubDigito.h"
 
 using namespace std;
+using namespace std::chrono;
 
 void swap(int *a, int *b)
 {
@@ -73,7 +75,7 @@ int *sorteia(int max, int n)
         qtdSorteados++;
     }
 
-    //Ordenação do Vetor
+    // Ordenação do Vetor
     cout << "ordenando" << endl;
     quickSort(vetorN, 0, n);
 
@@ -132,25 +134,52 @@ void quickSort2(Digito *vetorStruct, int inicio, int fim, int imp)
 
 int main()
 {
+    double tempoBusca;
+
     string arqNome = "tiktok_app_reviews.bin";
     ifstream arqBin;
+    ofstream consultaReview;
     DatabaseArquitetura dbA;
     arqBin.open(arqNome, ios::in | ios_base::binary | ios_base::app);
+    consultaReview.open("arqConsulta.bin", ios::out | ios_base::binary);
 
-    int tam = 1;
+    int tam = 100000;
     ListaDigitos a;
+
+    high_resolution_clock::time_point inicio = high_resolution_clock::now();
     cout << "Digite o Numero 1 de reviews Sorteadas: " << endl;
     int *vetorId = new int[tam];
-    vetorId = sorteia(1000, tam);
-    cout << "aqui 1" << endl;
-    a.ConstroiLista(arqBin, vetorId, tam);
-    cout << "acaba de construir a lista" << endl;
-    a.ImprimeLista();
+    vetorId = sorteia(3500000, tam);
 
+    a.ConstroiLista(consultaReview, arqBin, vetorId, tam);
+    consultaReview.close();
+
+    cout << "acaba de construir a lista" << endl;
+
+    SubDigito *vetDigitos = new SubDigito[a.tamanhoLista];
+    int tamanhoVetDigitos = a.tamanhoLista;
+    int l = a.tamanhoLista - 1;
+    for (Digito *g = a.inicio; g != nullptr; g = g->proximo)
+    {
+        SubDigito *caractere = new SubDigito();
+        caractere->setCodigo("");
+        caractere->setDigito(g->digito);
+        vetDigitos[l] = *caractere;
+        delete caractere;
+        l--;
+    }
+
+    // a.ImprimeLista();
+    //  for (int k = 0; k < a.tamanhoLista; k++)
+    //  {
+    //      cout << "Posicao " << k << " ;Digito " << vetDigitos[k].getDigito() << endl;
+    //  }
     int nArvores = a.tamanhoLista;
 
     Digito *vet = new Digito[nArvores];
 
+    ///////////////////////////////////////////////////////////////
+    ///  func ordena lista Digitos
     Digito *p = a.inicio;
     int i = 0;
     while (p != nullptr)
@@ -180,17 +209,21 @@ int main()
             vet[j].anterior = &vet[j - 1];
         }
     }
+    /// func ordena lista digitos
+    ///////////////////////////////////////////////////////////////
 
-    p = &vet[0];
-    while (p != nullptr)
-    {
-        cout << p->repeticoes << endl;
-        p = p->proximo;
-    }
-    cout << "=======================================" << endl
-         << endl
-         << endl;
+    // p = &vet[0];
+    // while (p != nullptr)
+    // {
+    //     cout << p->repeticoes << endl;
+    //     p = p->proximo;
+    // }
+    // cout << "=======================================" << endl
+    //      << endl
+    //      << endl;
 
+    ////////////////////////////////////////////////////////
+    ////func constroi arv
     Digito *primeiro = &vet[0];
     Digito *newPrimeiro;
     while (nArvores > 1)
@@ -229,33 +262,60 @@ int main()
 
         primeiro = newPrimeiro;
     }
-
     cout << "FINAL: " << primeiro->repeticoes << endl;
 
-    primeiro->imprimeN();
+    ////func constroi arv
+    ////////////////////////////////////////////////////////
+    high_resolution_clock::time_point fim = high_resolution_clock::now(); // termina o cronometro
+    tempoBusca = duration_cast<duration<double>>(fim - inicio).count();
+
+    cout << "Tempo: " << tempoBusca << endl;
+
+    // primeiro->imprimeN();
+    high_resolution_clock::time_point inicio2 = high_resolution_clock::now();
+    a.adicionaCodigoDigitoComprimido(vetDigitos, primeiro, tamanhoVetDigitos);
+
+    // for (int o = 0; o < a.tamanhoLista; o++)
+    // {
+    //     cout << "Posicao: " << o << " ; Digito: " << vetDigitos[o].getDigito() << " ; Codigo: " << vetDigitos[o].getCodigo() << endl;
+    // }
 
     ofstream comprimido;
     comprimido.open("comprimido.bin", ios::binary | ios::trunc);
+    ifstream consultaReview2;
+    consultaReview2.open("arqConsulta.bin", ios::in | ios_base::binary | ios_base::app);
 
     ListaDigitos b;
-    b.constroiArquivoComprimida(arqBin, comprimido, vetorId, tam, primeiro);
+    b.constroiArquivoComprimida(consultaReview2, comprimido, vetDigitos, tamanhoVetDigitos);
     comprimido.close();
+
+    high_resolution_clock::time_point fim2 = high_resolution_clock::now(); // termina o cronometro
+    tempoBusca = duration_cast<duration<double>>(fim2 - inicio2).count();
+
+    cout << "Tempo: " << tempoBusca << endl;
+
+    high_resolution_clock::time_point inicio3 = high_resolution_clock::now();
     ifstream descomprimir;
     ofstream descomprimido;
-    // ifstream arqBin;
-    // arqBin.open(arqNome, ios_base::binary);
 
     descomprimir.open("comprimido.bin", ios::in | ios_base::binary | ios_base::app);
     descomprimido.open("descomprimido.txt", ios::out);
 
-    //pega caracteres
+    ///////////////////////////////////
+    ////func pega caracteres
     descomprimir.seekg(0, descomprimir.end);
     int tamanho = descomprimir.tellg();
     descomprimir.seekg(0, descomprimir.beg);
     char *buffer = new char[tamanho];
     descomprimir.read(buffer, tamanho);
+    ////func pega caracteres
+    ///////////////////////////////////
 
     primeiro->descomprimir(buffer, tamanho, descomprimido);
+    high_resolution_clock::time_point fim3 = high_resolution_clock::now(); // termina o cronometro
+    tempoBusca = duration_cast<duration<double>>(fim3 - inicio3).count();
+
+    cout << "Tempo: " << tempoBusca << endl;
     descomprimir.close();
     descomprimido.close();
     return 0;

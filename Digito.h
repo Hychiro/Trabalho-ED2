@@ -2,6 +2,7 @@
 #define DIGITO_H
 #include <iostream>
 #include <string>
+#include "SubDigito.h"
 
 using namespace std;
 
@@ -24,10 +25,13 @@ public:
     void imprimeN();
     void imprimePorNivel(Digito *p, int nivel);
 
-    void comprime(char dig, ofstream &comprimido);
-    void auxComprime(Digito *p, char dig, string text, bool *encontrou, ofstream &comprimido);
+    void comprime(SubDigito* subDigito);
+    void auxComprime(Digito *p, char dig, string text, bool *encontrou, SubDigito* subDigito);
+
+
     void descomprimir(char *buffer, int tamanho, ofstream &descomprimido);
     void auxDescomprimir(Digito *p, char *buffer, int* i, ofstream &descomprimido);
 };
 
-#endif // DIGITO_HS
+
+#endif // DIGITO_H
