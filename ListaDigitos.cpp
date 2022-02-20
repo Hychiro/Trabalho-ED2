@@ -53,8 +53,8 @@ void ListaDigitos::AdicionaFimDaLista(char a)
         novo->digito = a;
         novo->repeticoes = 1;
         novo->jaBuscado = false;
-        novo->filhoDir=NULL;
-        novo->filhoEsq=NULL;
+        novo->dir=NULL;
+        novo->esq=NULL;
 
         novo->anterior=NULL;
         novo->proximo = NULL;
@@ -69,8 +69,8 @@ void ListaDigitos::AdicionaFimDaLista(char a)
         novo->digito = a;
         novo->repeticoes = 1;
         novo->jaBuscado = false;
-        novo->filhoDir=NULL;
-        novo->filhoEsq=NULL;
+        novo->dir=NULL;
+        novo->esq=NULL;
 
         novo->anterior=this->fim;
         this->fim->proximo = novo;
@@ -140,5 +140,123 @@ void ListaDigitos::ImprimeLista()
     {
         cout << "Caractere: " << aux->digito << endl;
         cout << "Repeticoes: " << aux->repeticoes << endl;
+    }
+}
+
+void ListaDigitos::apagaDaLista(Digito *a, Digito *b) //botar na struct da lista
+{
+    Digito *auxAnt;
+    Digito *auxProx;
+
+    if(a->anterior == nullptr && b->proximo == nullptr){
+        //chegamos ao fim
+        a->proximo = nullptr;
+        b->anterior = nullptr;
+        return;
+    }
+    else if(b->anterior == nullptr && a->proximo == nullptr){
+        b->proximo = nullptr;
+        a->anterior = nullptr;
+        return;
+    }
+
+    if (a->proximo != b && b->proximo != a)
+    {
+        // retira A
+        auxAnt = a->anterior;
+        auxProx = a->proximo;
+
+        if (auxAnt != nullptr && auxProx != nullptr)
+        {
+            auxAnt->proximo = auxProx;
+            auxProx->anterior = auxAnt;
+        }
+        else if (auxAnt == nullptr)
+        {
+            auxProx->anterior = auxAnt;
+        }
+        else if (auxProx == nullptr)
+        {
+            auxAnt->proximo = auxProx;
+        }
+
+        a->anterior = nullptr;
+        a->proximo = nullptr;
+
+        // retira B
+        auxAnt = b->anterior;
+        auxProx = b->proximo;
+
+        if (auxAnt != nullptr && auxProx != nullptr)
+        {
+            auxAnt->proximo = auxProx;
+            auxProx->anterior = auxAnt;
+        }
+        else if (auxAnt == nullptr)
+        {
+            auxProx->anterior = auxAnt;
+        }
+        else if (auxProx == nullptr)
+        {
+            auxAnt->proximo = auxProx;
+        }
+
+        b->anterior = nullptr;
+        b->proximo = nullptr;
+    }
+    else
+    {
+
+        if (a->proximo == b)
+        {
+
+            auxAnt = a->anterior;
+            auxProx = b->proximo;
+            if (auxAnt != nullptr && auxProx != nullptr)
+            {
+                auxAnt->proximo = auxProx;
+                auxProx->anterior = auxAnt;
+            }
+            else if (auxAnt == nullptr)
+            {
+                auxProx->anterior = auxAnt;
+            }
+            else if (auxProx == nullptr)
+            {
+                auxAnt->proximo = auxProx;
+            }
+
+            a->anterior = nullptr;
+            a->proximo = nullptr;
+
+            b->anterior = nullptr;
+            b->proximo = nullptr;
+        }
+        else if (b->proximo == a)
+        {
+            auxAnt = b->anterior;
+            auxProx = a->proximo;
+
+            if (auxAnt != nullptr && auxProx != nullptr)
+            {
+                auxAnt->proximo = auxProx;
+                auxProx->anterior = auxAnt;
+            }
+            else if (auxAnt == nullptr)
+            {
+                auxProx->anterior = auxAnt;
+            }
+            else if (auxProx == nullptr)
+            {
+                auxAnt->proximo = auxProx;
+            }
+
+            a->anterior = nullptr;
+            a->proximo = nullptr;
+
+            b->anterior = nullptr;
+            b->proximo = nullptr;
+        }
+
     }
 }

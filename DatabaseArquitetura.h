@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "No.h"
+#include "Digito.h"
 
 using namespace std;
 
@@ -23,6 +24,7 @@ class DatabaseArquitetura
         void leArqBinarioEmArquivoTexto(ofstream &output_file, SubNo parametro[], ifstream &arqBin, int imp);
         void leArqBinarioEmArquivoTexto(ofstream &output_file, No parametro[], ifstream &arqBin, int imp);
         int getIdUltimaPosicao(ifstream& arqBin);
+
 };
 
 
